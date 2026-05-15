@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Manrope:wght@600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "secondary": "#2f3131",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "surface": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#131313",
+                    "on-primary-fixed-variant": "#454747",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f5f5f5",
+                    "error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "tertiary-container": "#f5f5f5",
+                    "outline": "#8e9192",
+                    "surface-dim": "#f0f0f0",
+                    "primary-fixed-dim": "#c6c6c7",
+                    "tertiary": "#131313",
+                    "surface-container-high": "#e8e8e8",
+                    "on-primary-container": "#1a1c1c",
+                    "surface-container-highest": "#e0e0e0",
+                    "surface-container": "#f5f5f5",
+                    "secondary-container": "#e3e2e2",
+                    "error": "#ba1a1a",
+                    "primary": "#131313",
+                    "on-secondary-container": "#1a1c1c",
+                    "outline-variant": "#c4c7c8",
+                    "inverse-primary": "#c6c6c7",
+                    "surface-variant": "#e1e2e3",
+                    "inverse-on-surface": "#f5f5f5",
+                    "background": "#ffffff",
+                    "secondary-fixed": "#e3e2e2",
+                    "primary-container": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#1c1b1b",
+                    "on-error-container": "#410002",
+                    "on-surface-variant": "#444748",
+                    "on-error": "#ffffff",
+                    "on-background": "#131313",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "primary-fixed": "#e2e2e2",
+                    "on-surface": "#131313",
+                    "on-secondary-fixed-variant": "#464747",
+                    "surface-container-low": "#f7f7f7",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-primary-fixed": "#1a1c1c",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#131313"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "24px",
+                    "section-gap": "80px",
+                    "stack-md": "40px",
+                    "stack-lg": "64px",
+                    "unit": "4px",
+                    "stack-sm": "12px"
+            },
+            "fontFamily": {
+                    "otp-display": ["Manrope"],
+                    "body-large": ["Inter"],
+                    "headline-brand": ["Manrope"],
+                    "display-hero": ["Manrope"],
+                    "label-caps": ["Inter"],
+                    "input-text": ["Manrope"]
+            },
+            "fontSize": {
+                    "otp-display": ["24px", {"letterSpacing": "0.8em", "fontWeight": "800"}],
+                    "body-large": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-brand": ["36px", {"letterSpacing": "-0.05em", "fontWeight": "900"}],
+                    "display-hero": ["48px", {"lineHeight": "1.05", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "label-caps": ["10px", {"letterSpacing": "0.2em", "fontWeight": "700"}],
+                    "input-text": ["18px", {"fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+        background-color: #ffffff;
+        color: #131313;
+        min-height: 100vh;
+    }
+    .grain-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.03;
+        background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBjDBCMz7H8l8nwMwr51sr_toAMkmyPYcFWbZV_ewQ8QSHNx613DPsZDjgx-4RrgfEyTEpJsQAobNXSl5n5SDzidRdGZUvQVvQ--kGcmzQR3F6GeUt5tpA-fQgW0RHKRRny2QtmaKJDtdpzoM528_mqeIcGfNwpw2LLmD4FWRmgDQzYiPohnyUxmGaRoQWqsZ7o2NNSr5ZlWAj_5_caj-b1k5lOm2g-JE-rAo0u0F-GzA4GzzwHjIAgaVYT2NIsGBDbKbQLveghL-uN)
+    }
+    .diagonal-accents::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 60px;
+        height: 60px;
+        border-top: 1px solid #c4c7c8;
+        border-left: 1px solid #c4c7c8;
+        z-index: 60
+    }
+    .diagonal-accents::after {
+        content: "";
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 60px;
+        height: 60px;
+        border-bottom: 1px solid #c4c7c8;
+        border-right: 1px solid #c4c7c8;
+        z-index: 60
+    }
+</style>
+</head>
+<body class="font-body-large selection:bg-primary selection:text-surface antialiased overflow-x-hidden">
+<div class="grain-overlay"></div>
+<div class="diagonal-accents"></div>
+<!-- Desktop Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-outline-variant/30 flex items-center justify-between px-12 h-20">
+<div class="flex items-center gap-8">
+<button class="active:scale-95 transition-transform duration-150 text-on-surface flex items-center gap-2 hover:opacity-70">
+<span class="material-symbols-outlined">arrow_back</span>
+<span class="font-label-caps text-label-caps hidden md:inline">BACK</span>
+</button>
+<h1 class="font-headline-brand text-2xl text-on-surface">Onboarding</h1>
+</div>
+<div class="text-2xl font-black text-on-surface uppercase tracking-widest">KINETIC</div>
+<div class="w-24 hidden md:block"></div> <!-- Spacer to balance layout -->
+</header>
+<main class="min-h-screen pt-40 pb-24 px-container-padding flex justify-center">
+<div class="w-full max-w-[800px] flex flex-col">
+<!-- Hero Title Section -->
+<section class="w-full mb-16 text-center">
+<div class="inline-block border-l-4 border-primary pl-4 mb-6">
+<p class="font-label-caps text-label-caps text-on-surface-variant text-left">PROFILE IDENTITY</p>
+</div>
+<h2 class="font-display-hero text-6xl md:text-7xl text-primary uppercase italic leading-none">Establish Your<br/>Sanctuary.</h2>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+<!-- Left Side: Avatar Upload -->
+<section class="flex flex-col items-center">
+<div class="relative group">
+<div class="w-64 h-64 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center overflow-hidden bg-surface-container-low transition-all duration-300 group-hover:border-primary group-hover:bg-surface-container cursor-pointer">
+<div class="text-center">
+<span class="material-symbols-outlined text-5xl text-outline mb-3">add</span>
+<p class="font-label-caps text-label-caps text-outline group-hover:text-primary transition-colors">UPLOAD PHOTO</p>
+</div>
+</div>
+<!-- Decorative Frame -->
+<div class="absolute -inset-4 border border-outline-variant/30 rounded-full -z-10 animate-pulse"></div>
+<div class="absolute -inset-8 border border-outline-variant/10 rounded-full -z-20"></div>
+</div>
+<p class="mt-12 text-on-surface-variant font-label-caps text-[10px] tracking-widest uppercase">Select a profile representation</p>
+</section>
+<!-- Right Side: Form Fields -->
+<form class="space-y-10">
+<div class="space-y-3">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-[0.15em] ml-1">Legal Full Name</label>
+<div class="relative group">
+<input class="w-full bg-surface-container h-20 px-8 font-input-text text-xl text-primary border-b-2 border-transparent focus:border-primary focus:ring-0 placeholder:text-outline/40 transition-all uppercase tracking-tight" placeholder="ALEXANDER KINETIC" type="text"/>
+<span class="material-symbols-outlined absolute right-8 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary">badge</span>
+</div>
+</div>
+<div class="space-y-3">
+<label class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-[0.15em] ml-1">Current Age</label>
+<div class="relative group">
+<input class="w-full bg-surface-container h-20 px-8 font-input-text text-xl text-primary border-b-2 border-transparent focus:border-primary focus:ring-0 placeholder:text-outline/40 transition-all" placeholder="28" type="number"/>
+<span class="material-symbols-outlined absolute right-8 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary">calendar_today</span>
+</div>
+</div>
+<div class="pt-8">
+<button class="w-full bg-primary text-surface h-20 flex items-center justify-center gap-4 active:scale-[0.98] transition-all hover:bg-on-surface-variant group">
+<span class="font-label-caps text-xl tracking-[0.4em] font-black uppercase">Complete Profile</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+<!-- Technical Footer Decoration -->
+<div class="pt-10">
+<div class="w-full h-px bg-outline-variant/30"></div>
+<div class="flex justify-between mt-4">
+<span class="font-label-caps text-[9px] text-outline-variant">SYS_READY_V2.0_DESKTOP</span>
+<span class="font-label-caps text-[9px] text-outline-variant">DATA ENCRYPTION: ACTIVE (AES-256)</span>
+</div>
+</div>
+</form>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-8 left-12">
+<div class="flex items-center gap-4 opacity-50">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-caps text-[10px] tracking-tighter">SECURE CONNECTION ESTABLISHED</span>
+</div>
+</footer>
+</body></html>

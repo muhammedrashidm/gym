@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#5d5f5f",
+                        "tertiary": "#131313",
+                        "secondary-fixed": "#e3e2e2",
+                        "surface-container": "#f4f4f4",
+                        "surface-dim": "#e5e2e1",
+                        "surface-container-low": "#ffffff",
+                        "on-surface": "#131313",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#e5e2e1",
+                        "primary-fixed-dim": "#454747",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#c4c7c8",
+                        "on-primary-fixed": "#ffffff",
+                        "tertiary-container": "#1c1b1b",
+                        "surface": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#131313",
+                        "inverse-surface": "#131313",
+                        "secondary": "#484949",
+                        "background": "#f9f9f9",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c4c7c8",
+                        "primary-container": "#131313",
+                        "inverse-on-surface": "#f9f9f9",
+                        "primary-fixed": "#131313",
+                        "on-secondary-container": "#131313",
+                        "error-container": "#ffdad6",
+                        "on-surface-variant": "#444748",
+                        "primary": "#131313",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#353534",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-container": "#e3e2e2",
+                        "on-primary-fixed-variant": "#8e9192",
+                        "surface-variant": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-tertiary-container": "#e5e2e1",
+                        "outline": "#131313",
+                        "surface-container-high": "#ebebeb",
+                        "surface-bright": "#ffffff",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "on-background": "#131313",
+                        "on-error-container": "#410002",
+                        "on-primary-container": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-md": "40px",
+                        "section-gap": "80px",
+                        "container-padding": "24px",
+                        "stack-lg": "64px",
+                        "stack-sm": "12px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "headline-brand": ["Manrope"],
+                        "input-text": ["Manrope"],
+                        "body-large": ["Inter"],
+                        "otp-display": ["Manrope"],
+                        "display-hero": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["10px", {"letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "headline-brand": ["36px", {"letterSpacing": "-0.05em", "fontWeight": "900"}],
+                        "input-text": ["18px", {"fontWeight": "600"}],
+                        "body-large": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "otp-display": ["24px", {"letterSpacing": "0.8em", "fontWeight": "800"}],
+                        "display-hero": ["64px", {"lineHeight": "1.0", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #f9f9f9;
+            color: #131313;
+            overflow-x: hidden;
+        }
+        .architectural-line {
+            position: fixed;
+            background: #131313;
+            z-index: 0;
+            opacity: 0.1;
+        }
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCnBZy_1X7C9Q2Cr9DSARKkB8m-FE38TjkMURNiWERgPLfPjvha2NZlyB02sJAnKWzPiZOIrsp6LQ3eFSSJaf5CKpuvPrhGu7_rE4RCfY8g208Qck3SV7gnTGafH4JnQzvgdolv366VjboMkI3R2CvnK-2dh_vLtIaLg_8Eg0i0GZK8UyIn5tx8gLXw1EFiDDD9CKa-_rpKB7r2cSM1el5FJqhXri5iZgAORhM-8UL4G_UwiEhhloP4qnVeYemYDrArTI5RWuL2CCHC);
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .desktop-container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="font-body-large text-on-surface antialiased">
+<div class="grain-overlay"></div>
+<!-- Architectural Decorative Elements -->
+<div class="architectural-line w-px h-screen left-[10%] top-0"></div>
+<div class="architectural-line w-px h-screen right-[10%] top-0"></div>
+<div class="architectural-line h-px w-screen top-24 left-0"></div>
+<div class="architectural-line h-px w-screen bottom-24 left-0"></div>
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-outline-variant/20 px-10 h-20 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 cursor-pointer group">
+<span class="material-symbols-outlined text-primary group-hover:-translate-x-1 transition-transform">arrow_back</span>
+<span class="font-label-caps text-label-caps uppercase">Back to Terminal</span>
+</div>
+<div class="h-6 w-px bg-outline-variant/30"></div>
+<h1 class="font-['Manrope'] font-bold tracking-tight text-primary">Onboarding Flow // Identity Setup</h1>
+</div>
+<div class="text-2xl font-black text-primary uppercase tracking-tighter">
+            KINETIC
+        </div>
+</header>
+<main class="relative z-10 flex flex-col items-center justify-center min-h-screen pt-32 pb-24 px-10">
+<div class="desktop-container w-full grid grid-cols-12 gap-10 items-start">
+<!-- Left Side: Identity & Messaging -->
+<div class="col-span-12 lg:col-span-7 flex flex-col">
+<div class="mb-stack-lg relative">
+<div class="inline-flex items-center gap-4 mb-stack-sm">
+<div class="w-2 h-2 bg-primary"></div>
+<p class="font-label-caps text-label-caps text-primary tracking-[0.4em]">STATUS: PENDING_AUTHORIZATION</p>
+</div>
+<h2 class="font-display-hero text-[84px] leading-[0.95] uppercase italic tracking-tighter mb-stack-md text-primary">
+                        Welcome to<br/>the Temple.
+                    </h2>
+<div class="w-48 h-2 bg-primary mb-stack-lg"></div>
+<div class="max-w-xl">
+<p class="font-body-large text-xl text-on-surface-variant leading-relaxed mb-10">
+                            Your profile has been created successfully. To access our elite performance management suite, a role must be assigned to your identity. 
+                        </p>
+<p class="font-body-large text-lg text-on-surface-variant/70 leading-relaxed italic border-l-4 border-outline-variant/30 pl-6">
+                            "The strength of the collective begins with the precision of the individual."
+                        </p>
+</div>
+</div>
+<!-- Secondary Visual for Desktop -->
+<div class="mt-12 w-full h-[300px] overflow-hidden grayscale contrast-150 border border-outline-variant/40 group">
+<img alt="Brutalist gym interior" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBitcopGsaJfnIARMjZG3RngRy2eYqvTu_abnNwUN69TDqSWv1gTtlQGRlfRu_9Qkv0Duv07RJNKXtzGE8Z-n8DUvcr0WzkKZtNxbURI1C9aA56y-ic146rRtuZLtob90Mw1Kk8oXsk1XBqHG4qS7kuFsWA9m2kHH3GfnrSdhW5OA7Y95dXogyfd0I0734fYJDo9klEF0Kk0-J5IwE3euxfMePqF-uBnOgdPyzs_kWf3UsOeGNsWbg4QlablIrnzDESH9XcQUty0dr5"/>
+</div>
+</div>
+<!-- Right Side: Action Card -->
+<div class="col-span-12 lg:col-span-5 sticky top-32">
+<div class="bg-surface-container-low p-12 w-full relative border-2 border-primary shadow-[20px_20px_0px_rgba(19,19,19,0.05)]">
+<!-- Diagonal Corner Accents -->
+<div class="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-primary"></div>
+<div class="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-primary"></div>
+<div class="mb-10">
+<p class="font-label-caps text-label-caps text-outline-variant uppercase mb-2">Required Action</p>
+<h3 class="font-headline-brand text-2xl uppercase italic">Initiate Protocol</h3>
+</div>
+<div class="flex flex-col gap-6 w-full">
+<button class="w-full py-8 bg-primary text-white font-label-caps text-[16px] font-black uppercase tracking-[0.3em] hover:bg-on-surface-variant transition-all active:scale-[0.98] flex items-center justify-center gap-4 group">
+                            Onboard as Gym Owner
+                            <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</button>
+<div class="grid grid-cols-2 gap-4">
+<a class="flex items-center justify-center gap-2 py-5 border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="font-label-caps text-xs uppercase tracking-widest">Contact Support</span>
+<span class="material-symbols-outlined text-[16px]">north_east</span>
+</a>
+<a class="flex items-center justify-center gap-2 py-5 border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container transition-colors group" href="#">
+<span class="font-label-caps text-xs uppercase tracking-widest">Manual Auth</span>
+<span class="material-symbols-outlined text-[16px]">lock_open</span>
+</a>
+</div>
+</div>
+<div class="mt-12 pt-8 border-t border-outline-variant/20">
+<p class="text-xs text-on-surface-variant/60 leading-relaxed">
+                            System Authorization Required // Terminal 01<br/>
+                            Encryption: Active // AES-256-GCM<br/>
+                            Timestamp: 2024.Q3.08.12.00.00
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Footer Accent -->
+<div class="fixed bottom-0 left-[10%] w-[1px] h-48 bg-gradient-to-t from-primary to-transparent opacity-10"></div>
+<div class="fixed bottom-0 right-[10%] w-[1px] h-48 bg-gradient-to-t from-primary to-transparent opacity-10"></div>
+<footer class="fixed bottom-0 w-full px-10 py-4 flex justify-between items-center z-50">
+<p class="font-label-caps text-[9px] text-outline-variant uppercase tracking-[0.4em]">© KINETIC PERFORMANCE SYSTEMS 2024</p>
+<div class="flex gap-6">
+<span class="font-label-caps text-[9px] text-outline-variant uppercase tracking-[0.2em]">Privacy</span>
+<span class="font-label-caps text-[9px] text-outline-variant uppercase tracking-[0.2em]">Terms</span>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Manrope:wght@600;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-primary": "#5d5f5f",
+            "tertiary": "#ffffff",
+            "secondary-fixed": "#e3e2e2",
+            "surface-container": "#f4f4f4", // Light theme adjustment
+            "surface-dim": "#f0f0f0", // Light theme adjustment
+            "surface-container-low": "#ffffff", // Light theme adjustment
+            "on-surface": "#131313", // Light theme adjustment
+            "on-primary": "#ffffff", // Light theme adjustment
+            "on-tertiary-fixed": "#1c1b1b",
+            "primary-fixed-dim": "#c6c6c7",
+            "error": "#ba1a1a", // Light theme adjustment
+            "tertiary-fixed": "#e5e2e1",
+            "on-tertiary-fixed-variant": "#474746",
+            "on-primary-fixed": "#1a1c1c",
+            "tertiary-container": "#e5e2e1",
+            "surface": "#ffffff", // Light theme adjustment
+            "on-error": "#ffffff", // Light theme adjustment
+            "surface-tint": "#c6c6c7",
+            "inverse-surface": "#131313", // Light theme adjustment
+            "secondary": "#5d5f5f", // Light theme adjustment
+            "background": "#fbfbfb", // Light theme adjustment
+            "on-tertiary": "#313030",
+            "outline-variant": "#c4c7c8", // Light theme adjustment
+            "primary-container": "#e2e2e2",
+            "inverse-on-surface": "#ffffff", // Light theme adjustment
+            "primary-fixed": "#e2e2e2",
+            "on-secondary-container": "#1a1c1c",
+            "error-container": "#ffdad6",
+            "on-surface-variant": "#444748", // Light theme adjustment
+            "primary": "#131313", // Light theme adjustment (Black primary on light bg)
+            "on-secondary": "#ffffff",
+            "tertiary-fixed-dim": "#c8c6c5",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e2e2e2",
+            "secondary-container": "#e3e2e2",
+            "on-primary-fixed-variant": "#454747",
+            "surface-variant": "#e5e2e1",
+            "on-secondary-fixed-variant": "#464747",
+            "on-secondary-fixed": "#1a1c1c",
+            "on-tertiary-container": "#656464",
+            "outline": "#747878", // Light theme adjustment
+            "surface-container-high": "#ebebeb",
+            "surface-bright": "#ffffff",
+            "secondary-fixed-dim": "#c7c6c6",
+            "on-background": "#131313", // Light theme adjustment
+            "on-error-container": "#410002",
+            "on-primary-container": "#1a1c1c"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "unit": "4px",
+            "stack-md": "40px",
+            "section-gap": "80px",
+            "container-padding": "24px",
+            "stack-lg": "64px",
+            "stack-sm": "12px"
+          },
+          "fontFamily": {
+            "label-caps": ["Inter"],
+            "headline-brand": ["Manrope"],
+            "input-text": ["Manrope"],
+            "body-large": ["Inter"],
+            "otp-display": ["Manrope"],
+            "display-hero": ["Manrope"]
+          },
+          "fontSize": {
+            "label-caps": ["10px", {"letterSpacing": "0.2em", "fontWeight": "700"}],
+            "headline-brand": ["36px", {"letterSpacing": "-0.05em", "fontWeight": "900"}],
+            "input-text": ["18px", {"fontWeight": "600"}],
+            "body-large": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+            "otp-display": ["24px", {"letterSpacing": "0.8em", "fontWeight": "800"}],
+            "display-hero": ["48px", {"lineHeight": "1.05", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f0f0f0
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c4c7c8;
+      border-radius: 3px;
+    }
+    .monolithic-btn:active {
+      transform: scale(0.98)
+    }
+    .texture-overlay {
+      background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDawd6bnQOUnkgk-RRnJHY_VGtFjwAFJhBr14qgedUDWqbcwuk78cYw1piuzo0FLeZOIbFDYYJKoL2e-_yNwPiZwXCIX6AqvlcBTZpM1j5_S86MXjZKCm6CKkgK-SP7u8RMbSby2dufGaF5_HSyyXULMoNYwa5B9FUem2qUZmHxEPFVgpyOHJurd2y0kEcWRyVhy0UzOd5DXEv8eX5Kx6ynpPpwVh61HABmFAbFf3JzD2EKmaHpAm_Y9jipyNCT-cYI8wR1MS8HTgcn);
+      background-size: cover;
+      opacity: 0.03;
+      pointer-events: none
+    }
+    body {
+      min-height: 100dvh;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-large selection:bg-primary selection:text-white">
+<!-- Texture Overlay for "Grit" -->
+<div class="fixed inset-0 texture-overlay z-0" data-alt="A high-contrast, macro photograph of a textured concrete floor. Modified for a lighter, cleaner desktop aesthetic while maintaining the industrial feel."></div>
+<!-- Main Shell -->
+<div class="relative z-10 flex flex-col items-center min-h-screen w-full">
+<!-- Desktop Header -->
+<header class="w-full border-b border-outline-variant/30 bg-white/80 backdrop-blur-md px-container-padding h-20 flex items-center justify-between sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<button class="flex items-center justify-center w-10 h-10 hover:bg-surface-container transition-colors rounded-full active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="hidden md:block">
+<span class="font-headline-brand text-xl font-black tracking-tighter uppercase">Kinetic</span>
+</div>
+</div>
+<h1 class="font-headline-brand text-label-caps uppercase text-primary tracking-[0.3em] absolute left-1/2 -translate-x-1/2">Onboarding</h1>
+<div class="w-10"></div>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-5xl px-container-padding py-stack-lg flex flex-col md:flex-row gap-12 items-start">
+<!-- Left Column: Title & Info -->
+<aside class="w-full md:w-1/3 flex flex-col sticky top-32">
+<section class="mb-stack-md flex flex-col">
+<div class="flex items-center gap-3 mb-4">
+<span class="w-8 h-[2px] bg-primary"></span>
+<p class="font-label-caps text-label-caps text-on-surface-variant">STEP 04 // COMPLIANCE</p>
+</div>
+<h2 class="font-headline-brand text-[56px] text-primary uppercase italic leading-[0.9] mb-8">
+            Legal<br/>Foundation
+          </h2>
+<p class="text-on-surface-variant max-w-xs">
+            Review the Kinetic Operating Agreement. Your commitment to these standards ensures the integrity of our high-performance sanctuary.
+          </p>
+</section>
+</aside>
+<!-- Right Column: Document Viewer & Actions -->
+<div class="w-full md:w-2/3 flex flex-col">
+<!-- Legal Document Card -->
+<section class="bg-white border border-outline-variant shadow-sm flex flex-col overflow-hidden mb-stack-md">
+<div class="px-8 py-6 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<p class="font-label-caps text-label-caps text-primary">KINETIC OPERATING AGREEMENT v2.4</p>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="gavel">gavel</span>
+</div>
+<div class="custom-scrollbar overflow-y-auto max-h-[600px] p-8 space-y-10 font-body-large text-on-surface-variant leading-relaxed">
+<div>
+<h3 class="text-primary font-bold text-input-text uppercase mb-3">1. DEFINITIONS</h3>
+<p>The term "Sanctuary of Performance" refers to any physical location or digital entity managed under the KINETIC brand umbrella. "Operator" refers to the individual or entity seeking certification and ownership status within our exclusive ecosystem.</p>
+</div>
+<div>
+<h3 class="text-primary font-bold text-input-text uppercase mb-3">2. ARCHITECTURAL STANDARDS</h3>
+<p>All facilities must adhere to the Monolithic Design Protocol. This includes, but is not limited to, the use of monochromatic color palettes, high-contrast lighting arrays, and Brutalist structural elements. Deviation from these visual standards results in immediate revocation of the operating license.</p>
+</div>
+<div>
+<h3 class="text-primary font-bold text-input-text uppercase mb-3">3. PERFORMANCE METRICS</h3>
+<p>Operators agree to maintain a minimum athlete performance growth rate of 12% annually across the aggregate member base. Failure to meet these KPIs indicates a failure of discipline and focus, contradicting the core Kinetic ethos of relentless athletic pursuit.</p>
+</div>
+<div>
+<h3 class="text-primary font-bold text-input-text uppercase mb-3">4. INTELLECTUAL PROPERTY</h3>
+<p>The specific typographic scales, diagonal corner motifs, and tonal layer hierarchies used within the Kinetic Management Interface are proprietary and protected. Any replication of this UI for external ventures is strictly prohibited.</p>
+</div>
+<div>
+<h3 class="text-primary font-bold text-input-text uppercase mb-3">5. DISCIPLINARY ACTIONS</h3>
+<p>Kinetic reserves the right to audit facility operations at any time. We demand a culture of total transparency and unwavering commitment to the sanctuary’s standards of excellence and exclusivity.</p>
+</div>
+<div class="py-12 text-center border-t border-outline-variant/30 italic">
+<p class="text-label-caps opacity-50 uppercase tracking-widest">— End of Document —</p>
+</div>
+</div>
+</section>
+<!-- Interaction Footer -->
+<section class="space-y-8 bg-surface-container-low p-8 border border-outline-variant">
+<label class="flex items-start gap-4 cursor-pointer group">
+<div class="relative mt-1">
+<input class="peer appearance-none w-6 h-6 border-2 border-outline-variant bg-white checked:bg-primary checked:border-primary transition-all rounded-none" required="" type="checkbox"/>
+<span class="material-symbols-outlined absolute inset-0 text-white text-lg flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-caps text-[12px] leading-tight uppercase text-on-surface-variant group-hover:text-primary transition-colors pt-1">
+              I agree to the terms and service and acknowledge the professional requirements of the Kinetic brand.
+            </span>
+</label>
+<div class="flex justify-end">
+<button class="monolithic-btn px-12 bg-primary text-white font-headline-brand text-input-text py-6 uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center justify-center gap-3 active:scale-95 duration-150">
+              Accept &amp; Continue
+              <span class="material-symbols-outlined" data-icon="east">east</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Desktop Accents (Subtle Corners) -->
+<div class="fixed top-24 left-8 w-12 h-12 border-t-2 border-l-2 border-primary/10 pointer-events-none hidden lg:block"></div>
+<div class="fixed bottom-8 right-8 w-12 h-12 border-b-2 border-r-2 border-primary/10 pointer-events-none hidden lg:block"></div>
+</div>
+</body></html>

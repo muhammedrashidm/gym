@@ -1,0 +1,64 @@
+name: gym
+description: "The only gym app"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.10
+  google_fonts: ^6.2.1
+
+  # Routing
+  go_router: ^15.1.2
+
+  # State management
+  flutter_bloc: ^9.1.1
+  bloc: ^9.0.0
+
+  # Dependency injection
+  get_it: ^8.0.3
+  injectable: ^2.3.2
+
+  # Networking
+  dio: ^5.8.0
+  pretty_dio_logger: ^1.4.0
+
+  # Local storage
+  shared_preferences: ^2.2.3
+  flutter_secure_storage: ^9.2.4
+
+  # Functional error handling
+  dartz: ^0.10.1
+
+  # Mediator pattern (CQRS-style use case dispatch)
+  dart_mediatr: ^1.0.5
+
+  # Models
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+  jwt_decoder: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+  # Code generation — all pinned to be compatible with dart_mediatr (analyzer ^5)
+  build_runner: ^2.4.9
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
+  injectable_generator: ^2.4.2
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/

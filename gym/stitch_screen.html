@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EXPLORE - Find Gyms</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f9f9f9",
+                    "secondary-container": "#d6d4d3",
+                    "primary-fixed": "#5f5e5e",
+                    "outline-variant": "#c6c6c6",
+                    "on-tertiary-container": "#ffffff",
+                    "surface-container-highest": "#e2e2e2",
+                    "inverse-on-surface": "#f1f1f1",
+                    "primary": "#000000",
+                    "on-secondary-container": "#1b1c1c",
+                    "outline": "#777777",
+                    "surface-dim": "#dadada",
+                    "secondary-fixed": "#c8c6c6",
+                    "surface": "#f9f9f9",
+                    "on-primary-fixed": "#ffffff",
+                    "on-primary-container": "#ffffff",
+                    "primary-container": "#3c3b3b",
+                    "surface-container": "#eeeeee",
+                    "inverse-surface": "#2f3131",
+                    "on-surface-variant": "#474747",
+                    "tertiary-container": "#747474",
+                    "on-error-container": "#410002",
+                    "secondary": "#5f5e5e",
+                    "primary-fixed-dim": "#474746",
+                    "on-surface": "#1a1c1c",
+                    "on-secondary-fixed-variant": "#3b3b3b",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#464747",
+                    "surface-container-low": "#f3f3f3",
+                    "on-tertiary-fixed-variant": "#e3e2e2",
+                    "on-primary-fixed-variant": "#e5e2e1",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#5e5e5e",
+                    "inverse-primary": "#c8c6c5",
+                    "on-background": "#1a1c1c",
+                    "tertiary": "#3b3b3c",
+                    "surface-variant": "#e2e2e2",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#ffffff",
+                    "secondary-fixed-dim": "#acabab",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "on-primary": "#e5e2e1",
+                    "surface-tint": "#5f5e5e",
+                    "on-tertiary": "#e3e2e2",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#e8e8e8",
+                    "background": "#f9f9f9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f9f9f9;
+        color: #1a1c1c;
+      }
+      h1, h2, h3 {
+        font-family: 'Manrope', sans-serif;
+      }
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 border-0 bg-[#f9f9f9]/80 backdrop-blur-md flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-black cursor-pointer">search</span>
+<h1 class="font-['Manrope'] font-black text-xl tracking-tighter text-black uppercase">EXPLORE</h1>
+</div>
+<div class="w-10 h-10 bg-surface-container-highest overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="Close up portrait of a professional athletic woman with a neutral expression in high-key studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHliR0Bn8gnU5vHDzhrVYCjbMOPTKSGjpyqbA_NFmwfl1bOsmArQ5nLnXbPZEhPXo6f5kbuE7OihniTrloTkLfBPtf7LWamv2ghINsBS0EaPKD7lv9QRFovMZORU3q54IfI_hWyWBUXWA-XxOY-pp0nqUZb7Q2y1f3GjpMJN7Yaltynzc2cySg71BlRAfYcCSvFb2OeB46HUos0elSOad74oSNJWTgxZ5eqjChHPR9hOuN1ICGQeoFMFwLWzOLXgu0vgpykkWhdGsz"/>
+</div>
+</header>
+<main class="pt-20 pb-20 min-h-screen flex flex-col">
+<!-- Search & Filter Section -->
+<section class="px-6 py-8 bg-surface">
+<div class="relative mb-8">
+<input class="w-full bg-surface-container-highest border-0 px-4 py-5 font-['Inter'] text-sm tracking-widest uppercase focus:ring-0 focus:bg-surface-container-lowest transition-colors placeholder:text-outline" placeholder="FIND YOUR SANCTUARY..." type="text"/>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-2">
+<button class="bg-primary text-on-primary px-6 py-2 text-[10px] font-bold tracking-[0.2em] uppercase transition-transform active:scale-95">OPEN NOW</button>
+<button class="bg-surface-container-highest text-primary px-6 py-2 text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-surface-container-high">CLASSES</button>
+<button class="bg-surface-container-highest text-primary px-6 py-2 text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-surface-container-high">DISTANCE</button>
+<button class="bg-surface-container-highest text-primary px-6 py-2 text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-surface-container-high">STRENGTH</button>
+</div>
+</section>
+<!-- Interactive Map Mockup -->
+<section class="relative h-[397px] w-full bg-surface-container">
+<div class="absolute inset-0 grayscale opacity-60">
+<img alt="Map" class="w-full h-full object-cover" data-alt="Minimalist architectural city map view in grayscale showing clean urban grid and simplified street paths" data-location="New York City" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBG9Ob6UTMz6gUTM6i7z_cVIF2Gqz_nbfJ7J86uXW3MAwWNTt1EqUgHuIYzXXqIcdUekgGykBy7xc41lOoyuuweBltqkvePgaagatxpCCe73eOkKrMHwoMa24gFyd0huQFQVN5S3145FakWIYknExL4L_SuBiTvckZZBloE09usSZwcuBFG55elw3yCqwU4raR9LVzoFamTo0Iq37E7Zh6lzRZmfVKiHdsACS6Kut3y4Ilh8oVh3Mn4gixa_gTxzVSQ0CbiGctTmwpu"/>
+</div>
+<!-- Map Pins -->
+<div class="absolute top-1/4 left-1/3">
+<div class="w-4 h-4 bg-primary ring-8 ring-primary/10"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-surface px-2 py-1 shadow-sm">
+<p class="text-[8px] font-bold tracking-widest whitespace-nowrap">IRON TEMPLE</p>
+</div>
+</div>
+<div class="absolute bottom-1/3 right-1/4">
+<div class="w-4 h-4 bg-primary ring-8 ring-primary/10"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-surface px-2 py-1 shadow-sm">
+<p class="text-[8px] font-bold tracking-widest whitespace-nowrap">THE VOID</p>
+</div>
+</div>
+<div class="absolute top-1/2 right-1/2">
+<div class="w-3 h-3 bg-tertiary-container ring-4 ring-tertiary-container/20 rounded-full"></div>
+<p class="absolute -top-6 left-1/2 -translate-x-1/2 text-[8px] font-bold text-outline uppercase">YOU</p>
+</div>
+</section>
+<!-- Gym List / Bottom Sheet -->
+<section class="bg-surface-container-low px-6 pt-12 pb-24 -mt-8 relative z-10">
+<div class="w-12 h-1 bg-outline-variant mx-auto mb-10 opacity-30"></div>
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="text-[10px] font-bold tracking-[0.3em] text-outline uppercase block mb-2">RESULTS NEARBY</span>
+<h2 class="text-4xl font-extrabold tracking-tighter leading-none">THE LINEUP</h2>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold tracking-[0.1em] text-primary underline">VIEW ALL (24)</span>
+</div>
+</div>
+<div class="space-y-16">
+<!-- Gym Card 1 -->
+<div class="group cursor-pointer">
+<div class="aspect-[16/9] w-full bg-surface-container-highest overflow-hidden mb-6">
+<img alt="Iron Temple" class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" data-alt="Ultra-modern industrial gym interior with concrete walls, black power racks, and dramatic directional lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsRlPTEQX5HtHbmUBYubh13bhq3jdZzXXsjvejEs5slvIwob9P7fC6YZ6NTcbFIvL-fzl0foq4LXbDrALvmR3lErsXCTGCLNaj043eQufGqAbp63xwaPqTUPSx1IOKVdPmtzNVSt6bZFVWP_iEmbinwMGIVgN_Y_yKXPgO-o_0kYxWriBx4zcj29A8IzP2E6cF5t019HLZnuDo4nCWQQWsbjk3EGyL0Kkbi8VvjS-Zdm2rFMFuZee6TlFEnCsD_YmIA5o9hk-feLh4"/>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-surface-container-highest px-2 py-1 text-[8px] font-bold tracking-widest">BOXING</span>
+<span class="bg-surface-container-highest px-2 py-1 text-[8px] font-bold tracking-widest">STRENGTH</span>
+</div>
+<h3 class="text-2xl font-bold tracking-tight mb-1">IRON TEMPLE</h3>
+<div class="flex items-center gap-4">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[14px]">star</span>
+<span class="text-[10px] font-bold ml-1">4.9</span>
+</div>
+<span class="text-[10px] text-outline font-medium">BROOKLYN, NY</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xl font-black italic tracking-tighter">0.8 MI</span>
+<p class="text-[9px] font-bold tracking-widest text-outline">EST. 12 MIN</p>
+</div>
+</div>
+</div>
+<!-- Gym Card 2 -->
+<div class="group cursor-pointer">
+<div class="aspect-[16/9] w-full bg-surface-container-highest overflow-hidden mb-6">
+<img alt="The Void" class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" data-alt="Minimalist all-black pilates and mobility studio with large mirrors and soft ambient floor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWmscj5g7-Oy2riXDj4Z903sRbSHJ97Et_nMrhmOxQpJaRUGkfYxFi7pTclWzU-3S78uxboYHQs0fpXZMWUK2a2BvFZlW_8Kii4OxPgM5X7UFEPc161UvZZshvab7JFAqnK1JtHCY99XgCCPSLPR3drjGYgieSgYD5gSzvb2mvGzqhYORkkC7K7GuyfpPMfg47-NzAbn5TKDxIIGRFgN11T-wacgPO29aA_wiAmTT2lIgLnaNJPwa4vx1sDaVrsPVT3J98azDQky14"/>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-surface-container-highest px-2 py-1 text-[8px] font-bold tracking-widest">MOBILITY</span>
+<span class="bg-surface-container-highest px-2 py-1 text-[8px] font-bold tracking-widest">YOGA</span>
+</div>
+<h3 class="text-2xl font-bold tracking-tight mb-1">THE VOID</h3>
+<div class="flex items-center gap-4">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[14px]">star</span>
+<span class="text-[10px] font-bold ml-1">5.0</span>
+</div>
+<span class="text-[10px] text-outline font-medium">SOHO, NY</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xl font-black italic tracking-tighter">1.4 MI</span>
+<p class="text-[9px] font-bold tracking-widest text-outline">EST. 22 MIN</p>
+</div>
+</div>
+</div>
+<!-- Gym Card 3 -->
+<div class="group cursor-pointer">
+<div class="aspect-[16/9] w-full bg-surface-container-highest overflow-hidden mb-6">
+<img alt="Atlas Core" class="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105" data-alt="Spacious warehouse gym with high ceilings, exposed brick walls, and heavy-duty olympic lifting platforms" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlXEhFRE3_1hyuCl79niYJAMuDr60u1Xap6Xt3i5DIlqUK4fLnfmnqETYk19WyM7Qj3Rmi_3m1IDiDgpVjpZPUPa8dsJU3gjouJzKw5bA5tN1_zH1AitO27rMsWq3nAsYLMJYH_5LIeU3JS4ShfKeGpODlfB5xLmEmvoY7-7VCRDs3TTokRE2GXezEE9R3HF94Q9Sh-dZOrS1r1mS9j4bgg3aKKphmaWro58u8_YGj09pylkMyx8wy6HWk9_iUKfMKnfxdOKUodBFi"/>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-surface-container-highest px-2 py-1 text-[8px] font-bold tracking-widest">POWERLIFTING</span>
+<span class="bg-surface-container-highest px-2 py-1 text-[8px] font-bold tracking-widest">OPEN GYM</span>
+</div>
+<h3 class="text-2xl font-bold tracking-tight mb-1">ATLAS CORE</h3>
+<div class="flex items-center gap-4">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[14px]">star</span>
+<span class="text-[10px] font-bold ml-1">4.7</span>
+</div>
+<span class="text-[10px] text-outline font-medium">QUEENS, NY</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xl font-black italic tracking-tighter">2.1 MI</span>
+<p class="text-[9px] font-bold tracking-widest text-outline">EST. 30 MIN</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 pb-safe px-4 bg-[#f9f9f9] dark:bg-[#121212] z-50">
+<!-- EXPLORE (Active) -->
+<a class="flex flex-col items-center justify-center text-black dark:text-white bg-[#e2e2e2] dark:bg-[#3b3b3c] p-2 transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1">map</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.1em] uppercase">EXPLORE</span>
+</a>
+<!-- TRAIN -->
+<a class="flex flex-col items-center justify-center text-[#5f5e5e] dark:text-[#a1a1a1] p-2 hover:bg-[#e8e8e8] dark:hover:bg-[#2a2a2a] transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1">fitness_center</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.1em] uppercase">TRAIN</span>
+</a>
+<!-- RECOVERY -->
+<a class="flex flex-col items-center justify-center text-[#5f5e5e] dark:text-[#a1a1a1] p-2 hover:bg-[#e8e8e8] dark:hover:bg-[#2a2a2a] transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1">self_improvement</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.1em] uppercase">RECOVERY</span>
+</a>
+<!-- PROFILE -->
+<a class="flex flex-col items-center justify-center text-[#5f5e5e] dark:text-[#a1a1a1] p-2 hover:bg-[#e8e8e8] dark:hover:bg-[#2a2a2a] transition-opacity active:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Inter'] text-[10px] font-bold tracking-[0.1em] uppercase">PROFILE</span>
+</a>
+</nav>
+</body></html>

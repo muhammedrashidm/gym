@@ -1,0 +1,48 @@
+# Stitch Project Screens
+
+**Project ID:** 17839471930605821229
+
+This reference file contains a list of all screens available in the Stitch project. 
+
+**Rule:** Whenever making a UI page in a Flutter or React app, you must consult this file. If a matching page is not found, ask the user for one.
+
+- AI Generated Workout Plan (`068a1f62938e4b8cad56e0a343381202`)
+- Check-in Success (`75924dfb53c84ee7a1e846c61efb9ef8`)
+- Payment QR Code (`0937ba6e1c394f638f671f5795539219`)
+- Members Tab - Live Dashboard (`fbf0067536c942a59bf72df1294dc56b`)
+- Kinetic Performance Management App (`d439a2b0f4c940e29f4ba90686fbad13`)
+- PRD-Aligned Plan Selection (`196a9dee4250466fb44c6c9518300d94`)
+- Minimalistic Login / OTP Entry - Dark Mode (`fa879f2457ed4353be7ac20d8b0e6c3a`)
+- Checkout Confirmation (`0258453aa2ff48e7bd5fff5d78592e42`)
+- QR Check-in Scanner (`9d0041da19864f0d947acb4fdf460fd9`)
+- Explore - Map Popup with Bottom Sheet Handle (`fbd5056a14f34c11848ad87c2ad76c9e`)
+- Web Sign-In - Phone Entry (`6073103dfbc14427bc9dd052803299b5`)
+- Train Tab - AI Assistant (`dec4385aae6448d2a00990d2e14fa5b1`)
+- AI Assistant: Onboarding (`9c873d6f0351435abc29079c8751721d`)
+- Settings (`e5226f174d4c4801926162ea8e17fc5f`)
+- Member Profile Setup (Minimalist) (`f08bf195290a452285f33ab336d7c86c`)
+- Gym Profile View (`3cab8befa5df49298b0ef59e5564dbd3`)
+- AI Gym Assistant PRD (`0d470b2c99194334b57866f1ce866522`)
+- Members Tab with Add Member FAB (`f3368f1f59a744aeae015d9e8110c2e4`)
+- Heatmap of Members List (`c5cc9d1c72974285aef8a4dad164e26f`)
+- PRD-Aligned Plan Comparison (`c6de727c4911420397b608c7d59c5683`)
+- Train Tab - Active Set Overlay (`3587f7b171dd429a95f4d7414d674373`)
+- Web Sign-In - OTP Verification (`183bbd2d21424d4289e2068ed542a256`)
+- Admin Command Center (`83d680be737f4f36b7cadeb07101ba20`)
+- Active Workout Home & AI Instructor (`7fe85e19f37a4208a5fc03c03a6208b8`)
+- Gym App Subscription & Plan Flow PRD (`438b3ac610fb422c96041a00644202c6`)
+- Payment Method (`0c5ca026949142f1bc65dd293aef0302`)
+- Minimalistic Login / OTP Entry (`b906e7a8601e40e5838e2217d0bc705a`)
+- Explore - Map Popup with Active Workout (`091e874c85b44b48a0392022cfb95384`)
+- Add New Member - Details (`f6433b953be84bee9464d5347eac2a6e`)
+- Find Nearby Gyms (`1ea92c0336514dcfbd4059154a3cf9af`)
+- AI Assistant: Active Workout (`b6365bdb49b94ee8aeb8ce89c7a8f652`)
+- Gym Owner Profile (Minimalist) (`efd1a762c30f47f4ae9a12f752e087e1`)
+- Select Member Plan (`c1e48274cbf64725b7837446c48973db`)
+- Gym Management Dashboard (`418cf9f62bb1433ab5aa134ad340f51f`)
+- Account Hub (`c91397fbda944faea5f626c1543ab180`)
+- Web Admin Command Center (`c2520050810b455e92574d5db0385557`)
+- Refined Subscription Success (`4212fdbc2acf4448bd9756cf0f290fe6`)
+- Member Detail View (`2f88183cb4394155b80fe9a229c7a23c`)
+- Plan Comparison (`974d762f96ad488184f6b57ec5a04c67`)
+- Members Tab - Live Dashboard (`4b75b99279ba42148cfb105d4f12657c`)

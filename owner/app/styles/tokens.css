@@ -1,0 +1,35 @@
+/* Light mode (default) */
+:root {
+  --background: #f9f9f9;
+  --foreground: #1a1c1c;
+  --primary: #000000;
+  --primary-foreground: #e5e2e1;
+  --secondary: #5f5e5e;
+  --secondary-foreground: #ffffff;
+  --surface: #f9f9f9;
+  --surface-low: #f3f3f3;
+  --surface-high: #e8e8e8;
+  --surface-highest: #e2e2e2;
+  --muted: #eeeeee;
+  --muted-foreground: #474747;
+  --border: transparent;
+  --radius: 0px;
+}
+
+/* Dark mode */
+.dark {
+  --background: #131313;
+  --foreground: #e5e2e1;
+  --primary: #ffffff;
+  --primary-foreground: #2f3131;
+  --secondary: #c7c6c6;
+  --secondary-foreground: #2f3131;
+  --surface: #131313;
+  --surface-low: #1c1b1b;
+  --surface-high: #2a2a2a;
+  --surface-highest: #353534;
+  --muted: #201f1f;
+  --muted-foreground: #c4c7c8;
+  --border: transparent;
+  --radius: 0px;
+}
