@@ -235,6 +235,68 @@ describe('AuthService', () => {
       expect(result.user.roles).toHaveLength(1);
       expect(result.user.roles[0].roleName).toBe('member');
     });
+
+    it('should assign global member role if isMobile is true and user does not have it', async () => {
+      config.get.mockImplementation((key: string) => {
+        if (key === 'NODE_ENV') return 'development';
+        if (key === 'REFRESH_TOKEN_EXPIRES_DAYS') return 30;
+        return null;
+      });
+
+      const futureDate = new Date(Date.now() + 100000);
+      prisma.otpRequest.findFirst.mockResolvedValue({
+        id: 'otp-id',
+        phoneNumber: '+1234567890',
+        code: '1234',
+        expiresAt: futureDate,
+        verified: false,
+      } as any);
+
+      prisma.user.findUnique.mockResolvedValue({
+        id: 'user-id',
+        phoneNumber: '+1234567890',
+        isActive: true,
+      } as any);
+
+      prisma.profile.findFirst.mockResolvedValue(null);
+
+      prisma.role.findUnique.mockResolvedValue({
+        id: 'role-id',
+        name: 'member',
+        isActive: true,
+      } as any);
+
+      prisma.userRole.findFirst.mockResolvedValue(null);
+      prisma.userRole.create.mockResolvedValue({} as any);
+      prisma.userRole.findMany.mockResolvedValue([
+        { role: { id: 'role-id', name: 'member' }, gymId: null },
+      ] as any);
+
+      jwtService.sign.mockReturnValue('access-token');
+
+      const result = await authService.verifyOtp('+1234567890', '1234', true);
+
+      expect(prisma.role.findUnique).toHaveBeenCalledWith({
+        where: { name: 'member' },
+      });
+      expect(prisma.userRole.findFirst).toHaveBeenCalledWith({
+        where: {
+          userId: 'user-id',
+          roleId: 'role-id',
+          gymId: null,
+        },
+      });
+      expect(prisma.userRole.create).toHaveBeenCalledWith({
+        data: {
+          userId: 'user-id',
+          roleId: 'role-id',
+          gymId: null,
+        },
+      });
+      expect(result.user.roles).toHaveLength(1);
+      expect(result.user.roles[0].roleName).toBe('member');
+      expect(result.user.roles[0].gymId).toBeNull();
+    });
   });
 
   describe('refresh', () => {

@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import '../../domain/entities/profile.dart';
 import 'profile_state.dart';
 
-@injectable
+@singleton
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(const ProfileState.initial());
 

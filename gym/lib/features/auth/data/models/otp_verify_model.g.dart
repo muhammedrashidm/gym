@@ -6,14 +6,13 @@ part of 'otp_verify_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$OtpVerifyModelImpl _$$OtpVerifyModelImplFromJson(Map<String, dynamic> json) =>
-    _$OtpVerifyModelImpl(
+OtpVerifyModel _$OtpVerifyModelFromJson(Map<String, dynamic> json) =>
+    OtpVerifyModel(
       phoneNumber: json['phoneNumber'] as String,
       code: json['code'] as String,
     );
 
-Map<String, dynamic> _$$OtpVerifyModelImplToJson(
-        _$OtpVerifyModelImpl instance) =>
+Map<String, dynamic> _$OtpVerifyModelToJson(OtpVerifyModel instance) =>
     <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
       'code': instance.code,

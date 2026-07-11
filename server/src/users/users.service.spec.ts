@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { AuthService } from '../auth/auth.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { Sex, ExpLevel } from '@prisma/client';
+import { Sex, ExpLevel } from 'generated/prisma/client';
 import { ProfileModel } from './models/profile.model';
 import { DisableProfileModel } from './models/disable-profile.model';
 import { BodyMetricsModel } from './models/body-metrics.model';
@@ -24,6 +25,29 @@ describe('UsersService', () => {
     bodyMetrics: {
       create: jest.fn(),
     },
+    role: {
+      findUnique: jest.fn(),
+      create: jest.fn(),
+    },
+    userRole: {
+      findFirst: jest.fn(),
+      create: jest.fn(),
+    },
+    staffProfile: {
+      findUnique: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+    },
+    staffClientConnection: {
+      findUnique: jest.fn(),
+      findMany: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+    },
+  };
+
+  const mockAuthService = {
+    generateTokenPairForUser: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -31,6 +55,7 @@ describe('UsersService', () => {
       providers: [
         UsersService,
         { provide: PrismaService, useValue: mockPrismaService },
+        { provide: AuthService, useValue: mockAuthService },
       ],
     }).compile();
 
@@ -59,10 +84,16 @@ describe('UsersService', () => {
     };
 
     it('should throw BadRequestException if profile already exists', async () => {
-      mockPrismaService.profile.findUnique.mockResolvedValueOnce({ id: 'existing-id' });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'existing-id',
+      });
 
-      await expect(service.createProfile(userId, phoneNumber, dto)).rejects.toThrow(BadRequestException);
-      expect(mockPrismaService.profile.findUnique).toHaveBeenCalledWith({ where: { userId } });
+      await expect(
+        service.createProfile(userId, phoneNumber, dto),
+      ).rejects.toThrow(BadRequestException);
+      expect(mockPrismaService.profile.findUnique).toHaveBeenCalledWith({
+        where: { userId },
+      });
     });
 
     it('should create a profile with bodyMetrics if weight and height are provided', async () => {
@@ -79,15 +110,17 @@ describe('UsersService', () => {
         avatarUrl: null,
         isActive: true,
         createdAt: new Date(),
-        bodyMetrics: [{
-          id: 'bm-1',
-          weight: 80,
-          height: 180,
-          muscleMass: null,
-          bodyFatPct: null,
-          recordedAt: new Date(),
-          profileId: 'new-profile',
-        }],
+        bodyMetrics: [
+          {
+            id: 'bm-1',
+            weight: 80,
+            height: 180,
+            muscleMass: null,
+            bodyFatPct: null,
+            recordedAt: new Date(),
+            profileId: 'new-profile',
+          },
+        ],
       };
       mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
       mockPrismaService.profile.create.mockResolvedValueOnce(createdProfile);
@@ -141,7 +174,11 @@ describe('UsersService', () => {
       mockPrismaService.profile.create.mockResolvedValueOnce(createdProfile);
 
       const partialDto = { fullName: 'John Doe' };
-      const result = await service.createProfile(userId, phoneNumber, partialDto);
+      const result = await service.createProfile(
+        userId,
+        phoneNumber,
+        partialDto,
+      );
 
       expect(mockPrismaService.profile.create).toHaveBeenCalledWith({
         data: {
@@ -164,7 +201,9 @@ describe('UsersService', () => {
 
     it('should throw NotFoundException if profile does not exist', async () => {
       mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
-      await expect(service.updateProfile(userId, dto)).rejects.toThrow(NotFoundException);
+      await expect(service.updateProfile(userId, dto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should update profile and create bodyMetrics', async () => {
@@ -181,17 +220,22 @@ describe('UsersService', () => {
         avatarUrl: null,
         isActive: true,
         createdAt: new Date(),
-        bodyMetrics: [{
-          id: 'bm-2',
-          weight: 65,
-          height: 170,
-          muscleMass: null,
-          bodyFatPct: null,
-          recordedAt: new Date(),
-          profileId: 'profile-1',
-        }],
+        bodyMetrics: [
+          {
+            id: 'bm-2',
+            weight: 65,
+            height: 170,
+            muscleMass: null,
+            bodyFatPct: null,
+            recordedAt: new Date(),
+            profileId: 'profile-1',
+          },
+        ],
       };
-      mockPrismaService.profile.findUnique.mockResolvedValueOnce({ id: 'profile-1', userId });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'profile-1',
+        userId,
+      });
       mockPrismaService.profile.update.mockResolvedValueOnce(updatedProfile);
 
       const result = await service.updateProfile(userId, dto);
@@ -221,12 +265,20 @@ describe('UsersService', () => {
 
     it('should throw NotFoundException if profile does not exist', async () => {
       mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
-      await expect(service.disableProfile(userId)).rejects.toThrow(NotFoundException);
+      await expect(service.disableProfile(userId)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should soft delete the profile by setting isActive to false', async () => {
-      mockPrismaService.profile.findUnique.mockResolvedValueOnce({ id: 'profile-1', userId });
-      mockPrismaService.profile.update.mockResolvedValueOnce({ id: 'profile-1', isActive: false });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'profile-1',
+        userId,
+      });
+      mockPrismaService.profile.update.mockResolvedValueOnce({
+        id: 'profile-1',
+        isActive: false,
+      });
 
       const result = await service.disableProfile(userId);
 
@@ -248,10 +300,16 @@ describe('UsersService', () => {
     };
 
     it('should throw BadRequestException if profile with phone number already exists', async () => {
-      mockPrismaService.profile.findUnique.mockResolvedValueOnce({ id: 'existing' });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'existing',
+      });
 
-      await expect(service.staffCreateProfile(gymId, staffUserId, dto)).rejects.toThrow(BadRequestException);
-      expect(mockPrismaService.profile.findUnique).toHaveBeenCalledWith({ where: { phoneNumber: dto.phoneNumber } });
+      await expect(
+        service.staffCreateProfile(gymId, staffUserId, dto),
+      ).rejects.toThrow(BadRequestException);
+      expect(mockPrismaService.profile.findUnique).toHaveBeenCalledWith({
+        where: { phoneNumber: dto.phoneNumber },
+      });
     });
 
     it('should create an unclaimed profile if user does not exist', async () => {
@@ -295,7 +353,7 @@ describe('UsersService', () => {
       expect(result.userId).toBeNull();
     });
 
-    it('should create a claimed profile and link user if user exists', async () => {
+    it('should create a profile and link user if user exists with isClaimed false', async () => {
       const createdProfile = {
         id: 'new-profile',
         userId: 'existing-user-id',
@@ -305,7 +363,7 @@ describe('UsersService', () => {
         sex: null,
         expLevel: null,
         isKinetic: false,
-        isClaimed: true,
+        isClaimed: false,
         avatarUrl: null,
         isActive: true,
         createdAt: new Date(),
@@ -314,7 +372,9 @@ describe('UsersService', () => {
         bodyMetrics: [],
       };
       mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
-      mockPrismaService.user.findUnique.mockResolvedValueOnce({ id: 'existing-user-id' });
+      mockPrismaService.user.findUnique.mockResolvedValueOnce({
+        id: 'existing-user-id',
+      });
       mockPrismaService.profile.create.mockResolvedValueOnce(createdProfile);
 
       const result = await service.staffCreateProfile(gymId, staffUserId, dto);
@@ -324,7 +384,7 @@ describe('UsersService', () => {
           fullName: 'Walk In',
           phoneNumber: dto.phoneNumber,
           userId: 'existing-user-id',
-          isClaimed: true,
+          isClaimed: false,
           createdById: staffUserId,
           createdAtGymId: gymId,
           bodyMetrics: undefined,
@@ -332,8 +392,52 @@ describe('UsersService', () => {
         include: { bodyMetrics: true },
       });
       expect(result).toBeInstanceOf(ProfileModel);
-      expect(result.isClaimed).toBe(true);
+      expect(result.isClaimed).toBe(false);
       expect(result.userId).toBe('existing-user-id');
+    });
+
+    it('should create profile and automatically link via StaffClientConnection if creator has StaffProfile', async () => {
+      const createdProfile = {
+        id: 'new-profile',
+        userId: null,
+        phoneNumber: dto.phoneNumber,
+        fullName: dto.fullName,
+        age: null,
+        sex: null,
+        expLevel: null,
+        isKinetic: false,
+        isClaimed: false,
+        avatarUrl: null,
+        isActive: true,
+        createdAt: new Date(),
+        createdById: staffUserId,
+        createdAtGymId: gymId,
+        bodyMetrics: [],
+      };
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
+      mockPrismaService.user.findUnique.mockResolvedValueOnce(null);
+      mockPrismaService.profile.create.mockResolvedValueOnce(createdProfile);
+      mockPrismaService.staffProfile.findUnique.mockResolvedValueOnce({
+        id: 'staff-profile-id',
+        userId: staffUserId,
+      });
+      mockPrismaService.staffClientConnection.create.mockResolvedValueOnce({});
+
+      const result = await service.staffCreateProfile(gymId, staffUserId, dto);
+
+      expect(mockPrismaService.staffProfile.findUnique).toHaveBeenCalledWith({
+        where: { userId: staffUserId },
+      });
+      expect(
+        mockPrismaService.staffClientConnection.create,
+      ).toHaveBeenCalledWith({
+        data: {
+          staffProfileId: 'staff-profile-id',
+          clientProfileId: 'new-profile',
+          isActive: true,
+        },
+      });
+      expect(result).toBeInstanceOf(ProfileModel);
     });
   });
 
@@ -343,7 +447,9 @@ describe('UsersService', () => {
 
     it('should throw NotFoundException if profile does not exist', async () => {
       mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
-      await expect(service.staffUpdateProfile(profileId, dto)).rejects.toThrow(NotFoundException);
+      await expect(service.staffUpdateProfile(profileId, dto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should update profile using profileId', async () => {
@@ -362,7 +468,9 @@ describe('UsersService', () => {
         createdAt: new Date(),
         bodyMetrics: [],
       };
-      mockPrismaService.profile.findUnique.mockResolvedValueOnce({ id: profileId });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: profileId,
+      });
       mockPrismaService.profile.update.mockResolvedValueOnce(updatedProfile);
 
       const result = await service.staffUpdateProfile(profileId, dto);
@@ -385,12 +493,19 @@ describe('UsersService', () => {
 
     it('should throw NotFoundException if profile does not exist', async () => {
       mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
-      await expect(service.staffDisableProfile(profileId)).rejects.toThrow(NotFoundException);
+      await expect(service.staffDisableProfile(profileId)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should soft delete the profile by setting isActive to false', async () => {
-      mockPrismaService.profile.findUnique.mockResolvedValueOnce({ id: profileId });
-      mockPrismaService.profile.update.mockResolvedValueOnce({ id: profileId, isActive: false });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: profileId,
+      });
+      mockPrismaService.profile.update.mockResolvedValueOnce({
+        id: profileId,
+        isActive: false,
+      });
 
       const result = await service.staffDisableProfile(profileId);
 
@@ -400,6 +515,243 @@ describe('UsersService', () => {
       });
       expect(result).toBeInstanceOf(DisableProfileModel);
       expect(result.success).toBe(true);
+    });
+  });
+
+  describe('trainerSignup', () => {
+    const userId = 'user-staff-1';
+    const dto = {
+      name: 'John Trainer',
+      experience: '5',
+      bio: 'Hypertrophy specialist',
+      specializations: 'Strength,Yoga',
+    };
+    const files = [
+      {
+        fieldname: 'certificates',
+        originalname: 'cert.pdf',
+        encoding: '7bit',
+        mimetype: 'application/pdf',
+        size: 500,
+        destination: './uploads',
+        filename: 'cert-123.pdf',
+        path: './uploads/cert-123.pdf',
+        buffer: Buffer.from([]),
+        stream: null as any,
+      } as Express.Multer.File,
+    ];
+
+    it('should throw BadRequestException if user does not exist', async () => {
+      mockPrismaService.user.findUnique.mockResolvedValueOnce(null);
+      await expect(service.trainerSignup(userId, dto, files)).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+
+    it('should upsert staffProfile and return token pair on success', async () => {
+      const user = { id: userId, phoneNumber: '+1234567890' };
+      const staffRole = { id: 2, name: 'staff' };
+      const profile = { id: 'prof-1', userId };
+      const tokenPair = { accessToken: 'access', refreshToken: 'refresh' };
+
+      mockPrismaService.user.findUnique.mockResolvedValueOnce(user);
+      mockPrismaService.role.findUnique.mockResolvedValueOnce(staffRole);
+      mockPrismaService.userRole.findFirst.mockResolvedValueOnce(null);
+      mockPrismaService.userRole.create.mockResolvedValueOnce({});
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce(profile);
+      mockPrismaService.profile.update.mockResolvedValueOnce(profile);
+      mockPrismaService.staffProfile.findUnique.mockResolvedValueOnce(null);
+      mockPrismaService.staffProfile.create.mockResolvedValueOnce({});
+      mockAuthService.generateTokenPairForUser.mockResolvedValueOnce(tokenPair);
+
+      const result = await service.trainerSignup(userId, dto, files);
+
+      expect(mockPrismaService.staffProfile.create).toHaveBeenCalledWith({
+        data: {
+          profileId: 'prof-1',
+          userId,
+          bio: dto.bio,
+          experience: 5,
+          specializations: ['Strength', 'Yoga'],
+          certificates: ['./uploads/cert-123.pdf'],
+        },
+      });
+      expect(result).toEqual(tokenPair);
+    });
+  });
+
+  describe('generateStaffQrToken', () => {
+    const staffUserId = 'staff-user-id';
+
+    it('should throw NotFoundException if profile does not exist', async () => {
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
+      await expect(service.generateStaffQrToken(staffUserId)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+    it('should generate a QR token and set expiry', async () => {
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'staff-prof-id',
+      });
+      mockPrismaService.profile.update.mockResolvedValueOnce({});
+
+      const result = await service.generateStaffQrToken(staffUserId);
+
+      expect(result.qrToken).toBeDefined();
+      expect(result.expiresAt).toBeInstanceOf(Date);
+      expect(mockPrismaService.profile.update).toHaveBeenCalledWith({
+        where: { id: 'staff-prof-id' },
+        data: {
+          qrToken: result.qrToken,
+          qrTokenExpiry: result.expiresAt,
+        },
+      });
+    });
+  });
+
+  describe('connectToTrainer', () => {
+    const clientUserId = 'client-user-id';
+    const dto = { qrToken: 'valid-qr-token' };
+
+    it('should throw NotFoundException if client profile does not exist', async () => {
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
+      await expect(service.connectToTrainer(clientUserId, dto)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+    it('should throw BadRequestException if qrToken is invalid', async () => {
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'client-prof-id',
+      });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce(null);
+
+      await expect(service.connectToTrainer(clientUserId, dto)).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+
+    it('should throw BadRequestException if qrToken is expired', async () => {
+      const expiredDate = new Date(Date.now() - 1000);
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'client-prof-id',
+      });
+      mockPrismaService.profile.findUnique.mockResolvedValueOnce({
+        id: 'staff-prof-id',
+        qrTokenExpiry: expiredDate,
+      });
+
+      await expect(service.connectToTrainer(clientUserId, dto)).rejects.toThrow(
+        BadRequestException,
+      );
+    });
+
+    it('should connect client to trainer successfully', async () => {
+      const futureDate = new Date(Date.now() + 100000);
+      const clientProfile = { id: 'client-prof-id', userId: clientUserId };
+      const staffProfileCore = {
+        id: 'staff-prof-id',
+        userId: 'staff-user-id',
+        qrTokenExpiry: futureDate,
+        staffProfile: { id: 'staff-profile-sub-id' },
+      };
+      const connection = {
+        id: 'conn-id',
+        staffProfileId: 'staff-profile-sub-id',
+        clientProfileId: 'client-prof-id',
+      };
+
+      mockPrismaService.profile.findUnique
+        .mockResolvedValueOnce(clientProfile)
+        .mockResolvedValueOnce(staffProfileCore);
+      mockPrismaService.staffClientConnection.findUnique.mockResolvedValueOnce(
+        null,
+      );
+      mockPrismaService.staffClientConnection.create.mockResolvedValueOnce(
+        connection,
+      );
+
+      const result = await service.connectToTrainer(clientUserId, dto);
+
+      expect(
+        mockPrismaService.staffClientConnection.create,
+      ).toHaveBeenCalledWith({
+        data: {
+          staffProfileId: 'staff-profile-sub-id',
+          clientProfileId: 'client-prof-id',
+        },
+      });
+      expect(result).toEqual(connection);
+    });
+  });
+
+  describe('listStaffClients', () => {
+    const staffUserId = 'staff-user-id';
+
+    it('should throw NotFoundException if staff profile does not exist', async () => {
+      mockPrismaService.staffProfile.findUnique.mockResolvedValueOnce(null);
+      await expect(service.listStaffClients(staffUserId)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
+    it('should return client profiles on success', async () => {
+      const staffProfile = { id: 'staff-profile-id', userId: staffUserId };
+      const clientProfile = {
+        id: 'client-profile-id',
+        userId: 'client-user-id',
+        phoneNumber: '+1999999999',
+        fullName: 'Client Name',
+        age: 25,
+        sex: 'MALE',
+        expLevel: 'BEGINNER',
+        isKinetic: false,
+        isClaimed: true,
+        avatarUrl: null,
+        isActive: true,
+        createdAt: new Date(),
+        bodyMetrics: [],
+      };
+      const connections = [
+        {
+          id: 'conn-id',
+          staffProfileId: 'staff-profile-id',
+          clientProfileId: 'client-profile-id',
+          clientProfile,
+        },
+      ];
+
+      mockPrismaService.staffProfile.findUnique.mockResolvedValueOnce(
+        staffProfile,
+      );
+      mockPrismaService.staffClientConnection.findMany.mockResolvedValueOnce(
+        connections,
+      );
+
+      const result = await service.listStaffClients(staffUserId);
+
+      expect(mockPrismaService.staffProfile.findUnique).toHaveBeenCalledWith({
+        where: { userId: staffUserId },
+      });
+      expect(
+        mockPrismaService.staffClientConnection.findMany,
+      ).toHaveBeenCalledWith({
+        where: {
+          staffProfileId: 'staff-profile-id',
+          isActive: true,
+        },
+        include: {
+          clientProfile: {
+            include: {
+              bodyMetrics: true,
+            },
+          },
+        },
+      });
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBeInstanceOf(ProfileModel);
+      expect(result[0].id).toBe('client-profile-id');
     });
   });
 });

@@ -13,6 +13,7 @@ export interface RequestContext {
   roles: string[];
   roleAssignments: UserRoleClaim[];
   profileId?: string;
+  staffProfileId?: string;
   gymContext?: GymContext;
   isSuperAdmin: boolean;
   isAdminStaff: boolean;

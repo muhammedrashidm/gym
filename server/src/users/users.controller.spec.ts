@@ -67,7 +67,11 @@ describe('UsersController', () => {
 
       const result = await controller.createProfile(dto, user);
 
-      expect(service.createProfile).toHaveBeenCalledWith('user-123', '+1234567890', dto);
+      expect(service.createProfile).toHaveBeenCalledWith(
+        'user-123',
+        '+1234567890',
+        dto,
+      );
       expect(result).toBeInstanceOf(ProfileModel);
       expect(result.id).toBe('prof-1');
     });
@@ -109,7 +113,10 @@ describe('UsersController', () => {
 
   describe('staffCreateProfile', () => {
     it('should call usersService.staffCreateProfile with correct parameters', async () => {
-      const dto: StaffCreateProfileDto = { fullName: 'Walk In', phoneNumber: '+1999999999' };
+      const dto: StaffCreateProfileDto = {
+        fullName: 'Walk In',
+        phoneNumber: '+1999999999',
+      };
       const req = { user: { sub: 'staff-123', activeGymId: 'gym-456' } };
       const expectedProfile = new ProfileModel();
       expectedProfile.id = 'prof-1';
@@ -117,25 +124,40 @@ describe('UsersController', () => {
       expectedProfile.fullName = 'Walk In';
       expectedProfile.isActive = true;
       expectedProfile.bodyMetrics = [];
-      mockUsersService.staffCreateProfile.mockResolvedValueOnce(expectedProfile);
+      mockUsersService.staffCreateProfile.mockResolvedValueOnce(
+        expectedProfile,
+      );
 
       const result = await controller.staffCreateProfile(req, dto);
 
-      expect(service.staffCreateProfile).toHaveBeenCalledWith('gym-456', 'staff-123', dto);
+      expect(service.staffCreateProfile).toHaveBeenCalledWith(
+        'gym-456',
+        'staff-123',
+        dto,
+      );
       expect(result).toBeInstanceOf(ProfileModel);
       expect(result.id).toBe('prof-1');
     });
 
     it('should handle missing activeGymId gracefully', async () => {
-      const dto: StaffCreateProfileDto = { fullName: 'Walk In', phoneNumber: '+1999999999' };
+      const dto: StaffCreateProfileDto = {
+        fullName: 'Walk In',
+        phoneNumber: '+1999999999',
+      };
       const req = { user: { sub: 'staff-123' } }; // no activeGymId
       const expectedProfile = new ProfileModel();
       expectedProfile.id = 'prof-1';
-      mockUsersService.staffCreateProfile.mockResolvedValueOnce(expectedProfile);
+      mockUsersService.staffCreateProfile.mockResolvedValueOnce(
+        expectedProfile,
+      );
 
       const result = await controller.staffCreateProfile(req, dto);
 
-      expect(service.staffCreateProfile).toHaveBeenCalledWith(null, 'staff-123', dto);
+      expect(service.staffCreateProfile).toHaveBeenCalledWith(
+        null,
+        'staff-123',
+        dto,
+      );
       expect(result).toBeInstanceOf(ProfileModel);
     });
   });
@@ -149,7 +171,9 @@ describe('UsersController', () => {
       expectedProfile.fullName = 'Updated Walk In';
       expectedProfile.isActive = true;
       expectedProfile.bodyMetrics = [];
-      mockUsersService.staffUpdateProfile.mockResolvedValueOnce(expectedProfile);
+      mockUsersService.staffUpdateProfile.mockResolvedValueOnce(
+        expectedProfile,
+      );
 
       const result = await controller.staffUpdateProfile(profileId, dto);
 
@@ -164,7 +188,9 @@ describe('UsersController', () => {
       const profileId = 'prof-456';
       const expectedResult = new DisableProfileModel();
       expectedResult.success = true;
-      mockUsersService.staffDisableProfile.mockResolvedValueOnce(expectedResult);
+      mockUsersService.staffDisableProfile.mockResolvedValueOnce(
+        expectedResult,
+      );
 
       const result = await controller.staffDisableProfile(profileId);
 

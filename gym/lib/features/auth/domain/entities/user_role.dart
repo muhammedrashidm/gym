@@ -26,6 +26,9 @@ class UserRole with _$UserRole {
     required int roleId,
     required String roleName,
     String? gymId,
+    /// JWT claim: true if this role is the server-designated active role for
+    /// this session. Used to auto-select the active role on login.
+    @Default(false) bool isCurrent,
   }) = _UserRole;
 
   factory UserRole.fromJson(Map<String, dynamic> json) =>

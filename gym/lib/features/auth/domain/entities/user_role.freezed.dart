@@ -24,6 +24,10 @@ mixin _$UserRole {
   String get roleName => throw _privateConstructorUsedError;
   String? get gymId => throw _privateConstructorUsedError;
 
+  /// JWT claim: true if this role is the server-designated active role for
+  /// this session. Used to auto-select the active role on login.
+  bool get isCurrent => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserRoleCopyWith<UserRole> get copyWith =>
@@ -35,7 +39,7 @@ abstract class $UserRoleCopyWith<$Res> {
   factory $UserRoleCopyWith(UserRole value, $Res Function(UserRole) then) =
       _$UserRoleCopyWithImpl<$Res, UserRole>;
   @useResult
-  $Res call({int roleId, String roleName, String? gymId});
+  $Res call({int roleId, String roleName, String? gymId, bool isCurrent});
 }
 
 /// @nodoc
@@ -54,6 +58,7 @@ class _$UserRoleCopyWithImpl<$Res, $Val extends UserRole>
     Object? roleId = null,
     Object? roleName = null,
     Object? gymId = freezed,
+    Object? isCurrent = null,
   }) {
     return _then(_value.copyWith(
       roleId: null == roleId
@@ -68,6 +73,10 @@ class _$UserRoleCopyWithImpl<$Res, $Val extends UserRole>
           ? _value.gymId
           : gymId // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCurrent: null == isCurrent
+          ? _value.isCurrent
+          : isCurrent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -80,7 +89,7 @@ abstract class _$$UserRoleImplCopyWith<$Res>
       __$$UserRoleImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int roleId, String roleName, String? gymId});
+  $Res call({int roleId, String roleName, String? gymId, bool isCurrent});
 }
 
 /// @nodoc
@@ -97,6 +106,7 @@ class __$$UserRoleImplCopyWithImpl<$Res>
     Object? roleId = null,
     Object? roleName = null,
     Object? gymId = freezed,
+    Object? isCurrent = null,
   }) {
     return _then(_$UserRoleImpl(
       roleId: null == roleId
@@ -111,6 +121,10 @@ class __$$UserRoleImplCopyWithImpl<$Res>
           ? _value.gymId
           : gymId // ignore: cast_nullable_to_non_nullable
               as String?,
+      isCurrent: null == isCurrent
+          ? _value.isCurrent
+          : isCurrent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -119,7 +133,10 @@ class __$$UserRoleImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserRoleImpl implements _UserRole {
   const _$UserRoleImpl(
-      {required this.roleId, required this.roleName, this.gymId});
+      {required this.roleId,
+      required this.roleName,
+      this.gymId,
+      this.isCurrent = false});
 
   factory _$UserRoleImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserRoleImplFromJson(json);
@@ -131,9 +148,15 @@ class _$UserRoleImpl implements _UserRole {
   @override
   final String? gymId;
 
+  /// JWT claim: true if this role is the server-designated active role for
+  /// this session. Used to auto-select the active role on login.
+  @override
+  @JsonKey()
+  final bool isCurrent;
+
   @override
   String toString() {
-    return 'UserRole(roleId: $roleId, roleName: $roleName, gymId: $gymId)';
+    return 'UserRole(roleId: $roleId, roleName: $roleName, gymId: $gymId, isCurrent: $isCurrent)';
   }
 
   @override
@@ -144,12 +167,15 @@ class _$UserRoleImpl implements _UserRole {
             (identical(other.roleId, roleId) || other.roleId == roleId) &&
             (identical(other.roleName, roleName) ||
                 other.roleName == roleName) &&
-            (identical(other.gymId, gymId) || other.gymId == gymId));
+            (identical(other.gymId, gymId) || other.gymId == gymId) &&
+            (identical(other.isCurrent, isCurrent) ||
+                other.isCurrent == isCurrent));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, roleId, roleName, gymId);
+  int get hashCode =>
+      Object.hash(runtimeType, roleId, roleName, gymId, isCurrent);
 
   @JsonKey(ignore: true)
   @override
@@ -169,7 +195,8 @@ abstract class _UserRole implements UserRole {
   const factory _UserRole(
       {required final int roleId,
       required final String roleName,
-      final String? gymId}) = _$UserRoleImpl;
+      final String? gymId,
+      final bool isCurrent}) = _$UserRoleImpl;
 
   factory _UserRole.fromJson(Map<String, dynamic> json) =
       _$UserRoleImpl.fromJson;
@@ -180,6 +207,11 @@ abstract class _UserRole implements UserRole {
   String get roleName;
   @override
   String? get gymId;
+  @override
+
+  /// JWT claim: true if this role is the server-designated active role for
+  /// this session. Used to auto-select the active role on login.
+  bool get isCurrent;
   @override
   @JsonKey(ignore: true)
   _$$UserRoleImplCopyWith<_$UserRoleImpl> get copyWith =>

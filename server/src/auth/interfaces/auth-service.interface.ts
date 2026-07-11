@@ -6,9 +6,14 @@ import { AuthUserModel } from '../models/auth-user.model';
 
 export interface IAuthService {
   requestOtp(phoneNumber: string): Promise<OtpRequestedModel>;
-  verifyOtp(phoneNumber: string, code: string): Promise<VerifyOtpResponseModel>;
+  verifyOtp(
+    phoneNumber: string,
+    code: string,
+    isMobile?: boolean,
+  ): Promise<VerifyOtpResponseModel>;
   refresh(rawRefreshToken: string): Promise<TokenPairModel>;
   logout(userId: string, rawRefreshToken: string): Promise<LogoutModel>;
   getMe(userId: string): Promise<AuthUserModel>;
   claimOwner(userId: string): Promise<{ success: boolean }>;
+  generateTokenPairForUser(userId: string): Promise<TokenPairModel>;
 }

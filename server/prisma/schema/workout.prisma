@@ -1,0 +1,280 @@
+// ============================================================================
+// workout.prisma
+// Domain: Workout planning (WeeklyPlan templates, DayPlans, Tasks, Media)
+//         + client progress tracking (WorkoutProfile cursor, SessionLogs)
+//
+// This file is one of several schema files in /prisma/schema/. It assumes
+// a `User` model exists elsewhere (referenced via clientId / trainerId /
+// createdBy) and that Prisma is configured with `prismaSchemaFolder`
+// preview feature enabled so multiple .prisma files compose into one client.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// Enums
+// ----------------------------------------------------------------------------
+
+enum WeeklyPlanStatus {
+  ACTIVE
+  UPCOMING
+  ARCHIVED
+}
+
+enum TaskMediaType {
+  IMAGE
+  GIF
+  VIDEO
+}
+
+enum SessionLogStatus {
+  SCHEDULED
+  COMPLETED
+  SKIPPED
+  PARTIAL
+}
+
+// Actor who submitted a WorkoutSessionLog. MEMBER = client logged their own
+// session; TRAINER/STAFF = a staff-side user logged it on the client's behalf.
+enum SessionLogActorRole {
+  MEMBER
+  TRAINER
+  STAFF
+}
+
+// ----------------------------------------------------------------------------
+// WorkoutProfile
+// One per client. Holds the pointer to the currently active plan and the
+// live cursor (currentDayIndex) that determines "what's next" at runtime.
+// ----------------------------------------------------------------------------
+
+model WorkoutProfile {
+  id                 String   @id @default(cuid())
+  clientUserId       String?
+  clientProfileId    String
+  trainerUserId      String
+  trainerProfileId   String
+
+  activeWeeklyPlanId String?  @unique
+  activeWeeklyPlan   WeeklyPlan? @relation("ActivePlanForProfile", fields: [activeWeeklyPlanId], references: [id])
+
+  // Cursor: 1..7. Cached/derived value advanced only on COMPLETED session logs.
+  // Never derive "today's plan" from a calendar weekday — always from this field.
+  currentDayIndex   Int      @default(1)
+
+  // Number of full 7-day cycles completed against the currently active plan.
+  // Incremented only when currentDayIndex wraps 7 -> 1 on a COMPLETED log.
+  // Snapshotted onto WorkoutSessionLog.cycleNumberAtTime at write time.
+  completedCycleCount Int    @default(0)
+
+  isActive           Boolean  @default(true)
+  isDeleted          Boolean  @default(false)
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  weeklyPlans        WeeklyPlan[]        @relation("PlansForProfile")
+  sessionLogs        WorkoutSessionLog[]
+
+  // Relations
+  clientUser         User?        @relation("ClientWorkoutProfiles", fields: [clientUserId], references: [id])
+  clientProfile      Profile      @relation("ClientWorkoutProfiles", fields: [clientProfileId], references: [id])
+  trainerUser        User         @relation("TrainerWorkoutProfiles", fields: [trainerUserId], references: [id])
+  trainerProfile     StaffProfile @relation("TrainerWorkoutProfiles", fields: [trainerProfileId], references: [id])
+
+  @@index([trainerUserId])
+  @@index([trainerProfileId])
+  @@map("workout_profiles")
+}
+
+// ----------------------------------------------------------------------------
+// WeeklyPlan
+// A trainer-authored template, versioned. Exactly one ACTIVE plan per
+// WorkoutProfile at any time (enforced at the application layer via a
+// transaction; see API design doc for the swap procedure — Prisma does not
+// support partial unique indexes with a filter condition across all DBs
+// uniformly, so this is enforced in service logic, not the DB constraint).
+//
+// daysPerWeek is intentionally NOT modeled — fixed at 7. Every WeeklyPlan
+// always has exactly 7 DayPlan rows (dayIndex 1..7). Days the trainer does
+// not want to program are represented as DayPlan.isRestDay = true, not by
+// omitting the row.
+// ----------------------------------------------------------------------------
+
+model WeeklyPlan {
+  id               String           @id @default(cuid())
+  name             String
+
+  workoutProfileId String
+  workoutProfile   WorkoutProfile   @relation("PlansForProfile", fields: [workoutProfileId], references: [id])
+
+  status           WeeklyPlanStatus @default(UPCOMING)
+
+  effectiveFrom    DateTime?
+  effectiveTo      DateTime?
+
+  createdById      String
+  notes            String?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  dayPlans         DayPlan[]
+
+  // Back-relation for WorkoutProfile.activeWeeklyPlanId (1:1, optional)
+  activeForProfile WorkoutProfile? @relation("ActivePlanForProfile")
+
+  sessionLogs      WorkoutSessionLog[]
+
+  @@index([workoutProfileId, status])
+  @@map("weekly_plans")
+}
+
+// ----------------------------------------------------------------------------
+// DayPlan
+// dayIndex is the template position (1..7), NOT a weekday. Always exactly
+// 7 rows per WeeklyPlan, created together when the plan is created.
+// ----------------------------------------------------------------------------
+
+model DayPlan {
+  id           String     @id @default(cuid())
+  weeklyPlanId String
+  weeklyPlan   WeeklyPlan @relation(fields: [weeklyPlanId], references: [id], onDelete: Cascade)
+
+  dayIndex     Int        // 1..7
+  label        String?    // trainer-facing tag, e.g. "Leg Day", "Push"
+  isRestDay    Boolean    @default(false)
+
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  tasks        Task[]
+  sessionLogs  WorkoutSessionLog[]
+
+  @@unique([weeklyPlanId, dayIndex])
+  @@map("day_plans")
+}
+
+// ----------------------------------------------------------------------------
+// Task
+// sequenceIndex defines the order to perform tasks within a DayPlan.
+// reps is a String to allow ranges ("8-12") or scheme labels ("AMRAP", "to failure").
+// ----------------------------------------------------------------------------
+
+model Task {
+  id            String   @id @default(cuid())
+  dayPlanId     String
+  dayPlan       DayPlan  @relation(fields: [dayPlanId], references: [id], onDelete: Cascade)
+
+  sequenceIndex Int      // 1..n, order within the day
+
+  name          String
+  description   String?
+  machineDetails String? // free text: equipment, station, seat/pin settings
+  notes         String?  // freeform "anything to make it better"
+
+  sets          Int
+  reps          String
+  restSeconds   Int?
+  tempo         String?  // e.g. "3-1-1"
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  media               TaskMedia[]
+  taskCompletionLogs  TaskCompletionLog[]
+
+  @@unique([dayPlanId, sequenceIndex])
+  @@map("tasks")
+}
+
+// ----------------------------------------------------------------------------
+// TaskMedia
+// One row per attachment. sequenceIndex orders multiple media items within
+// a single task's gallery.
+// ----------------------------------------------------------------------------
+
+model TaskMedia {
+  id            String        @id @default(cuid())
+  taskId        String
+  task          Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  type          TaskMediaType
+  url           String
+  caption       String?
+  sequenceIndex Int
+
+  createdAt     DateTime      @default(now())
+
+  @@unique([taskId, sequenceIndex])
+  @@map("task_media")
+}
+
+// ----------------------------------------------------------------------------
+// WorkoutSessionLog
+// Append-only record of what actually happened. weeklyPlanId + dayPlanId are
+// snapshot references — if a DayPlan is edited or archived later, the log
+// still points at the exact DayPlan that was performed at the time.
+// dayIndexAtTime is denormalized for cheap historical reads/reporting even
+// if the DayPlan row itself is later deleted (cascade) or its dayIndex changes.
+// ----------------------------------------------------------------------------
+
+model WorkoutSessionLog {
+  id               String            @id @default(cuid())
+
+  workoutProfileId String
+  workoutProfile   WorkoutProfile    @relation(fields: [workoutProfileId], references: [id])
+
+  weeklyPlanId     String
+  weeklyPlan       WeeklyPlan        @relation(fields: [weeklyPlanId], references: [id])
+
+  dayPlanId        String?
+  dayPlan          DayPlan?          @relation(fields: [dayPlanId], references: [id])
+
+  dayIndexAtTime   Int
+
+  // "Week N" of the active plan — snapshot of WorkoutProfile.completedCycleCount
+  // at write time, following the same denormalization rationale as dayIndexAtTime.
+  cycleNumberAtTime Int              @default(1)
+
+  scheduledDate    DateTime?
+  completedDate    DateTime?
+
+  status           SessionLogStatus  @default(SCHEDULED)
+
+  // Who actually submitted this log — the client themselves, or a trainer/staff
+  // member logging on the client's behalf. Never trust this from client input;
+  // always derive from the authenticated RequestContext.
+  loggedByUserId   String?
+  loggedByRole     SessionLogActorRole?
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  taskCompletionLogs TaskCompletionLog[]
+
+  @@index([workoutProfileId, createdAt])
+  @@map("workout_session_logs")
+}
+
+// ----------------------------------------------------------------------------
+// TaskCompletionLog
+// Optional per-exercise actuals, tied to a session log.
+// ----------------------------------------------------------------------------
+
+model TaskCompletionLog {
+  id              String            @id @default(cuid())
+
+  sessionLogId    String
+  sessionLog      WorkoutSessionLog @relation(fields: [sessionLogId], references: [id], onDelete: Cascade)
+
+  taskId          String
+  task            Task              @relation(fields: [taskId], references: [id])
+
+  actualSets      Int?
+  actualReps      String?
+  actualWeightKg  Float?
+  notes           String?
+
+  createdAt       DateTime          @default(now())
+
+  @@map("task_completion_logs")
+}

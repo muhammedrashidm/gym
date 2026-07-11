@@ -1,20 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import '../../config/app_config.dart';
+import '../../di/injection.dart';
 import '../../storage/secure_storage.dart';
+import '../../../features/auth/presentation/cubit/auth_cubit.dart';
+import '../token_refresh_result.dart';
+import '../token_refresh_service.dart';
 
 @singleton
 class AuthInterceptor extends Interceptor {
   final SecureStorage _secureStorage;
-  // A separate Dio instance used only for token refresh — avoids circular calls.
-  late final Dio _refreshDio;
+  final TokenRefreshService _tokenRefreshService;
 
   bool _isRefreshing = false;
   final List<(RequestOptions, ErrorInterceptorHandler)> _pendingRequests = [];
 
-  AuthInterceptor(this._secureStorage, AppConfig config) {
-    _refreshDio = Dio(BaseOptions(baseUrl: config.baseUrl));
-  }
+  AuthInterceptor(this._secureStorage, this._tokenRefreshService);
 
   @override
   Future<void> onRequest(
@@ -39,7 +39,7 @@ class AuthInterceptor extends Interceptor {
     }
 
     if (_isRefreshing) {
-      // Queue request until refresh completes
+      // Queue request until the in-flight refresh completes
       _pendingRequests.add((err.requestOptions, handler));
       return;
     }
@@ -47,40 +47,26 @@ class AuthInterceptor extends Interceptor {
     _isRefreshing = true;
 
     try {
-      final refreshToken = await _secureStorage.getRefreshToken();
-      if (refreshToken == null) {
-        _rejectAll(err);
-        handler.next(err);
-        return;
+      final result = await _tokenRefreshService.refresh();
+
+      switch (result) {
+        case RefreshSuccess(:final token):
+          handler.resolve(await _retry(err.requestOptions, token.accessToken));
+          for (final (options, pendingHandler) in _pendingRequests) {
+            pendingHandler.resolve(await _retry(options, token.accessToken));
+          }
+        case RefreshRejected():
+          // Server explicitly rejected the refresh token — this is the one
+          // scenario that forces a logout.
+          _rejectAll(err);
+          handler.next(err);
+          getIt<AuthCubit>().forceLogout();
+        case RefreshTransientFailure():
+          // Network/timeout error — leave the session untouched, just fail
+          // this request (and any queued ones) so callers can retry later.
+          _rejectAll(err);
+          handler.next(err);
       }
-
-      // API: POST /auth/refresh with Authorization: Bearer {refreshToken}
-      final response = await _refreshDio.post(
-        '/auth/refresh',
-        options: Options(
-          headers: {'Authorization': 'Bearer $refreshToken'},
-        ),
-      );
-
-      final newAccessToken = response.data['accessToken'] as String;
-      final newRefreshToken = response.data['refreshToken'] as String?;
-
-      await _secureStorage.saveAccessToken(newAccessToken);
-      if (newRefreshToken != null) {
-        await _secureStorage.saveRefreshToken(newRefreshToken);
-      }
-
-      // Retry original request
-      handler.resolve(await _retry(err.requestOptions, newAccessToken));
-
-      // Retry all queued requests
-      for (final (options, pendingHandler) in _pendingRequests) {
-        pendingHandler.resolve(await _retry(options, newAccessToken));
-      }
-    } catch (_) {
-      await _secureStorage.clearTokens();
-      _rejectAll(err);
-      handler.next(err);
     } finally {
       _isRefreshing = false;
       _pendingRequests.clear();
@@ -88,9 +74,15 @@ class AuthInterceptor extends Interceptor {
   }
 
   Future<Response<dynamic>> _retry(RequestOptions options, String token) {
-    return _refreshDio.request(
+    // FormData is single-use — it gets finalized (its byte streams consumed)
+    // the first time it's sent, so a retry must clone it or the request
+    // fails with "The FormData has already been finalized."
+    final data = options.data;
+    final retryData = data is FormData ? data.clone() : data;
+
+    return _tokenRefreshService.bareDio.request(
       options.path,
-      data: options.data,
+      data: retryData,
       queryParameters: options.queryParameters,
       options: Options(
         method: options.method,

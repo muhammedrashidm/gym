@@ -11,6 +11,9 @@ export class AuthUserModel {
   @ApiProperty({ description: 'Whether the account is currently active' })
   isActive: boolean;
 
-  @ApiProperty({ description: 'All role assignments for this user', type: [UserRoleModel] })
+  @ApiProperty({
+    description: 'All role assignments for this user',
+    type: [UserRoleModel],
+  })
   roles: UserRoleModel[];
 }

@@ -11,6 +11,7 @@ _$UserRoleImpl _$$UserRoleImplFromJson(Map<String, dynamic> json) =>
       roleId: (json['roleId'] as num).toInt(),
       roleName: json['roleName'] as String,
       gymId: json['gymId'] as String?,
+      isCurrent: json['isCurrent'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$UserRoleImplToJson(_$UserRoleImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$UserRoleImplToJson(_$UserRoleImpl instance) =>
       'roleId': instance.roleId,
       'roleName': instance.roleName,
       'gymId': instance.gymId,
+      'isCurrent': instance.isCurrent,
     };

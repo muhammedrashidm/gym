@@ -3,7 +3,10 @@ import { IsString, IsOptional, IsNumber, IsEnum } from 'class-validator';
 import { ExpLevel, Sex } from 'generated/prisma/client';
 
 export class CreateProfileDto {
-  @ApiProperty({ description: 'Full display name of the member', example: 'Aisha Khan' })
+  @ApiProperty({
+    description: 'Full display name of the member',
+    example: 'Aisha Khan',
+  })
   @IsString()
   fullName: string;
 
@@ -17,14 +20,23 @@ export class CreateProfileDto {
   @IsEnum(Sex)
   sex?: Sex;
 
-
+  @ApiPropertyOptional({
+    description: 'Training experience level',
+    enum: ExpLevel,
+  })
+  @IsOptional()
+  @IsEnum(ExpLevel)
+  expLevel?: ExpLevel;
 
   @ApiPropertyOptional({ description: 'URL of the profile avatar image' })
   @IsOptional()
   @IsString()
   avatarUrl?: string;
 
-  @ApiPropertyOptional({ description: 'Body weight in kilograms', example: 72.5 })
+  @ApiPropertyOptional({
+    description: 'Body weight in kilograms',
+    example: 72.5,
+  })
   @IsOptional()
   @IsNumber()
   weight?: number;

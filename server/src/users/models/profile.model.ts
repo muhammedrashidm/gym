@@ -6,7 +6,11 @@ export class ProfileModel {
   @ApiProperty({ description: 'Unique identifier' })
   id: string;
 
-  @ApiProperty({ description: 'Linked user account ID', nullable: true, type: String })
+  @ApiProperty({
+    description: 'Linked user account ID',
+    nullable: true,
+    type: String,
+  })
   userId: string | null;
 
   @ApiProperty({ description: 'Phone number associated with this profile' })
@@ -21,16 +25,26 @@ export class ProfileModel {
   @ApiProperty({ description: 'Biological sex', enum: Sex, nullable: true })
   sex: Sex | null;
 
-  @ApiProperty({ description: 'Training experience level', enum: ExpLevel, nullable: true })
+  @ApiProperty({
+    description: 'Training experience level',
+    enum: ExpLevel,
+    nullable: true,
+  })
   expLevel: ExpLevel | null;
 
   @ApiProperty({ description: 'Whether the profile is a Kinetic member' })
   isKinetic: boolean;
 
-  @ApiProperty({ description: 'Whether the profile has been claimed by a user account' })
+  @ApiProperty({
+    description: 'Whether the profile has been claimed by a user account',
+  })
   isClaimed: boolean;
 
-  @ApiProperty({ description: 'Avatar image URL', nullable: true, type: String })
+  @ApiProperty({
+    description: 'Avatar image URL',
+    nullable: true,
+    type: String,
+  })
   avatarUrl: string | null;
 
   @ApiProperty({ description: 'Whether the profile is active' })
@@ -39,6 +53,9 @@ export class ProfileModel {
   @ApiProperty({ description: 'Profile creation timestamp' })
   createdAt: Date;
 
-  @ApiProperty({ description: 'Body metrics history for this profile', type: [BodyMetricsModel] })
+  @ApiProperty({
+    description: 'Body metrics history for this profile',
+    type: [BodyMetricsModel],
+  })
   bodyMetrics: BodyMetricsModel[];
 }

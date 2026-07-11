@@ -14,7 +14,10 @@ class ApiClient {
         baseUrl: config.baseUrl,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Client-Platform': 'mobile',
+        },
       ),
     );
 
@@ -37,6 +40,9 @@ class ApiClient {
 
   Future<Response<T>> put<T>(String path, {dynamic data}) =>
       _dio.put(path, data: data);
+
+  Future<Response<T>> patch<T>(String path, {dynamic data}) =>
+      _dio.patch(path, data: data);
 
   Future<Response<T>> delete<T>(String path) => _dio.delete(path);
 }

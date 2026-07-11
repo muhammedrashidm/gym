@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Protocol Execution View | SLATE &amp; SINEW</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#000000",
+                        "secondary-fixed-dim": "#45dfa4",
+                        "inverse-primary": "#c0c6db",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e0e2e6",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#f9debf",
+                        "tertiary-container": "#261906",
+                        "on-secondary-container": "#00714e",
+                        "on-background": "#191c1f",
+                        "sinew-green": "#34D399",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#005137",
+                        "on-error": "#ffffff",
+                        "surface-container": "#eceef2",
+                        "slate-dark": "#111827",
+                        "outline-variant": "#c6c6cd",
+                        "on-secondary-fixed": "#002114",
+                        "tertiary-fixed-dim": "#dcc2a4",
+                        "secondary-container": "#64f9bc",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "secondary": "#006c4b",
+                        "secondary-fixed": "#68fcbf",
+                        "inverse-on-surface": "#eff1f5",
+                        "surface-bright": "#f7f9fd",
+                        "primary": "#000000",
+                        "on-tertiary-fixed-variant": "#55442d",
+                        "on-surface-variant": "#45464c",
+                        "slate-mid": "#D1D5DB",
+                        "on-tertiary-container": "#968065",
+                        "on-tertiary-fixed": "#261906",
+                        "on-primary-fixed": "#141b2b",
+                        "surface-tint": "#575e70",
+                        "surface-container-low": "#f2f4f8",
+                        "primary-container": "#141b2b",
+                        "surface-dim": "#d8dade",
+                        "on-primary-container": "#7d8497",
+                        "on-primary-fixed-variant": "#404758",
+                        "surface": "#f7f9fd",
+                        "primary-fixed-dim": "#c0c6db",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e2e6",
+                        "slate-light": "#F9FAFB",
+                        "on-surface": "#191c1f",
+                        "primary-fixed": "#dce2f7",
+                        "surface-container-high": "#e6e8ec",
+                        "outline": "#76777d",
+                        "on-primary": "#ffffff",
+                        "background": "#f7f9fd",
+                        "inverse-surface": "#2d3134"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-xs": "8px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "24px",
+                        "stack-md": "24px",
+                        "stack-sm": "16px",
+                        "unit": "24px",
+                        "stack-xl": "72px",
+                        "stack-lg": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Manrope"],
+                        "label-md": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "label-bold": ["Manrope"],
+                        "display-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0", "fontWeight": "400" }],
+                        "label-bold": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "display-lg": ["64px", { "lineHeight": "72px", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #f7f9fd;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .hairline-border {
+            border: 1.5px solid #e5e7eb;
+        }
+        .bento-cell {
+            padding: 24px;
+            border: 1.5px solid #e5e7eb;
+        }
+        /* Custom Scrollbar for architectural feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f9fd;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #000000;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- Top App Bar -->
+<header class="bg-surface sticky top-0 z-50 w-full border-b-[1.5px] border-outline-variant flex justify-between items-center px-margin-mobile h-[72px]">
+<div class="flex items-center gap-4">
+<button class="hover:bg-surface-container transition-colors duration-150 p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<h1 class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant">TASK EXECUTION</h1>
+</div>
+<div class="flex items-center">
+<span class="font-display-lg text-headline-md tracking-tighter text-tertiary">SLATE &amp; SINEW</span>
+</div>
+<button class="hover:bg-surface-container transition-colors duration-150 p-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">more_vert</span>
+</button>
+</header>
+<main class="max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg pb-40">
+<!-- Exercise Title Section -->
+<section class="mb-stack-lg">
+<span class="font-label-bold text-label-bold text-sinew-green uppercase tracking-[0.2em] mb-2 block">Current Protocol</span>
+<h2 class="font-display-lg text-headline-lg md:text-display-lg uppercase leading-none tracking-tighter text-tertiary">
+                BARBELL BACK SQUAT
+            </h2>
+</section>
+<!-- Hero Image / Technical Form -->
+<div class="w-full h-[300px] md:h-[500px] hairline-border mb-stack-lg overflow-hidden relative bg-slate-light">
+<img class="w-full h-full object-cover grayscale opacity-90" data-alt="A cinematic, high-contrast black and white photograph of a professional athlete performing a barbell back squat in a brutalist, minimalist gym environment. The lighting is dramatic and architectural, highlighting the muscle tension and the industrial steel of the squat rack. The background features clean concrete walls and large windows with soft daylight, maintaining the Slate and Sinew aesthetic of monochromatic discipline and structural precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoKTKywz8aotTHFvTFnQmxHtezAPY2lDkyxIzGAS_0Ed9gn_GtquBu-NXwcYSydFwQn4b1QcKHve6xvDZ-ghc_NDCq4hOZxqaSUnwlqJRiYcK1tYpY9lhNm_74xnDBAn2kNHE3ifZumEpmUsFV5XeqpXAwBp4hzxPzw7VcnMpDb_t2aUpNWCLDsErNwFC_QqRONQNN6Z8Cx7oDQJTgMFHaTFzN3UhCOskgWYC9Lfvk0XGX2KlOGDjBddl-J3h5QXj3RFaSInPM547O"/>
+<div class="absolute bottom-6 left-6 bg-tertiary text-on-tertiary px-4 py-2 font-label-bold text-label-bold uppercase">
+                Technical Reference
+            </div>
+</div>
+<!-- Technical Specs Bento Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-0 hairline-border border-collapse mb-stack-lg bg-white">
+<div class="bento-cell flex flex-col items-center justify-center border-r-[1.5px] border-b-[1.5px] md:border-b-0 border-outline-variant">
+<span class="font-label-bold text-label-bold text-outline uppercase mb-2">SETS</span>
+<span class="font-headline-lg text-headline-lg text-tertiary">04</span>
+</div>
+<div class="bento-cell flex flex-col items-center justify-center md:border-r-[1.5px] border-b-[1.5px] md:border-b-0 border-outline-variant">
+<span class="font-label-bold text-label-bold text-outline uppercase mb-2">REPS</span>
+<span class="font-headline-lg text-headline-lg text-tertiary">08-12</span>
+</div>
+<div class="bento-cell flex flex-col items-center justify-center border-r-[1.5px] border-outline-variant">
+<span class="font-label-bold text-label-bold text-outline uppercase mb-2">REST</span>
+<span class="font-headline-lg text-headline-lg text-tertiary">90s</span>
+</div>
+<div class="bento-cell flex flex-col items-center justify-center">
+<span class="font-label-bold text-label-bold text-outline uppercase mb-2">TEMPO</span>
+<span class="font-headline-lg text-headline-lg text-tertiary">3-0-1-0</span>
+</div>
+</div>
+<!-- Details Modules -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<!-- Station Setup -->
+<div class="hairline-border p-stack-md bg-white">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary">settings_input_component</span>
+<h3 class="font-label-bold text-label-bold text-tertiary uppercase tracking-widest">STATION SETUP</h3>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between border-b-[1.5px] border-outline-variant pb-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Seat height</span>
+<span class="font-label-bold text-label-bold text-tertiary">LEVEL 4</span>
+</div>
+<div class="flex justify-between border-b-[1.5px] border-outline-variant pb-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Safety pins</span>
+<span class="font-label-bold text-label-bold text-tertiary">LEVEL 2</span>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                        Ensure bar is centered on high-traps. Check clamp security before initiation.
+                    </p>
+</div>
+</div>
+<!-- Coaching Cues -->
+<div class="hairline-border p-stack-md bg-tertiary text-on-tertiary">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-sinew-green">campaign</span>
+<h3 class="font-label-bold text-label-bold text-on-tertiary uppercase tracking-widest">COACHING CUES</h3>
+</div>
+<ul class="space-y-3">
+<li class="flex gap-4 items-start">
+<span class="w-1.5 h-1.5 bg-sinew-green mt-2 flex-shrink-0"></span>
+<span class="font-body-md">Maintain vertical shin angle throughout the eccentric phase.</span>
+</li>
+<li class="flex gap-4 items-start">
+<span class="w-1.5 h-1.5 bg-sinew-green mt-2 flex-shrink-0"></span>
+<span class="font-body-md">Drive through mid-foot to engage the posterior chain effectively.</span>
+</li>
+<li class="flex gap-4 items-start">
+<span class="w-1.5 h-1.5 bg-sinew-green mt-2 flex-shrink-0"></span>
+<span class="font-body-md">Brace core intensely before descent to protect the lumbar spine.</span>
+</li>
+</ul>
+</div>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="fixed bottom-[80px] left-0 w-full px-margin-mobile py-4 bg-surface/80 backdrop-blur-md z-40">
+<button class="w-full bg-tertiary text-on-tertiary py-6 font-label-bold text-label-bold uppercase tracking-[0.3em] active:scale-[0.98] transition-all hover:bg-slate-dark shadow-xl">
+            MARK AS COMPLETE
+        </button>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 h-[80px] bg-surface border-t-[1.5px] border-outline-variant flex justify-around items-stretch">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1">dashboard</span>
+<span class="font-label-bold text-[10px] tracking-widest uppercase">DASHBOARD</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-tertiary text-on-tertiary h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-label-bold text-[10px] tracking-widest uppercase">TRAINING</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1">group</span>
+<span class="font-label-bold text-[10px] tracking-widest uppercase">MEMBERS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all h-full w-full" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-bold text-[10px] tracking-widest uppercase">PROFILE</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for the Complete button
+        const completeBtn = document.querySelector('button.bg-tertiary');
+        completeBtn.addEventListener('click', () => {
+            completeBtn.innerHTML = 'PROTOCOLS UPDATED';
+            completeBtn.classList.remove('bg-tertiary');
+            completeBtn.classList.add('bg-sinew-green');
+            completeBtn.classList.add('text-on-secondary-fixed');
+            
+            setTimeout(() => {
+                completeBtn.innerHTML = 'MARK AS COMPLETE';
+                completeBtn.classList.add('bg-tertiary');
+                completeBtn.classList.remove('bg-sinew-green');
+                completeBtn.classList.remove('text-on-secondary-fixed');
+            }, 3000);
+        });
+    </script>
+</body></html>

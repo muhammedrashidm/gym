@@ -8,4 +8,5 @@ abstract interface class AuthRepository {
     required String phoneNumber,
     required String otp,
   });
+  Future<Either<Failure, Unit>> logout({required String refreshToken});
 }

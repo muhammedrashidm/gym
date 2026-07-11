@@ -1,0 +1,51 @@
+model Gym {
+  id               String            @id @default(uuid())
+  name             String
+  createdAt        DateTime          @default(now())
+  ownerId          String
+  tier             Int               @default(3)
+  isApproved       Boolean           @default(false)
+  address          String?
+  lat              Float?
+  lng              Float?
+  logoUrl          String?
+  owner            User              @relation(fields: [ownerId], references: [id])
+  userRoles        UserRole[]
+  memberships      Membership[]
+  gymPlans         GymPlan[]
+  gymSubscriptions GymSubscription[]
+  checkIns         CheckIn[]
+  sessionRates     GymSessionRate[]
+  staffAttendance  StaffAttendance[]
+  sessionPayouts   SessionPayout[]
+  payoutBatches    PayoutBatch[]
+  invites          Invite[]
+}
+
+model CheckIn {
+  id               String         @id @default(uuid())
+  method           String
+  accessGranted    Boolean
+  denyReason       String?
+  checkInAt        DateTime       @default(now())
+  checkOutAt       DateTime?
+  profileId        String
+  profile          Profile        @relation(fields: [profileId], references: [id])
+  gymId            String
+  gym              Gym            @relation(fields: [gymId], references: [id])
+  scannedByStaffId String?
+  sessionPayout    SessionPayout?
+}
+
+model StaffAttendance {
+  id               String    @id @default(uuid())
+  lat              Float
+  lng              Float
+  isWithinGeofence Boolean
+  checkInAt        DateTime  @default(now())
+  checkOutAt       DateTime?
+  userId           String
+  user             User      @relation(fields: [userId], references: [id])
+  gymId            String
+  gym              Gym       @relation(fields: [gymId], references: [id])
+}

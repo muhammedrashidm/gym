@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Slate &amp; Sinew | Weekly Plan View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#191c1f",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#f7f9fd",
+                    "on-primary-container": "#7d8497",
+                    "on-tertiary-fixed": "#261906",
+                    "inverse-on-surface": "#eff1f5",
+                    "on-secondary-fixed-variant": "#005137",
+                    "secondary-container": "#64f9bc",
+                    "secondary": "#006c4b",
+                    "surface-bright": "#f7f9fd",
+                    "sinew-green": "#34D399",
+                    "primary-container": "#141b2b",
+                    "surface-variant": "#e0e2e6",
+                    "surface-container-highest": "#e0e2e6",
+                    "on-tertiary-container": "#968065",
+                    "slate-light": "#F9FAFB",
+                    "tertiary": "#000000",
+                    "on-background": "#191c1f",
+                    "primary-fixed-dim": "#c0c6db",
+                    "surface-dim": "#d8dade",
+                    "on-primary-fixed": "#141b2b",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#f2f4f8",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#55442d",
+                    "primary-fixed": "#dce2f7",
+                    "outline": "#76777d",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#261906",
+                    "tertiary-fixed": "#f9debf",
+                    "surface-container": "#eceef2",
+                    "on-secondary-container": "#00714e",
+                    "surface-container-high": "#e6e8ec",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#002114",
+                    "tertiary-fixed-dim": "#dcc2a4",
+                    "on-error": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#575e70",
+                    "outline-variant": "#c6c6cd",
+                    "slate-dark": "#111827",
+                    "on-surface-variant": "#45464c",
+                    "inverse-primary": "#c0c6db",
+                    "on-primary-fixed-variant": "#404758",
+                    "inverse-surface": "#2d3134",
+                    "primary": "#000000",
+                    "secondary-fixed-dim": "#45dfa4",
+                    "slate-mid": "#D1D5DB",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#68fcbf",
+                    "surface": "#f7f9fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "48px",
+                    "stack-md": "24px",
+                    "stack-xs": "8px",
+                    "stack-sm": "16px",
+                    "unit": "24px",
+                    "stack-lg": "48px",
+                    "margin-mobile": "24px",
+                    "stack-xl": "72px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Manrope"],
+                    "label-md": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "label-bold": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-bold": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .task-card.completed {
+            opacity: 0.5;
+            background-color: #F9FAFB;
+        }
+        .task-card.completed .task-title {
+            text-decoration: line-through;
+        }
+        .task-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest border-b-[1.5px] border-outline-variant w-full top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-20">
+<button class="hover:bg-surface-variant transition-colors p-2 active:opacity-80">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-display-lg text-headline-md tracking-tighter text-primary">SLATE &amp; SINEW</h1>
+<div class="w-10 h-10 bg-slate-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg">
+<!-- Plan Header Section -->
+<section class="mb-stack-xl flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+<div class="max-w-2xl">
+<span class="font-label-bold text-label-bold text-on-surface-variant tracking-widest uppercase mb-2 block">ACTIVE PROGRAM</span>
+<h2 class="font-display-lg text-headline-lg md:text-display-lg text-primary uppercase leading-none mb-stack-sm">ELITE STRENGTH PROTOCOL</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">A rigorous 12-week macrocycle focusing on compound movements, neural adaptations, and progressive overload for the elite tactical athlete.</p>
+</div>
+<div class="flex flex-col items-start md:items-end min-w-[200px]">
+<div class="flex justify-between w-full mb-2">
+<span class="font-label-bold text-label-bold">DAY 1 COMPLETION</span>
+<span class="font-label-bold text-label-bold" id="completion-percent">66%</span>
+</div>
+<div class="w-full h-1.5 bg-slate-light border border-outline-variant relative overflow-hidden">
+<div class="h-full bg-sinew-green" id="progress-bar" style="width: 66.6%;"></div>
+</div>
+</div>
+</section>
+<!-- 7-Day Tab Navigation -->
+<nav class="mb-stack-lg overflow-x-auto no-scrollbar border-b border-outline-variant">
+<div class="flex space-x-0 min-w-max">
+<button class="day-tab border-b-2 border-primary px-8 py-4 text-primary font-label-bold text-label-bold transition-all bg-surface-container-low" onclick="switchDay(1)">DAY 1</button>
+<button class="day-tab border-b-2 border-transparent px-8 py-4 text-on-surface-variant font-label-bold text-label-bold hover:text-primary transition-all" onclick="switchDay(2)">DAY 2</button>
+<button class="day-tab border-b-2 border-transparent px-8 py-4 text-on-surface-variant font-label-bold text-label-bold hover:text-primary transition-all" onclick="switchDay(3)">DAY 3</button>
+<button class="day-tab border-b-2 border-transparent px-8 py-4 text-on-surface-variant font-label-bold text-label-bold hover:text-primary transition-all" onclick="switchDay(4)">DAY 4</button>
+<button class="day-tab border-b-2 border-transparent px-8 py-4 text-on-surface-variant font-label-bold text-label-bold hover:text-primary transition-all" onclick="switchDay(5)">DAY 5</button>
+<button class="day-tab border-b-2 border-transparent px-8 py-4 text-on-surface-variant font-label-bold text-label-bold hover:text-primary transition-all" onclick="switchDay(6)">DAY 6</button>
+<button class="day-tab border-b-2 border-transparent px-8 py-4 text-on-surface-variant font-label-bold text-label-bold hover:text-primary transition-all" onclick="switchDay(7)">DAY 7</button>
+</div>
+</nav>
+<!-- Task List Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-stack-md" id="task-list">
+<!-- Task 1: Completed -->
+<div class="task-card completed border-[1.5px] border-outline-variant bg-surface-container-lowest flex flex-col group relative">
+<div class="h-48 overflow-hidden grayscale">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A cinematic, high-contrast black and white photograph of an Olympic barbell being prepared for a back squat in a minimalist brutalist gym. The lighting is dramatic, casting long geometric shadows on the concrete floor. The aesthetic is raw, professional, and powerful, capturing the grit of elite athletic training." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByK2Dc9JQY-HpL-aot0GdX_0j2yNRgQ7VM6AxDuhuVNggUUcaNwiG5xqxPxL34AQEzO5xFJ75zM3PN4KPK-LQlYBs9GwbxmISAOu0bZKQLBsCDZoVK70sLqrdSi_4uEVmUiHKr_CkzYFdsdiRfSw-KVG5Pg11lhQ-QaihFB-ypyA6X8mxw0yDgtPGz5lDSX2rfgcacsqMiB6gPtbsCHqNTklIvotbF4Mn8XOKfUOURm3-52oC7P781vpkR-NpOhMm-ZVHJrv7pEWi-"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="font-label-bold text-label-bold text-sinew-green mb-1 block">A1. STRENGTH</span>
+<h3 class="task-title font-headline-md text-headline-md text-primary uppercase">Barbell Back Squat</h3>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-stack-md">
+<div class="border-l-[1.5px] border-outline-variant pl-3">
+<span class="block text-[10px] font-label-bold text-on-surface-variant uppercase">Sets / Reps</span>
+<span class="block font-headline-md text-primary">5 x 5</span>
+</div>
+<div class="border-l-[1.5px] border-outline-variant pl-3">
+<span class="block text-[10px] font-label-bold text-on-surface-variant uppercase">RPE / Tempo</span>
+<span class="block font-headline-md text-primary">8 / 31X1</span>
+</div>
+</div>
+<button class="mt-auto w-full border-[1.5px] border-primary py-3 px-6 font-label-bold text-label-bold flex items-center justify-center gap-2 hover:bg-slate-dark hover:text-white transition-all" onclick="toggleComplete(this)">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        COMPLETED
+                    </button>
+</div>
+</div>
+<!-- Task 2: Active -->
+<div class="task-card border-[1.5px] border-outline-variant bg-surface-container-lowest flex flex-col group relative">
+<div class="h-48 overflow-hidden grayscale">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An artistic high-angle shot of weighted pull-up equipment in a stark architectural gym environment. Monochrome lighting highlights the metallic texture of the bar and the heavy chains. Deep blacks and bright whites emphasize a sense of discipline and structural strength. Minimalist and elite fitness vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY5yC-ym-QhpCLRcJtokXRYG4HAEmaXPMbfXp5W5pHlzsCC9qNp6Ttr4E2lUDVauR0ZNPdFDwoeaB_4O_7Nwv0jxP2Ql3FhshHpCJecS-u-t2ZrWRzaW_C14RDUpcei8-MdI-JD0y59GU1Vz0h4u8ZdSNdyAkVTs-omYJsKVthC8deASZ8JooODYLA5MZKnMT5PfqjN_TGgbMTIsebyPopelmMSQfzHd7vdNqh2JCVecr6Ll1yJ5Uc2BIBQO4rnd4oDiajvHrI9nzx"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="font-label-bold text-label-bold text-on-surface-variant mb-1 block">A2. STRENGTH</span>
+<h3 class="task-title font-headline-md text-headline-md text-primary uppercase">Weighted Pull-Up</h3>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-stack-md">
+<div class="border-l-[1.5px] border-outline-variant pl-3">
+<span class="block text-[10px] font-label-bold text-on-surface-variant uppercase">Sets / Reps</span>
+<span class="block font-headline-md text-primary">4 x 8</span>
+</div>
+<div class="border-l-[1.5px] border-outline-variant pl-3">
+<span class="block text-[10px] font-label-bold text-on-surface-variant uppercase">RPE / Tempo</span>
+<span class="block font-headline-md text-primary">7.5 / 20X0</span>
+</div>
+</div>
+<button class="mt-auto w-full border-[1.5px] border-primary py-3 px-6 font-label-bold text-label-bold flex items-center justify-center gap-2 hover:bg-slate-dark hover:text-white transition-all" onclick="toggleComplete(this)">
+<span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span>
+                        MARK AS COMPLETE
+                    </button>
+</div>
+</div>
+<!-- Task 3: Pending -->
+<div class="task-card border-[1.5px] border-outline-variant bg-surface-container-lowest flex flex-col group relative">
+<div class="h-48 overflow-hidden grayscale">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close up of a pair of heavy dumbbells sitting on a rubber floor in a modern high-end gym. The lighting is moody and dramatic with sharp contrast, reflecting the Slate and Sinew brand aesthetic. Monochromatic palette with a focus on textures of metal and rubber. Elite, focused athletic mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1cKkBTqitdiBZj-Xq9tP9blYUfRqs2GIME3weY0GNqTo7sKd4_XKJOCr0JH6diL-jGTwGtxSzz81wQVswLpEmHlBd0ZqLxHihJXYZINJX_zfv9pFvURaP-TeOGo4JUvlLwJPeV8YzVfB7Wj6boinAi2JRN_lTo4kJF5DQ6g5ce1A_W28X95ggv6ryYaaOjAuBN49EKDssOoiXIdLni4oAr-rYU5GcLtpL9DzslUqLPaVCaJpmNYLG5CWmyHEAH2bg6YfRLlka7hhF"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="font-label-bold text-label-bold text-on-surface-variant mb-1 block">B1. ACCESSORY</span>
+<h3 class="task-title font-headline-md text-headline-md text-primary uppercase">Bulgarian Split Squat</h3>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-stack-md">
+<div class="border-l-[1.5px] border-outline-variant pl-3">
+<span class="block text-[10px] font-label-bold text-on-surface-variant uppercase">Sets / Reps</span>
+<span class="block font-headline-md text-primary">3 x 12</span>
+</div>
+<div class="border-l-[1.5px] border-outline-variant pl-3">
+<span class="block text-[10px] font-label-bold text-on-surface-variant uppercase">RPE / Tempo</span>
+<span class="block font-headline-md text-primary">9 / 2121</span>
+</div>
+</div>
+<button class="mt-auto w-full border-[1.5px] border-primary py-3 px-6 font-label-bold text-label-bold flex items-center justify-center gap-2 hover:bg-slate-dark hover:text-white transition-all" onclick="toggleComplete(this)">
+<span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span>
+                        MARK AS COMPLETE
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<footer class="fixed bottom-0 w-full z-50 border-t-[1.5px] border-outline-variant bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto flex justify-around items-stretch h-16">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 h-full w-full hover:text-primary duration-75" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-bold text-[10px] uppercase mt-1">DASHBOARD</span>
+</a>
+<!-- Active State -->
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary p-2 h-full w-full duration-75" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+<span class="font-label-bold text-[10px] uppercase mt-1">TRAINING</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 h-full w-full hover:text-primary duration-75" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-bold text-[10px] uppercase mt-1">MEMBERS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 h-full w-full hover:text-primary duration-75" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-[10px] uppercase mt-1">PROFILE</span>
+</a>
+</div>
+</footer>
+<script>
+        function toggleComplete(btn) {
+            const card = btn.closest('.task-card');
+            const icon = btn.querySelector('.material-symbols-outlined');
+            const isCompleted = card.classList.contains('completed');
+
+            if (isCompleted) {
+                card.classList.remove('completed');
+                btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">radio_button_unchecked</span> MARK AS COMPLETE`;
+            } else {
+                card.classList.add('completed');
+                btn.innerHTML = `<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span> COMPLETED`;
+            }
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.task-card').length;
+            const completed = document.querySelectorAll('.task-card.completed').length;
+            const percent = Math.round((completed / total) * 100);
+            
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('completion-percent').innerText = percent + '%';
+        }
+
+        function switchDay(day) {
+            const tabs = document.querySelectorAll('.day-tab');
+            tabs.forEach((tab, index) => {
+                if (index + 1 === day) {
+                    tab.classList.add('border-primary', 'text-primary', 'bg-surface-container-low');
+                    tab.classList.remove('border-transparent', 'text-on-surface-variant');
+                } else {
+                    tab.classList.remove('border-primary', 'text-primary', 'bg-surface-container-low');
+                    tab.classList.add('border-transparent', 'text-on-surface-variant');
+                }
+            });
+            // Logic to reload task list would go here
+        }
+    </script>
+</body></html>

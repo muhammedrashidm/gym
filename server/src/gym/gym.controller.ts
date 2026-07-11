@@ -46,10 +46,7 @@ export class GymController {
 
   @Public()
   @Get(':id')
-  async findOne(
-    @Param('id') id: string,
-    @ReqContext() ctx?: RequestContext,
-  ) {
+  async findOne(@Param('id') id: string, @ReqContext() ctx?: RequestContext) {
     const where = await this.gymScopeResolver.resolve(ctx);
     return this.gymService.findOne({ id, where, ctx });
   }

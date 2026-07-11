@@ -47,7 +47,7 @@ describe('AuthController', () => {
       const dto: RequestOtpDto = { phoneNumber: '+1234567890' };
       const expectedResult = new OtpRequestedModel();
       expectedResult.success = true;
-      
+
       authService.requestOtp.mockResolvedValue(expectedResult);
 
       const result = await controller.requestOtp(dto);
@@ -75,10 +75,38 @@ describe('AuthController', () => {
 
       const result = await controller.verifyOtp(dto);
 
-      expect(authService.verifyOtp).toHaveBeenCalledWith(dto.phoneNumber, dto.code);
+      expect(authService.verifyOtp).toHaveBeenCalledWith(
+        dto.phoneNumber,
+        dto.code,
+        false,
+      );
       expect(result).toBeInstanceOf(VerifyOtpResponseModel);
       expect(result.accessToken).toBe('access-token');
       expect(result.user).toBeInstanceOf(AuthUserModel);
+    });
+
+    it('should call authService.verifyOtp with isMobile=true when x-client-platform is mobile', async () => {
+      const dto: VerifyOtpDto = { phoneNumber: '+1234567890', code: '1234' };
+      const expectedResult = new VerifyOtpResponseModel();
+      expectedResult.accessToken = 'access-token';
+      expectedResult.refreshToken = 'refresh-token';
+      expectedResult.user = new AuthUserModel();
+      expectedResult.user.id = 'uuid';
+      expectedResult.user.phoneNumber = dto.phoneNumber;
+      expectedResult.user.isActive = true;
+      expectedResult.user.roles = [];
+      expectedResult.claimedProfile = null;
+
+      authService.verifyOtp.mockResolvedValue(expectedResult);
+
+      const result = await controller.verifyOtp(dto, 'mobile');
+
+      expect(authService.verifyOtp).toHaveBeenCalledWith(
+        dto.phoneNumber,
+        dto.code,
+        true,
+      );
+      expect(result).toBeInstanceOf(VerifyOtpResponseModel);
     });
   });
 
@@ -101,7 +129,12 @@ describe('AuthController', () => {
 
   describe('logout', () => {
     it('should call authService.logout with user.id and refreshToken', async () => {
-      const user: AuthUser = { id: 'user-uuid', phoneNumber: '+1234567890', isActive: true, roles: [] };
+      const user: AuthUser = {
+        id: 'user-uuid',
+        phoneNumber: '+1234567890',
+        isActive: true,
+        roles: [],
+      };
       const refreshToken = 'refresh-token-to-revoke';
       const expectedResult = new LogoutModel();
       expectedResult.success = true;
@@ -118,7 +151,12 @@ describe('AuthController', () => {
 
   describe('getMe', () => {
     it('should call authService.getMe with user.id and return AuthUserModel', async () => {
-      const user: AuthUser = { id: 'user-uuid', phoneNumber: '+1234567890', isActive: true, roles: [] };
+      const user: AuthUser = {
+        id: 'user-uuid',
+        phoneNumber: '+1234567890',
+        isActive: true,
+        roles: [],
+      };
       const expectedResult = new AuthUserModel();
       expectedResult.id = 'user-uuid';
       expectedResult.phoneNumber = '+1234567890';

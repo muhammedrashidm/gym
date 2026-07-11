@@ -32,7 +32,6 @@ State Management:
 
 Architecture:
 - Clean Architecture
-- MVVM (Model-View-ViewModel)
 - Repository Pattern for data access
 - Feature-first directory structure
 

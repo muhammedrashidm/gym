@@ -19,62 +19,74 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() checkingToken,
     required TResult Function() loading,
     required TResult Function(String phoneNumber) otpSent,
-    required TResult Function(AuthToken token) authenticated,
-    required TResult Function() unauthenticated,
+    required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? checkingToken,
     TResult? Function()? loading,
     TResult? Function(String phoneNumber)? otpSent,
-    TResult? Function(AuthToken token)? authenticated,
-    TResult? Function()? unauthenticated,
+    TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? checkingToken,
     TResult Function()? loading,
     TResult Function(String phoneNumber)? otpSent,
-    TResult Function(AuthToken token)? authenticated,
-    TResult Function()? unauthenticated,
+    TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
     required TResult Function(AuthLoading value) loading,
     required TResult Function(AuthOtpSent value) otpSent,
-    required TResult Function(AuthAuthenticated value) authenticated,
     required TResult Function(AuthUnauthenticated value) unauthenticated,
     required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
     TResult? Function(AuthLoading value)? loading,
     TResult? Function(AuthOtpSent value)? otpSent,
-    TResult? Function(AuthAuthenticated value)? authenticated,
     TResult? Function(AuthUnauthenticated value)? unauthenticated,
     TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
     TResult Function(AuthLoading value)? loading,
     TResult Function(AuthOtpSent value)? otpSent,
-    TResult Function(AuthAuthenticated value)? authenticated,
     TResult Function(AuthUnauthenticated value)? unauthenticated,
     TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -136,11 +148,14 @@ class _$AuthInitialImpl implements AuthInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() checkingToken,
     required TResult Function() loading,
     required TResult Function(String phoneNumber) otpSent,
-    required TResult Function(AuthToken token) authenticated,
-    required TResult Function() unauthenticated,
+    required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
   }) {
     return initial();
   }
@@ -149,11 +164,14 @@ class _$AuthInitialImpl implements AuthInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? checkingToken,
     TResult? Function()? loading,
     TResult? Function(String phoneNumber)? otpSent,
-    TResult? Function(AuthToken token)? authenticated,
-    TResult? Function()? unauthenticated,
+    TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
   }) {
     return initial?.call();
   }
@@ -162,11 +180,14 @@ class _$AuthInitialImpl implements AuthInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? checkingToken,
     TResult Function()? loading,
     TResult Function(String phoneNumber)? otpSent,
-    TResult Function(AuthToken token)? authenticated,
-    TResult Function()? unauthenticated,
+    TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -179,11 +200,12 @@ class _$AuthInitialImpl implements AuthInitial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
     required TResult Function(AuthLoading value) loading,
     required TResult Function(AuthOtpSent value) otpSent,
-    required TResult Function(AuthAuthenticated value) authenticated,
     required TResult Function(AuthUnauthenticated value) unauthenticated,
     required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
   }) {
     return initial(this);
   }
@@ -192,11 +214,12 @@ class _$AuthInitialImpl implements AuthInitial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
     TResult? Function(AuthLoading value)? loading,
     TResult? Function(AuthOtpSent value)? otpSent,
-    TResult? Function(AuthAuthenticated value)? authenticated,
     TResult? Function(AuthUnauthenticated value)? unauthenticated,
     TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
   }) {
     return initial?.call(this);
   }
@@ -205,11 +228,12 @@ class _$AuthInitialImpl implements AuthInitial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
     TResult Function(AuthLoading value)? loading,
     TResult Function(AuthOtpSent value)? otpSent,
-    TResult Function(AuthAuthenticated value)? authenticated,
     TResult Function(AuthUnauthenticated value)? unauthenticated,
     TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -221,6 +245,144 @@ class _$AuthInitialImpl implements AuthInitial {
 
 abstract class AuthInitial implements AuthState {
   const factory AuthInitial() = _$AuthInitialImpl;
+}
+
+/// @nodoc
+abstract class _$$AuthCheckingTokenImplCopyWith<$Res> {
+  factory _$$AuthCheckingTokenImplCopyWith(_$AuthCheckingTokenImpl value,
+          $Res Function(_$AuthCheckingTokenImpl) then) =
+      __$$AuthCheckingTokenImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$AuthCheckingTokenImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthCheckingTokenImpl>
+    implements _$$AuthCheckingTokenImplCopyWith<$Res> {
+  __$$AuthCheckingTokenImplCopyWithImpl(_$AuthCheckingTokenImpl _value,
+      $Res Function(_$AuthCheckingTokenImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$AuthCheckingTokenImpl implements AuthCheckingToken {
+  const _$AuthCheckingTokenImpl();
+
+  @override
+  String toString() {
+    return 'AuthState.checkingToken()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$AuthCheckingTokenImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() checkingToken,
+    required TResult Function() loading,
+    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(bool sessionExpired) unauthenticated,
+    required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
+  }) {
+    return checkingToken();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? checkingToken,
+    TResult? Function()? loading,
+    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(bool sessionExpired)? unauthenticated,
+    TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
+  }) {
+    return checkingToken?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? checkingToken,
+    TResult Function()? loading,
+    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(bool sessionExpired)? unauthenticated,
+    TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
+    required TResult orElse(),
+  }) {
+    if (checkingToken != null) {
+      return checkingToken();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
+    required TResult Function(AuthLoading value) loading,
+    required TResult Function(AuthOtpSent value) otpSent,
+    required TResult Function(AuthUnauthenticated value) unauthenticated,
+    required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
+  }) {
+    return checkingToken(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
+    TResult? Function(AuthLoading value)? loading,
+    TResult? Function(AuthOtpSent value)? otpSent,
+    TResult? Function(AuthUnauthenticated value)? unauthenticated,
+    TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
+  }) {
+    return checkingToken?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
+    TResult Function(AuthLoading value)? loading,
+    TResult Function(AuthOtpSent value)? otpSent,
+    TResult Function(AuthUnauthenticated value)? unauthenticated,
+    TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
+    required TResult orElse(),
+  }) {
+    if (checkingToken != null) {
+      return checkingToken(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AuthCheckingToken implements AuthState {
+  const factory AuthCheckingToken() = _$AuthCheckingTokenImpl;
 }
 
 /// @nodoc
@@ -262,11 +424,14 @@ class _$AuthLoadingImpl implements AuthLoading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() checkingToken,
     required TResult Function() loading,
     required TResult Function(String phoneNumber) otpSent,
-    required TResult Function(AuthToken token) authenticated,
-    required TResult Function() unauthenticated,
+    required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
   }) {
     return loading();
   }
@@ -275,11 +440,14 @@ class _$AuthLoadingImpl implements AuthLoading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? checkingToken,
     TResult? Function()? loading,
     TResult? Function(String phoneNumber)? otpSent,
-    TResult? Function(AuthToken token)? authenticated,
-    TResult? Function()? unauthenticated,
+    TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
   }) {
     return loading?.call();
   }
@@ -288,11 +456,14 @@ class _$AuthLoadingImpl implements AuthLoading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? checkingToken,
     TResult Function()? loading,
     TResult Function(String phoneNumber)? otpSent,
-    TResult Function(AuthToken token)? authenticated,
-    TResult Function()? unauthenticated,
+    TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -305,11 +476,12 @@ class _$AuthLoadingImpl implements AuthLoading {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
     required TResult Function(AuthLoading value) loading,
     required TResult Function(AuthOtpSent value) otpSent,
-    required TResult Function(AuthAuthenticated value) authenticated,
     required TResult Function(AuthUnauthenticated value) unauthenticated,
     required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
   }) {
     return loading(this);
   }
@@ -318,11 +490,12 @@ class _$AuthLoadingImpl implements AuthLoading {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
     TResult? Function(AuthLoading value)? loading,
     TResult? Function(AuthOtpSent value)? otpSent,
-    TResult? Function(AuthAuthenticated value)? authenticated,
     TResult? Function(AuthUnauthenticated value)? unauthenticated,
     TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
   }) {
     return loading?.call(this);
   }
@@ -331,11 +504,12 @@ class _$AuthLoadingImpl implements AuthLoading {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
     TResult Function(AuthLoading value)? loading,
     TResult Function(AuthOtpSent value)? otpSent,
-    TResult Function(AuthAuthenticated value)? authenticated,
     TResult Function(AuthUnauthenticated value)? unauthenticated,
     TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -415,11 +589,14 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() checkingToken,
     required TResult Function() loading,
     required TResult Function(String phoneNumber) otpSent,
-    required TResult Function(AuthToken token) authenticated,
-    required TResult Function() unauthenticated,
+    required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
   }) {
     return otpSent(phoneNumber);
   }
@@ -428,11 +605,14 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? checkingToken,
     TResult? Function()? loading,
     TResult? Function(String phoneNumber)? otpSent,
-    TResult? Function(AuthToken token)? authenticated,
-    TResult? Function()? unauthenticated,
+    TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
   }) {
     return otpSent?.call(phoneNumber);
   }
@@ -441,11 +621,14 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? checkingToken,
     TResult Function()? loading,
     TResult Function(String phoneNumber)? otpSent,
-    TResult Function(AuthToken token)? authenticated,
-    TResult Function()? unauthenticated,
+    TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
     required TResult orElse(),
   }) {
     if (otpSent != null) {
@@ -458,11 +641,12 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
     required TResult Function(AuthLoading value) loading,
     required TResult Function(AuthOtpSent value) otpSent,
-    required TResult Function(AuthAuthenticated value) authenticated,
     required TResult Function(AuthUnauthenticated value) unauthenticated,
     required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
   }) {
     return otpSent(this);
   }
@@ -471,11 +655,12 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
     TResult? Function(AuthLoading value)? loading,
     TResult? Function(AuthOtpSent value)? otpSent,
-    TResult? Function(AuthAuthenticated value)? authenticated,
     TResult? Function(AuthUnauthenticated value)? unauthenticated,
     TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
   }) {
     return otpSent?.call(this);
   }
@@ -484,11 +669,12 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
     TResult Function(AuthLoading value)? loading,
     TResult Function(AuthOtpSent value)? otpSent,
-    TResult Function(AuthAuthenticated value)? authenticated,
     TResult Function(AuthUnauthenticated value)? unauthenticated,
     TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
   }) {
     if (otpSent != null) {
@@ -509,179 +695,12 @@ abstract class AuthOtpSent implements AuthState {
 }
 
 /// @nodoc
-abstract class _$$AuthAuthenticatedImplCopyWith<$Res> {
-  factory _$$AuthAuthenticatedImplCopyWith(_$AuthAuthenticatedImpl value,
-          $Res Function(_$AuthAuthenticatedImpl) then) =
-      __$$AuthAuthenticatedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({AuthToken token});
-
-  $AuthTokenCopyWith<$Res> get token;
-}
-
-/// @nodoc
-class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$AuthAuthenticatedImpl>
-    implements _$$AuthAuthenticatedImplCopyWith<$Res> {
-  __$$AuthAuthenticatedImplCopyWithImpl(_$AuthAuthenticatedImpl _value,
-      $Res Function(_$AuthAuthenticatedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? token = null,
-  }) {
-    return _then(_$AuthAuthenticatedImpl(
-      token: null == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as AuthToken,
-    ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $AuthTokenCopyWith<$Res> get token {
-    return $AuthTokenCopyWith<$Res>(_value.token, (value) {
-      return _then(_value.copyWith(token: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$AuthAuthenticatedImpl implements AuthAuthenticated {
-  const _$AuthAuthenticatedImpl({required this.token});
-
-  @override
-  final AuthToken token;
-
-  @override
-  String toString() {
-    return 'AuthState.authenticated(token: $token)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AuthAuthenticatedImpl &&
-            (identical(other.token, token) || other.token == token));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, token);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
-      __$$AuthAuthenticatedImplCopyWithImpl<_$AuthAuthenticatedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
-    required TResult Function(AuthToken token) authenticated,
-    required TResult Function() unauthenticated,
-    required TResult Function(String message) error,
-  }) {
-    return authenticated(token);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
-    TResult? Function(AuthToken token)? authenticated,
-    TResult? Function()? unauthenticated,
-    TResult? Function(String message)? error,
-  }) {
-    return authenticated?.call(token);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
-    TResult Function(AuthToken token)? authenticated,
-    TResult Function()? unauthenticated,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (authenticated != null) {
-      return authenticated(token);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AuthInitial value) initial,
-    required TResult Function(AuthLoading value) loading,
-    required TResult Function(AuthOtpSent value) otpSent,
-    required TResult Function(AuthAuthenticated value) authenticated,
-    required TResult Function(AuthUnauthenticated value) unauthenticated,
-    required TResult Function(AuthError value) error,
-  }) {
-    return authenticated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AuthInitial value)? initial,
-    TResult? Function(AuthLoading value)? loading,
-    TResult? Function(AuthOtpSent value)? otpSent,
-    TResult? Function(AuthAuthenticated value)? authenticated,
-    TResult? Function(AuthUnauthenticated value)? unauthenticated,
-    TResult? Function(AuthError value)? error,
-  }) {
-    return authenticated?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthInitial value)? initial,
-    TResult Function(AuthLoading value)? loading,
-    TResult Function(AuthOtpSent value)? otpSent,
-    TResult Function(AuthAuthenticated value)? authenticated,
-    TResult Function(AuthUnauthenticated value)? unauthenticated,
-    TResult Function(AuthError value)? error,
-    required TResult orElse(),
-  }) {
-    if (authenticated != null) {
-      return authenticated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AuthAuthenticated implements AuthState {
-  const factory AuthAuthenticated({required final AuthToken token}) =
-      _$AuthAuthenticatedImpl;
-
-  AuthToken get token;
-  @JsonKey(ignore: true)
-  _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
 abstract class _$$AuthUnauthenticatedImplCopyWith<$Res> {
   factory _$$AuthUnauthenticatedImplCopyWith(_$AuthUnauthenticatedImpl value,
           $Res Function(_$AuthUnauthenticatedImpl) then) =
       __$$AuthUnauthenticatedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool sessionExpired});
 }
 
 /// @nodoc
@@ -691,67 +710,102 @@ class __$$AuthUnauthenticatedImplCopyWithImpl<$Res>
   __$$AuthUnauthenticatedImplCopyWithImpl(_$AuthUnauthenticatedImpl _value,
       $Res Function(_$AuthUnauthenticatedImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sessionExpired = null,
+  }) {
+    return _then(_$AuthUnauthenticatedImpl(
+      sessionExpired: null == sessionExpired
+          ? _value.sessionExpired
+          : sessionExpired // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
-  const _$AuthUnauthenticatedImpl();
+  const _$AuthUnauthenticatedImpl({this.sessionExpired = false});
+
+  @override
+  @JsonKey()
+  final bool sessionExpired;
 
   @override
   String toString() {
-    return 'AuthState.unauthenticated()';
+    return 'AuthState.unauthenticated(sessionExpired: $sessionExpired)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthUnauthenticatedImpl);
+            other is _$AuthUnauthenticatedImpl &&
+            (identical(other.sessionExpired, sessionExpired) ||
+                other.sessionExpired == sessionExpired));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, sessionExpired);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AuthUnauthenticatedImplCopyWith<_$AuthUnauthenticatedImpl> get copyWith =>
+      __$$AuthUnauthenticatedImplCopyWithImpl<_$AuthUnauthenticatedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() checkingToken,
     required TResult Function() loading,
     required TResult Function(String phoneNumber) otpSent,
-    required TResult Function(AuthToken token) authenticated,
-    required TResult Function() unauthenticated,
+    required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
   }) {
-    return unauthenticated();
+    return unauthenticated(sessionExpired);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? checkingToken,
     TResult? Function()? loading,
     TResult? Function(String phoneNumber)? otpSent,
-    TResult? Function(AuthToken token)? authenticated,
-    TResult? Function()? unauthenticated,
+    TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
   }) {
-    return unauthenticated?.call();
+    return unauthenticated?.call(sessionExpired);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? checkingToken,
     TResult Function()? loading,
     TResult Function(String phoneNumber)? otpSent,
-    TResult Function(AuthToken token)? authenticated,
-    TResult Function()? unauthenticated,
+    TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
-      return unauthenticated();
+      return unauthenticated(sessionExpired);
     }
     return orElse();
   }
@@ -760,11 +814,12 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
     required TResult Function(AuthLoading value) loading,
     required TResult Function(AuthOtpSent value) otpSent,
-    required TResult Function(AuthAuthenticated value) authenticated,
     required TResult Function(AuthUnauthenticated value) unauthenticated,
     required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
   }) {
     return unauthenticated(this);
   }
@@ -773,11 +828,12 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
     TResult? Function(AuthLoading value)? loading,
     TResult? Function(AuthOtpSent value)? otpSent,
-    TResult? Function(AuthAuthenticated value)? authenticated,
     TResult? Function(AuthUnauthenticated value)? unauthenticated,
     TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
   }) {
     return unauthenticated?.call(this);
   }
@@ -786,11 +842,12 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
     TResult Function(AuthLoading value)? loading,
     TResult Function(AuthOtpSent value)? otpSent,
-    TResult Function(AuthAuthenticated value)? authenticated,
     TResult Function(AuthUnauthenticated value)? unauthenticated,
     TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -801,7 +858,13 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
 }
 
 abstract class AuthUnauthenticated implements AuthState {
-  const factory AuthUnauthenticated() = _$AuthUnauthenticatedImpl;
+  const factory AuthUnauthenticated({final bool sessionExpired}) =
+      _$AuthUnauthenticatedImpl;
+
+  bool get sessionExpired;
+  @JsonKey(ignore: true)
+  _$$AuthUnauthenticatedImplCopyWith<_$AuthUnauthenticatedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -869,11 +932,14 @@ class _$AuthErrorImpl implements AuthError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
+    required TResult Function() checkingToken,
     required TResult Function() loading,
     required TResult Function(String phoneNumber) otpSent,
-    required TResult Function(AuthToken token) authenticated,
-    required TResult Function() unauthenticated,
+    required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
   }) {
     return error(message);
   }
@@ -882,11 +948,14 @@ class _$AuthErrorImpl implements AuthError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
+    TResult? Function()? checkingToken,
     TResult? Function()? loading,
     TResult? Function(String phoneNumber)? otpSent,
-    TResult? Function(AuthToken token)? authenticated,
-    TResult? Function()? unauthenticated,
+    TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
   }) {
     return error?.call(message);
   }
@@ -895,11 +964,14 @@ class _$AuthErrorImpl implements AuthError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
+    TResult Function()? checkingToken,
     TResult Function()? loading,
     TResult Function(String phoneNumber)? otpSent,
-    TResult Function(AuthToken token)? authenticated,
-    TResult Function()? unauthenticated,
+    TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -912,11 +984,12 @@ class _$AuthErrorImpl implements AuthError {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
     required TResult Function(AuthLoading value) loading,
     required TResult Function(AuthOtpSent value) otpSent,
-    required TResult Function(AuthAuthenticated value) authenticated,
     required TResult Function(AuthUnauthenticated value) unauthenticated,
     required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
   }) {
     return error(this);
   }
@@ -925,11 +998,12 @@ class _$AuthErrorImpl implements AuthError {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
     TResult? Function(AuthLoading value)? loading,
     TResult? Function(AuthOtpSent value)? otpSent,
-    TResult? Function(AuthAuthenticated value)? authenticated,
     TResult? Function(AuthUnauthenticated value)? unauthenticated,
     TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
   }) {
     return error?.call(this);
   }
@@ -938,11 +1012,12 @@ class _$AuthErrorImpl implements AuthError {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
     TResult Function(AuthLoading value)? loading,
     TResult Function(AuthOtpSent value)? otpSent,
-    TResult Function(AuthAuthenticated value)? authenticated,
     TResult Function(AuthUnauthenticated value)? unauthenticated,
     TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -958,5 +1033,229 @@ abstract class AuthError implements AuthState {
   String get message;
   @JsonKey(ignore: true)
   _$$AuthErrorImplCopyWith<_$AuthErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AuthAuthenticatedImplCopyWith<$Res> {
+  factory _$$AuthAuthenticatedImplCopyWith(_$AuthAuthenticatedImpl value,
+          $Res Function(_$AuthAuthenticatedImpl) then) =
+      __$$AuthAuthenticatedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {AuthToken token, List<UserRole> availableRoles, UserRole activeRole});
+
+  $AuthTokenCopyWith<$Res> get token;
+  $UserRoleCopyWith<$Res> get activeRole;
+}
+
+/// @nodoc
+class __$$AuthAuthenticatedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$AuthAuthenticatedImpl>
+    implements _$$AuthAuthenticatedImplCopyWith<$Res> {
+  __$$AuthAuthenticatedImplCopyWithImpl(_$AuthAuthenticatedImpl _value,
+      $Res Function(_$AuthAuthenticatedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? token = null,
+    Object? availableRoles = null,
+    Object? activeRole = null,
+  }) {
+    return _then(_$AuthAuthenticatedImpl(
+      token: null == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as AuthToken,
+      availableRoles: null == availableRoles
+          ? _value._availableRoles
+          : availableRoles // ignore: cast_nullable_to_non_nullable
+              as List<UserRole>,
+      activeRole: null == activeRole
+          ? _value.activeRole
+          : activeRole // ignore: cast_nullable_to_non_nullable
+              as UserRole,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AuthTokenCopyWith<$Res> get token {
+    return $AuthTokenCopyWith<$Res>(_value.token, (value) {
+      return _then(_value.copyWith(token: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserRoleCopyWith<$Res> get activeRole {
+    return $UserRoleCopyWith<$Res>(_value.activeRole, (value) {
+      return _then(_value.copyWith(activeRole: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$AuthAuthenticatedImpl implements AuthAuthenticated {
+  const _$AuthAuthenticatedImpl(
+      {required this.token,
+      required final List<UserRole> availableRoles,
+      required this.activeRole})
+      : _availableRoles = availableRoles;
+
+  @override
+  final AuthToken token;
+  final List<UserRole> _availableRoles;
+  @override
+  List<UserRole> get availableRoles {
+    if (_availableRoles is EqualUnmodifiableListView) return _availableRoles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_availableRoles);
+  }
+
+  @override
+  final UserRole activeRole;
+
+  @override
+  String toString() {
+    return 'AuthState.authenticated(token: $token, availableRoles: $availableRoles, activeRole: $activeRole)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AuthAuthenticatedImpl &&
+            (identical(other.token, token) || other.token == token) &&
+            const DeepCollectionEquality()
+                .equals(other._availableRoles, _availableRoles) &&
+            (identical(other.activeRole, activeRole) ||
+                other.activeRole == activeRole));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, token,
+      const DeepCollectionEquality().hash(_availableRoles), activeRole);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
+      __$$AuthAuthenticatedImplCopyWithImpl<_$AuthAuthenticatedImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() checkingToken,
+    required TResult Function() loading,
+    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(bool sessionExpired) unauthenticated,
+    required TResult Function(String message) error,
+    required TResult Function(
+            AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
+        authenticated,
+  }) {
+    return authenticated(token, availableRoles, activeRole);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? checkingToken,
+    TResult? Function()? loading,
+    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(bool sessionExpired)? unauthenticated,
+    TResult? Function(String message)? error,
+    TResult? Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
+  }) {
+    return authenticated?.call(token, availableRoles, activeRole);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? checkingToken,
+    TResult Function()? loading,
+    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(bool sessionExpired)? unauthenticated,
+    TResult Function(String message)? error,
+    TResult Function(AuthToken token, List<UserRole> availableRoles,
+            UserRole activeRole)?
+        authenticated,
+    required TResult orElse(),
+  }) {
+    if (authenticated != null) {
+      return authenticated(token, availableRoles, activeRole);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AuthInitial value) initial,
+    required TResult Function(AuthCheckingToken value) checkingToken,
+    required TResult Function(AuthLoading value) loading,
+    required TResult Function(AuthOtpSent value) otpSent,
+    required TResult Function(AuthUnauthenticated value) unauthenticated,
+    required TResult Function(AuthError value) error,
+    required TResult Function(AuthAuthenticated value) authenticated,
+  }) {
+    return authenticated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AuthInitial value)? initial,
+    TResult? Function(AuthCheckingToken value)? checkingToken,
+    TResult? Function(AuthLoading value)? loading,
+    TResult? Function(AuthOtpSent value)? otpSent,
+    TResult? Function(AuthUnauthenticated value)? unauthenticated,
+    TResult? Function(AuthError value)? error,
+    TResult? Function(AuthAuthenticated value)? authenticated,
+  }) {
+    return authenticated?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthInitial value)? initial,
+    TResult Function(AuthCheckingToken value)? checkingToken,
+    TResult Function(AuthLoading value)? loading,
+    TResult Function(AuthOtpSent value)? otpSent,
+    TResult Function(AuthUnauthenticated value)? unauthenticated,
+    TResult Function(AuthError value)? error,
+    TResult Function(AuthAuthenticated value)? authenticated,
+    required TResult orElse(),
+  }) {
+    if (authenticated != null) {
+      return authenticated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AuthAuthenticated implements AuthState {
+  const factory AuthAuthenticated(
+      {required final AuthToken token,
+      required final List<UserRole> availableRoles,
+      required final UserRole activeRole}) = _$AuthAuthenticatedImpl;
+
+  AuthToken get token;
+  List<UserRole> get availableRoles;
+  UserRole get activeRole;
+  @JsonKey(ignore: true)
+  _$$AuthAuthenticatedImplCopyWith<_$AuthAuthenticatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

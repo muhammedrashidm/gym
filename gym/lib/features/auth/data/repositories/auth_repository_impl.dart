@@ -42,6 +42,18 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, Unit>> logout({required String refreshToken}) async {
+    try {
+      await _remoteDataSource.logout(refreshToken: refreshToken);
+      return const Right(unit);
+    } on DioException catch (e) {
+      return Left(_mapDioError(e));
+    } catch (e) {
+      return Left(Failure.unknown(message: e.toString()));
+    }
+  }
+
   Failure _mapDioError(DioException e) {
     return switch (e.type) {
       DioExceptionType.connectionError ||
@@ -52,10 +64,20 @@ class AuthRepositoryImpl implements AuthRepository {
           401 => const Failure.unauthorized(),
           int code => Failure.server(
               statusCode: code,
-              message: e.response?.data?['message'] as String? ?? 'Server error',
+              message: _parseErrorMessage(e.response?.data?['message']),
             ),
           null => Failure.unknown(message: e.message),
         },
     };
+  }
+
+  String _parseErrorMessage(dynamic messageData) {
+    if (messageData is List) {
+      return messageData.join(', ');
+    }
+    if (messageData is String) {
+      return messageData;
+    }
+    return 'Server error';
   }
 }

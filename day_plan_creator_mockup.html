@@ -1,0 +1,337 @@
+<h2 class="sr-only">Mockup of a trainer-facing day plan creator: seven fixed day tabs for a weekly plan, a rest day toggle, and an ordered list of tasks per day, each editable with sets, reps, machine details, and media attachments.</h2>
+
+<div style="margin-bottom:1.25rem;">
+  <div style="font-size:13px; color:var(--color-text-secondary); margin-bottom:8px;">Weekly plan &middot; 7 fixed days</div>
+  <div id="dayTabs" style="display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:6px;"></div>
+</div>
+
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span id="dayHeading" style="font-size:16px; font-weight:500;"></span>
+    <span id="restBadge" style="font-size:12px; padding:2px 8px; border-radius:var(--border-radius-md); display:none;"></span>
+  </div>
+  <label style="display:flex; align-items:center; gap:6px; font-size:13px; color:var(--color-text-secondary); cursor:pointer; user-select:none;">
+    <input type="checkbox" id="restToggle" style="width:16px; height:16px; margin:0;">
+    Mark as rest day
+  </label>
+</div>
+
+<div id="taskList" style="display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div>
+
+<button id="addTaskBtn" style="width:100%; font-size:13px;"><i class="ti ti-plus" style="font-size:15px; vertical-align:-2px; margin-right:4px;" aria-hidden="true"></i>Add task</button>
+
+<div id="emptyState" style="display:none; text-align:center; padding:2rem 1rem; color:var(--color-text-tertiary); font-size:13px;">
+  Rest day &middot; no tasks scheduled
+</div>
+
+<script>
+(function(){
+  var dayNames = ['Day 1','Day 2','Day 3','Day 4','Day 5','Day 6','Day 7'];
+
+  var seedTasks = function(){
+    return [
+      {
+        id: 't1', name: 'Barbell back squat', sets: 4, reps: '8-10',
+        machine: 'Squat rack, station 2 — set safety pins at hip height',
+        media: ['image','gif','video'], notes: 'Pause 1s at the bottom on last set', expanded: false
+      },
+      {
+        id: 't2', name: 'Leg press', sets: 3, reps: '12',
+        machine: 'Leg press machine, seat position 3',
+        media: ['image','video'], notes: '', expanded: false
+      },
+      {
+        id: 't3', name: 'Walking lunges', sets: 3, reps: '10 per leg',
+        machine: 'Open floor space, dumbbells optional',
+        media: ['gif'], notes: 'Keep torso upright through the movement', expanded: false
+      }
+    ];
+  };
+
+  var plan = {};
+  for (var i = 1; i <= 7; i++){
+    plan[i] = { isRest: (i === 7), tasks: (i === 1 ? seedTasks() : (i === 7 ? [] : [])) };
+  }
+
+  var state = { activeDay: 1 };
+
+  var dayTabs = document.getElementById('dayTabs');
+  var dayHeading = document.getElementById('dayHeading');
+  var restBadge = document.getElementById('restBadge');
+  var restToggle = document.getElementById('restToggle');
+  var taskList = document.getElementById('taskList');
+  var emptyState = document.getElementById('emptyState');
+  var addTaskBtn = document.getElementById('addTaskBtn');
+
+  var mediaIconFor = { image: 'ti-photo', gif: 'ti-gif', video: 'ti-video' };
+
+  function taskCountLabel(day){
+    var d = plan[day];
+    if (d.isRest) return 'Rest';
+    var n = d.tasks.length;
+    return n + (n === 1 ? ' task' : ' tasks');
+  }
+
+  function renderTabs(){
+    dayTabs.innerHTML = '';
+    for (var i = 1; i <= 7; i++){
+      var d = plan[i];
+      var isActive = (i === state.activeDay);
+      var tab = document.createElement('div');
+      tab.style.cursor = 'pointer';
+      tab.style.borderRadius = 'var(--border-radius-md)';
+      tab.style.padding = '8px 4px';
+      tab.style.textAlign = 'center';
+      tab.style.border = isActive ? '2px solid var(--color-border-info)' : '0.5px solid var(--color-border-tertiary)';
+      tab.style.background = d.isRest ? 'var(--color-background-secondary)' : 'var(--color-background-primary)';
+      tab.innerHTML =
+        '<div style="font-size:12px; font-weight:500;">' + dayNames[i-1] + '</div>' +
+        '<div style="font-size:11px; color:var(--color-text-secondary); margin-top:2px;">' + taskCountLabel(i) + '</div>';
+      tab.onclick = function(idx){ return function(){ state.activeDay = idx; render(); }; }(i);
+      dayTabs.appendChild(tab);
+    }
+  }
+
+  function renderHeader(){
+    var d = plan[state.activeDay];
+    dayHeading.textContent = dayNames[state.activeDay - 1];
+    restToggle.checked = d.isRest;
+    if (d.isRest){
+      restBadge.style.display = 'inline-block';
+      restBadge.style.background = 'var(--color-background-secondary)';
+      restBadge.style.color = 'var(--color-text-secondary)';
+      restBadge.textContent = 'rest day';
+    } else {
+      restBadge.style.display = 'none';
+    }
+  }
+
+  function renderTasks(){
+    var d = plan[state.activeDay];
+    taskList.innerHTML = '';
+
+    if (d.isRest){
+      emptyState.style.display = 'block';
+      addTaskBtn.style.display = 'none';
+      return;
+    }
+    emptyState.style.display = 'none';
+    addTaskBtn.style.display = 'block';
+
+    if (d.tasks.length === 0){
+      var empty = document.createElement('div');
+      empty.style.textAlign = 'center';
+      empty.style.padding = '1.5rem 1rem';
+      empty.style.color = 'var(--color-text-tertiary)';
+      empty.style.fontSize = '13px';
+      empty.textContent = 'No tasks yet — add the first one';
+      taskList.appendChild(empty);
+      return;
+    }
+
+    d.tasks.forEach(function(task, idx){
+      var card = document.createElement('div');
+      card.style.background = 'var(--color-background-primary)';
+      card.style.border = '0.5px solid var(--color-border-tertiary)';
+      card.style.borderRadius = 'var(--border-radius-lg)';
+      card.style.padding = '0.75rem 1rem';
+
+      var headerRow = document.createElement('div');
+      headerRow.style.display = 'flex';
+      headerRow.style.alignItems = 'center';
+      headerRow.style.gap = '10px';
+      headerRow.style.cursor = 'pointer';
+
+      var seq = document.createElement('div');
+      seq.className = 'c-teal';
+      seq.style.width = '24px';
+      seq.style.height = '24px';
+      seq.style.borderRadius = '50%';
+      seq.style.display = 'flex';
+      seq.style.alignItems = 'center';
+      seq.style.justifyContent = 'center';
+      seq.style.fontSize = '12px';
+      seq.style.fontWeight = '500';
+      seq.style.flexShrink = '0';
+      seq.textContent = idx + 1;
+
+      var dragHandle = document.createElement('i');
+      dragHandle.className = 'ti ti-grip-vertical';
+      dragHandle.setAttribute('aria-hidden', 'true');
+      dragHandle.style.fontSize = '16px';
+      dragHandle.style.color = 'var(--color-text-tertiary)';
+      dragHandle.style.flexShrink = '0';
+
+      var titleWrap = document.createElement('div');
+      titleWrap.style.flex = '1';
+      titleWrap.style.minWidth = '0';
+      var titleEl = document.createElement('div');
+      titleEl.style.fontSize = '14px';
+      titleEl.style.fontWeight = '500';
+      titleEl.textContent = task.name;
+      var subEl = document.createElement('div');
+      subEl.style.fontSize = '12px';
+      subEl.style.color = 'var(--color-text-secondary)';
+      subEl.textContent = task.sets + ' sets \u00d7 ' + task.reps;
+      titleWrap.appendChild(titleEl);
+      titleWrap.appendChild(subEl);
+
+      var mediaIcons = document.createElement('div');
+      mediaIcons.style.display = 'flex';
+      mediaIcons.style.gap = '4px';
+      mediaIcons.style.flexShrink = '0';
+      task.media.forEach(function(m){
+        var icon = document.createElement('i');
+        icon.className = 'ti ' + mediaIconFor[m];
+        icon.setAttribute('aria-hidden', 'true');
+        icon.style.fontSize = '15px';
+        icon.style.color = 'var(--color-text-tertiary)';
+        mediaIcons.appendChild(icon);
+      });
+
+      var chevron = document.createElement('i');
+      chevron.className = 'ti ti-chevron-down';
+      chevron.setAttribute('aria-hidden', 'true');
+      chevron.style.fontSize = '16px';
+      chevron.style.color = 'var(--color-text-tertiary)';
+      chevron.style.flexShrink = '0';
+      chevron.style.transition = 'transform 0.15s';
+      chevron.style.transform = task.expanded ? 'rotate(180deg)' : 'rotate(0deg)';
+
+      headerRow.appendChild(seq);
+      headerRow.appendChild(dragHandle);
+      headerRow.appendChild(titleWrap);
+      headerRow.appendChild(mediaIcons);
+      headerRow.appendChild(chevron);
+
+      headerRow.onclick = function(){
+        task.expanded = !task.expanded;
+        renderTasks();
+      };
+
+      card.appendChild(headerRow);
+
+      if (task.expanded){
+        var detail = document.createElement('div');
+        detail.style.marginTop = '12px';
+        detail.style.paddingTop = '12px';
+        detail.style.borderTop = '0.5px solid var(--color-border-tertiary)';
+        detail.style.display = 'flex';
+        detail.style.flexDirection = 'column';
+        detail.style.gap = '10px';
+
+        function fieldRow(labelText, valueText, iconName){
+          var row = document.createElement('div');
+          row.style.display = 'flex';
+          row.style.gap = '8px';
+          row.style.fontSize = '13px';
+          var lab = document.createElement('div');
+          lab.style.color = 'var(--color-text-secondary)';
+          lab.style.minWidth = '90px';
+          lab.style.flexShrink = '0';
+          lab.innerHTML = (iconName ? '<i class="ti ' + iconName + '" style="font-size:14px; vertical-align:-2px; margin-right:5px;" aria-hidden="true"></i>' : '') + labelText;
+          var val = document.createElement('div');
+          val.style.color = 'var(--color-text-primary)';
+          val.textContent = valueText;
+          row.appendChild(lab);
+          row.appendChild(val);
+          return row;
+        }
+
+        detail.appendChild(fieldRow('Sets \u00d7 reps', task.sets + ' \u00d7 ' + task.reps, 'ti-repeat'));
+        detail.appendChild(fieldRow('Machine / setup', task.machine, 'ti-settings'));
+        if (task.notes){
+          detail.appendChild(fieldRow('Notes', task.notes, 'ti-notes'));
+        }
+
+        var mediaRow = document.createElement('div');
+        mediaRow.style.display = 'flex';
+        mediaRow.style.gap = '8px';
+        mediaRow.style.marginTop = '2px';
+        task.media.forEach(function(m){
+          var chip = document.createElement('div');
+          chip.style.display = 'flex';
+          chip.style.alignItems = 'center';
+          chip.style.gap = '5px';
+          chip.style.fontSize = '12px';
+          chip.style.padding = '5px 10px';
+          chip.style.borderRadius = 'var(--border-radius-md)';
+          chip.style.background = 'var(--color-background-secondary)';
+          chip.innerHTML = '<i class="ti ' + mediaIconFor[m] + '" style="font-size:14px;" aria-hidden="true"></i>' + m;
+          mediaRow.appendChild(chip);
+        });
+        var addMediaChip = document.createElement('div');
+        addMediaChip.style.display = 'flex';
+        addMediaChip.style.alignItems = 'center';
+        addMediaChip.style.gap = '5px';
+        addMediaChip.style.fontSize = '12px';
+        addMediaChip.style.padding = '5px 10px';
+        addMediaChip.style.borderRadius = 'var(--border-radius-md)';
+        addMediaChip.style.border = '0.5px dashed var(--color-border-secondary)';
+        addMediaChip.style.color = 'var(--color-text-secondary)';
+        addMediaChip.style.cursor = 'pointer';
+        addMediaChip.innerHTML = '<i class="ti ti-plus" style="font-size:14px;" aria-hidden="true"></i>add media';
+        mediaRow.appendChild(addMediaChip);
+
+        detail.appendChild(mediaRow);
+
+        var actionRow = document.createElement('div');
+        actionRow.style.display = 'flex';
+        actionRow.style.gap = '8px';
+        actionRow.style.marginTop = '4px';
+        var editBtn = document.createElement('button');
+        editBtn.style.fontSize = '12px';
+        editBtn.style.flex = '1';
+        editBtn.innerHTML = '<i class="ti ti-edit" style="font-size:13px; vertical-align:-2px; margin-right:4px;" aria-hidden="true"></i>Edit task';
+        var removeBtn = document.createElement('button');
+        removeBtn.style.fontSize = '12px';
+        removeBtn.style.flex = '1';
+        removeBtn.style.color = 'var(--color-text-danger)';
+        removeBtn.innerHTML = '<i class="ti ti-trash" style="font-size:13px; vertical-align:-2px; margin-right:4px;" aria-hidden="true"></i>Remove';
+        removeBtn.onclick = function(taskId){ return function(e){
+          e.stopPropagation();
+          var d2 = plan[state.activeDay];
+          d2.tasks = d2.tasks.filter(function(t){ return t.id !== taskId; });
+          render();
+        }; }(task.id);
+
+        actionRow.appendChild(editBtn);
+        actionRow.appendChild(removeBtn);
+        detail.appendChild(actionRow);
+
+        card.appendChild(detail);
+      }
+
+      taskList.appendChild(card);
+    });
+  }
+
+  restToggle.onchange = function(){
+    plan[state.activeDay].isRest = restToggle.checked;
+    render();
+  };
+
+  addTaskBtn.onclick = function(){
+    var d = plan[state.activeDay];
+    var n = d.tasks.length + 1;
+    d.tasks.push({
+      id: 't' + Date.now(),
+      name: 'New task',
+      sets: 3, reps: '10',
+      machine: 'Add setup notes',
+      media: [],
+      notes: '',
+      expanded: true
+    });
+    render();
+  };
+
+  function render(){
+    renderTabs();
+    renderHeader();
+    renderTasks();
+  }
+
+  render();
+})();
+</script>

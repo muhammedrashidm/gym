@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:gym/features/profile/presentation/cubit/profile_cubit.dart';
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'globals.dart';
@@ -32,13 +35,26 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     final router = getIt<AppRouter>().router;
 
-    return MaterialApp.router(
-      title: 'Kinetic',
-      routerConfig: router,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeManager.themeMode,
-      debugShowCheckedModeBanner: false,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) {
+            return getIt<AuthCubit>();
+          },
+        ),BlocProvider(
+          create: (BuildContext context) {
+            return getIt<ProfileCubit>();
+          },
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'Kinetic',
+        routerConfig: router,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeManager.themeMode,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

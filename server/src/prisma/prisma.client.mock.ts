@@ -23,6 +23,18 @@ export enum MembershipStatus {
   ACTIVE_KINETIC = 'ACTIVE_KINETIC',
 }
 
+export enum WeeklyPlanStatus {
+  ACTIVE = 'ACTIVE',
+  UPCOMING = 'UPCOMING',
+  ARCHIVED = 'ARCHIVED',
+}
+
+export enum TaskMediaType {
+  IMAGE = 'IMAGE',
+  GIF = 'GIF',
+  VIDEO = 'VIDEO',
+}
+
 export class PrismaClient {
   constructor() {}
   async $connect() {}

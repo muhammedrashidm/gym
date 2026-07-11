@@ -1,0 +1,10 @@
+model DietPlan {
+  id                String   @id @default(uuid())
+  title             String
+  mealPlan          Json
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  profileId         String
+  profile           Profile  @relation(fields: [profileId], references: [id])
+  assignedByStaffId String?
+}

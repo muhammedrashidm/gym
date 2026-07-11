@@ -1,0 +1,172 @@
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ExpLevel {
+  BEGINNER
+  INTERMEDIATE
+  PRO
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+}
+
+model User {
+  id          String   @id @default(uuid())
+  phoneNumber String   @unique
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  profile                Profile?
+  staffProfile           StaffProfile?
+  userRoles              UserRole[]
+  refreshTokens          RefreshToken[]
+  otpRequests            OtpRequest[]
+  gyms                   Gym[]
+  invites                Invite[]
+  staffAttendances       StaffAttendance[]
+  gymSessionRates        GymSessionRate[]
+  payoutBatches          PayoutBatch[]
+  ownerBankAccounts      OwnerBankAccount[]
+  clientWorkoutProfiles  WorkoutProfile[]   @relation("ClientWorkoutProfiles")
+  trainerWorkoutProfiles WorkoutProfile[]   @relation("TrainerWorkoutProfiles")
+}
+
+model OtpRequest {
+  id          String   @id @default(uuid())
+  phoneNumber String
+  code        String
+  expiresAt   DateTime
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  isRevoked Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Profile {
+  id               String            @id @default(uuid())
+  phoneNumber      String            @unique
+  fullName         String
+  age              Int?
+  sex              Sex?
+  expLevel         ExpLevel?
+  isKinetic        Boolean           @default(false)
+  isClaimed        Boolean           @default(false)
+  createdById      String?
+  createdAtGymId   String?
+  avatarUrl        String?
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  qrToken          String?           @unique
+  qrTokenExpiry    DateTime?
+  userId           String?           @unique
+  user             User?             @relation(fields: [userId], references: [id])
+  memberships      Membership[]
+  gymSubscriptions GymSubscription[]
+  checkIns         CheckIn[]
+  bodyMetrics      BodyMetrics[]
+  dietPlans        DietPlan[]
+  transactions     Transaction[]
+  sessionPayouts   SessionPayout[]
+
+  staffProfile          StaffProfile?
+  clientConnections     StaffClientConnection[] @relation("ClientConnections")
+  clientWorkoutProfiles WorkoutProfile[]        @relation("ClientWorkoutProfiles")
+}
+
+model StaffProfile {
+  id              String   @id @default(uuid())
+  profileId       String   @unique
+  userId          String   @unique
+  bio             String?
+  experience      Int      @default(0)
+  specializations String[]
+  certificates    String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  profile         Profile                 @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  user            User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  connections     StaffClientConnection[] @relation("StaffConnections")
+  workoutProfiles WorkoutProfile[]        @relation("TrainerWorkoutProfiles")
+}
+
+model StaffClientConnection {
+  id              String   @id @default(uuid())
+  staffProfileId  String
+  clientProfileId String
+  createdAt       DateTime @default(now())
+  isActive        Boolean  @default(true)
+
+  staffProfile  StaffProfile @relation("StaffConnections", fields: [staffProfileId], references: [id], onDelete: Cascade)
+  clientProfile Profile      @relation("ClientConnections", fields: [clientProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([staffProfileId, clientProfileId])
+}
+
+model Role {
+  id          Int        @id
+  name        String     @unique
+  description String?
+  isActive    Boolean    @default(true)
+  isSystem    Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  userRoles   UserRole[]
+  invites     Invite[]
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  assignedAt DateTime @default(now())
+  assignedBy String?
+  gymId      String?
+  gym        Gym?     @relation(fields: [gymId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId     Int
+  role       Role     @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, roleId, gymId])
+}
+
+model Invite {
+  id              String       @id @default(uuid())
+  phoneNumber     String
+  token           String       @unique
+  status          InviteStatus @default(PENDING)
+  expiresAt       DateTime
+  createdAt       DateTime     @default(now())
+  invitedByUserId String
+  invitedBy       User         @relation(fields: [invitedByUserId], references: [id])
+  roleId          Int
+  role            Role         @relation(fields: [roleId], references: [id])
+  gymId           String?
+  gym             Gym?         @relation(fields: [gymId], references: [id])
+}
+
+model BodyMetrics {
+  id         String   @id @default(uuid())
+  weight     Float
+  height     Float
+  muscleMass Float?
+  bodyFatPct Float?
+  recordedAt DateTime @default(now())
+  profileId  String
+  profile    Profile  @relation(fields: [profileId], references: [id])
+}

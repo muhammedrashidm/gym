@@ -2,15 +2,22 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/auth_token_model.dart';
 
-@singleton
-class AuthRemoteDataSource {
+abstract interface class AuthRemoteDataSource {
+  Future<void> sendOtp({required String phoneNumber});
+  Future<AuthTokenModel> verifyOtp({
+    required String phoneNumber,
+    required String otp,
+  });
+  Future<void> logout({required String refreshToken});
+}
+
+@Singleton(as: AuthRemoteDataSource)
+class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiClient _apiClient;
 
-  const AuthRemoteDataSource(this._apiClient);
+  const AuthRemoteDataSourceImpl(this._apiClient);
 
-  /// POST /auth/request-otp
-  /// Body: { "phoneNumber": "+1234567890" }
-  /// Response: { "success": true }
+  @override
   Future<void> sendOtp({required String phoneNumber}) async {
     await _apiClient.post<Map<String, dynamic>>(
       '/auth/request-otp',
@@ -18,9 +25,7 @@ class AuthRemoteDataSource {
     );
   }
 
-  /// POST /auth/verify-otp
-  /// Body: { "phoneNumber": "+1234567890", "code": "1234" }
-  /// Response: { "accessToken": "...", "refreshToken": "...", "user": {...} }
+  @override
   Future<AuthTokenModel> verifyOtp({
     required String phoneNumber,
     required String otp,
@@ -32,9 +37,7 @@ class AuthRemoteDataSource {
     return AuthTokenModel.fromJson(response.data as Map<String, dynamic>);
   }
 
-  /// POST /auth/logout
-  /// Header: Authorization: Bearer {accessToken}
-  /// Body: { "refreshToken": "uuid" }
+  @override
   Future<void> logout({required String refreshToken}) async {
     await _apiClient.post<Map<String, dynamic>>(
       '/auth/logout',

@@ -4,11 +4,15 @@ import { AuthUserModel } from './auth-user.model';
 import { ProfileModel } from '../../users/models/profile.model';
 
 export class VerifyOtpResponseModel extends TokenPairModel {
-  @ApiProperty({ description: 'Authenticated user summary', type: AuthUserModel })
+  @ApiProperty({
+    description: 'Authenticated user summary',
+    type: AuthUserModel,
+  })
   user: AuthUserModel;
 
   @ApiProperty({
-    description: 'Profile that was auto-claimed for this phone number (if one existed), or null',
+    description:
+      'Profile that was auto-claimed for this phone number (if one existed), or null',
     type: ProfileModel,
     nullable: true,
   })

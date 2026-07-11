@@ -9,7 +9,10 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../prisma/prisma.service';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { SYSTEM_ROLES } from '../constants/roles';
-import type { AuthUser, UserRoleClaim } from '../interfaces/auth-user.interface';
+import type {
+  AuthUser,
+  UserRoleClaim,
+} from '../interfaces/auth-user.interface';
 import type { RequestContext } from '../../common/types/request-context.type';
 
 interface JwtPayload {
@@ -94,7 +97,13 @@ export class JwtAuthGuard implements CanActivate {
       select: { id: true },
     });
 
-    const gymId = this.getHeader(request, 'x-gym-id') ??
+    const staffProfile = await this.prisma.staffProfile.findUnique({
+      where: { userId: user.id },
+      select: { id: true },
+    });
+
+    const gymId =
+      this.getHeader(request, 'x-gym-id') ??
       this.getHeader(request, 'x-gym-context') ??
       user.roles.find((role) => role.gymId)?.gymId;
 
@@ -113,8 +122,11 @@ export class JwtAuthGuard implements CanActivate {
           isStaff: user.roles.some(
             (role) =>
               role.gymId === gym.id &&
-              [SYSTEM_ROLES.STAFF, SYSTEM_ROLES.MANAGER, SYSTEM_ROLES.TRAINER]
-                .includes(role.roleName as any),
+              [
+                SYSTEM_ROLES.STAFF,
+                SYSTEM_ROLES.MANAGER,
+                SYSTEM_ROLES.TRAINER,
+              ].includes(role.roleName as any),
           ),
         };
       }
@@ -129,14 +141,18 @@ export class JwtAuthGuard implements CanActivate {
       roles: roleNames,
       roleAssignments: user.roles,
       profileId: profile?.id,
+      staffProfileId: staffProfile?.id,
       gymContext,
       isSuperAdmin,
       isAdminStaff,
       isAdmin: isSuperAdmin || isAdminStaff,
       isOwner: roleNames.includes(SYSTEM_ROLES.OWNER),
       isStaff: roleNames.some((role) =>
-        [SYSTEM_ROLES.STAFF, SYSTEM_ROLES.MANAGER, SYSTEM_ROLES.TRAINER]
-          .includes(role as any),
+        [
+          SYSTEM_ROLES.STAFF,
+          SYSTEM_ROLES.MANAGER,
+          SYSTEM_ROLES.TRAINER,
+        ].includes(role as any),
       ),
       isMember: roleNames.some((role) =>
         [SYSTEM_ROLES.MEMBER, SYSTEM_ROLES.SUBSCRIBER].includes(role as any),

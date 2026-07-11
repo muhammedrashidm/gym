@@ -10,10 +10,18 @@ export class BodyMetricsModel {
   @ApiProperty({ description: 'Height in centimetres' })
   height: number;
 
-  @ApiProperty({ description: 'Muscle mass percentage', nullable: true, type: Number })
+  @ApiProperty({
+    description: 'Muscle mass percentage',
+    nullable: true,
+    type: Number,
+  })
   muscleMass: number | null;
 
-  @ApiProperty({ description: 'Body fat percentage', nullable: true, type: Number })
+  @ApiProperty({
+    description: 'Body fat percentage',
+    nullable: true,
+    type: Number,
+  })
   bodyFatPct: number | null;
 
   @ApiProperty({ description: 'When this entry was recorded' })

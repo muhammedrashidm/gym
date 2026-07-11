@@ -45,7 +45,10 @@ export class ResourceAccessGuard implements CanActivate {
     return false;
   }
 
-  private getResourceId(request: any, resource: ResourceType): string | undefined {
+  private getResourceId(
+    request: any,
+    resource: ResourceType,
+  ): string | undefined {
     if (resource === 'gym') {
       return request.params?.id ?? request.params?.gymId;
     }
@@ -67,8 +70,11 @@ export class ResourceAccessGuard implements CanActivate {
     const hasScopedStaffRole = ctx.roleAssignments.some(
       (role) =>
         role.gymId === gym.id &&
-        [SYSTEM_ROLES.STAFF, SYSTEM_ROLES.MANAGER, SYSTEM_ROLES.TRAINER]
-          .includes(role.roleName as any),
+        [
+          SYSTEM_ROLES.STAFF,
+          SYSTEM_ROLES.MANAGER,
+          SYSTEM_ROLES.TRAINER,
+        ].includes(role.roleName as any),
     );
     if (ctx.isStaff && hasScopedStaffRole) return true;
 

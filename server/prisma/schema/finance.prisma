@@ -1,0 +1,155 @@
+enum PlanType {
+  MONTHLY
+  ANNUAL
+  CLASS
+  PUNCH_CARD
+}
+
+enum MembershipStatus {
+  PAID
+  UNPAID
+  ACTIVE_KINETIC
+}
+
+enum SubStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+  PENDING_MANDATE
+}
+
+model Membership {
+  id               String           @id @default(uuid())
+  planType         PlanType
+  status           MembershipStatus
+  autoDebit        Boolean          @default(false)
+  expiryDate       DateTime?
+  createdAt        DateTime         @default(now())
+  gymId            String?
+  platformPlanId   String
+  paymentMandateId String?
+  profileId        String
+  profile          Profile          @relation(fields: [profileId], references: [id])
+  platformPlan     PlatformPlan     @relation(fields: [platformPlanId], references: [id])
+  gym              Gym?             @relation(fields: [gymId], references: [id])
+  transactions     Transaction[]
+}
+
+model PlatformPlan {
+  id           String       @id @default(uuid())
+  name         String
+  tier         Int
+  price        Float
+  billingCycle String
+  isActive     Boolean      @default(true)
+  features     Json
+  createdAt    DateTime     @default(now())
+  memberships  Membership[]
+}
+
+model GymPlan {
+  id               String            @id @default(uuid())
+  name             String
+  planType         PlanType
+  price            Float
+  durationDays     Int?
+  sessionCount     Int?
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  gymId            String
+  gym              Gym               @relation(fields: [gymId], references: [id])
+  gymSubscriptions GymSubscription[]
+}
+
+model GymSubscription {
+  id             String        @id @default(uuid())
+  status         SubStatus     @default(PENDING_MANDATE)
+  autoDebit      Boolean       @default(false)
+  mandateRef     String?
+  startDate      DateTime
+  expiryDate     DateTime?
+  addedByStaffId String?
+  createdAt      DateTime      @default(now())
+  profileId      String
+  profile        Profile       @relation(fields: [profileId], references: [id])
+  gymPlanId      String
+  gymPlan        GymPlan       @relation(fields: [gymPlanId], references: [id])
+  gymId          String
+  gym            Gym           @relation(fields: [gymId], references: [id])
+  transactions   Transaction[]
+}
+
+model Transaction {
+  id                String           @id @default(uuid())
+  amount            Float
+  platformFee       Float
+  gymAmount         Float
+  status            String
+  gateway           String
+  gatewayRef        String?
+  createdAt         DateTime         @default(now())
+  profileId         String
+  profile           Profile          @relation(fields: [profileId], references: [id])
+  gymSubscriptionId String?
+  gymSubscription   GymSubscription? @relation(fields: [gymSubscriptionId], references: [id])
+  membershipId      String?
+  membership        Membership?      @relation(fields: [membershipId], references: [id])
+}
+
+model GymSessionRate {
+  id             String   @id @default(uuid())
+  ratePerSession Float
+  effectiveFrom  DateTime
+  isActive       Boolean  @default(true)
+  gymId          String
+  gym            Gym      @relation(fields: [gymId], references: [id])
+  setByAdminId   String
+  setByAdmin     User     @relation(fields: [setByAdminId], references: [id])
+  createdAt      DateTime @default(now())
+}
+
+model SessionPayout {
+  id            String       @id @default(uuid())
+  amount        Float
+  status        String
+  createdAt     DateTime     @default(now())
+  checkInId     String       @unique
+  checkIn       CheckIn      @relation(fields: [checkInId], references: [id])
+  gymId         String
+  gym           Gym          @relation(fields: [gymId], references: [id])
+  profileId     String
+  profile       Profile      @relation(fields: [profileId], references: [id])
+  payoutBatchId String?
+  payoutBatch   PayoutBatch? @relation(fields: [payoutBatchId], references: [id])
+}
+
+model PayoutBatch {
+  id                 String          @id @default(uuid())
+  totalAmount        Float
+  sessionPayoutTotal Float
+  gymPlanTotal       Float
+  status             String
+  razorpayPayoutRef  String?
+  periodStart        DateTime
+  periodEnd          DateTime
+  createdAt          DateTime        @default(now())
+  gymId              String
+  gym                Gym             @relation(fields: [gymId], references: [id])
+  ownerId            String
+  owner              User            @relation(fields: [ownerId], references: [id])
+  sessionPayouts     SessionPayout[]
+}
+
+model OwnerBankAccount {
+  id                    String   @id @default(uuid())
+  accountHolderName     String
+  accountNumber         String
+  ifscCode              String
+  razorpayFundAccountId String?
+  isVerified            Boolean  @default(false)
+  isPrimary             Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id])
+}

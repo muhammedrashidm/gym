@@ -19,7 +19,7 @@ export class AuthService implements IAuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private config: ConfigService,
-  ) { }
+  ) {}
 
   async requestOtp(phoneNumber: string): Promise<OtpRequestedModel> {
     const isDev = this.config.get('NODE_ENV') === 'development';
@@ -47,7 +47,11 @@ export class AuthService implements IAuthService {
     return result;
   }
 
-  async verifyOtp(phoneNumber: string, code: string): Promise<VerifyOtpResponseModel> {
+  async verifyOtp(
+    phoneNumber: string,
+    code: string,
+    isMobile?: boolean,
+  ): Promise<VerifyOtpResponseModel> {
     const otpRequest = await this.prisma.otpRequest.findFirst({
       where: {
         phoneNumber,
@@ -73,6 +77,8 @@ export class AuthService implements IAuthService {
       data: { verified: true },
     });
 
+    console.log(`[Verify OTP] Phone: ${phoneNumber}, isMobile: ${isMobile}`);
+
     let user = await this.prisma.user.findUnique({
       where: { phoneNumber },
     });
@@ -87,7 +93,9 @@ export class AuthService implements IAuthService {
       where: { phoneNumber, isClaimed: false },
     });
 
-    let claimedPrismaProfile: (typeof unclaimedProfile & { bodyMetrics: any[] }) | null = null;
+    let claimedPrismaProfile:
+      | (typeof unclaimedProfile & { bodyMetrics: any[] })
+      | null = null;
     if (unclaimedProfile) {
       const updated = await this.prisma.profile.update({
         where: { id: unclaimedProfile.id },
@@ -121,6 +129,43 @@ export class AuthService implements IAuthService {
             },
           });
         }
+      }
+    }
+
+    if (isMobile) {
+      const memberRole = await this.prisma.role.findUnique({
+        where: { name: 'member' },
+      });
+
+      if (memberRole) {
+        const existingGlobalRole = await this.prisma.userRole.findFirst({
+          where: {
+            userId: user.id,
+            roleId: memberRole.id,
+            gymId: null,
+          },
+        });
+
+        if (!existingGlobalRole) {
+          await this.prisma.userRole.create({
+            data: {
+              userId: user.id,
+              roleId: memberRole.id,
+              gymId: null,
+            },
+          });
+          console.log(
+            `[Verify OTP] Assigned default global member role to user ${user.id}`,
+          );
+        } else {
+          console.log(
+            `[Verify OTP] User ${user.id} already has a global member role`,
+          );
+        }
+      } else {
+        console.error(
+          `[Verify OTP] "member" role not found in database! Make sure roles are seeded.`,
+        );
       }
     }
 
@@ -279,7 +324,7 @@ export class AuthService implements IAuthService {
     });
 
     const userRoles = await this.prisma.userRole.findMany({
-      where: { userId: userId!, role: { isActive: true } },
+      where: { userId: userId, role: { isActive: true } },
       include: { role: true },
     });
 
@@ -306,5 +351,61 @@ export class AuthService implements IAuthService {
     }
 
     return { success: true };
+  }
+
+  async generateTokenPairForUser(userId: string): Promise<TokenPairModel> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException('User not found or inactive');
+    }
+
+    const userRoles = await this.prisma.userRole.findMany({
+      where: { userId: user.id },
+      include: { role: true },
+    });
+
+    const roles: UserRoleModel[] = userRoles.map((ur) => {
+      const r = new UserRoleModel();
+      r.roleId = ur.role.id;
+      r.roleName = ur.role.name;
+      r.gymId = ur.gymId ?? null;
+      return r;
+    });
+
+    const payload = {
+      sub: user.id,
+      phone: user.phoneNumber,
+      roles,
+    };
+
+    const accessToken = this.jwtService.sign(payload);
+
+    const newRawRefreshToken = crypto.randomUUID();
+    const newTokenHash = crypto
+      .createHash('sha256')
+      .update(newRawRefreshToken)
+      .digest('hex');
+
+    const refreshExpiresDays =
+      this.config.get<number>('REFRESH_TOKEN_EXPIRES_DAYS') || 30;
+    const expiresAt = new Date(
+      Date.now() + refreshExpiresDays * 24 * 60 * 60 * 1000,
+    );
+
+    await this.prisma.refreshToken.create({
+      data: {
+        token: newTokenHash,
+        userId: user.id,
+        expiresAt,
+      },
+    });
+
+    const result = new TokenPairModel();
+    result.accessToken = accessToken;
+    result.refreshToken = newRawRefreshToken;
+    return result;
   }
 }

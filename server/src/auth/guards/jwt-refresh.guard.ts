@@ -2,25 +2,25 @@ import {
   Injectable,
   ExecutionContext,
   UnauthorizedException,
+  CanActivate,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 
 // Used ONLY on POST /auth/refresh.
-// Delegates to JwtRefreshStrategy which extracts the raw Bearer UUID.
+// Manually extracts the raw Bearer UUID and assigns to request.user.
 // AuthService.refresh() performs the actual DB validation (isRevoked, expiry).
 @Injectable()
-export class JwtRefreshGuard extends AuthGuard('jwt-refresh') {
-  canActivate(context: ExecutionContext) {
-    return super.canActivate(context);
-  }
-
-  handleRequest(err: any, user: any) {
-    if (err || !user) {
-      throw (
-        err ?? new UnauthorizedException('Invalid or missing refresh token')
-      );
+export class JwtRefreshGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    const authHeader = request.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new UnauthorizedException('Refresh token missing');
     }
-    // user = { refreshToken: string } as returned by JwtRefreshStrategy.validate()
-    return user;
+    const refreshToken = authHeader.substring(7).trim();
+    if (!refreshToken) {
+      throw new UnauthorizedException('Refresh token missing');
+    }
+    request.user = { refreshToken };
+    return true;
   }
 }
