@@ -13,7 +13,7 @@ WeeklyPlanModel _$WeeklyPlanModelFromJson(Map<String, dynamic> json) =>
       workoutProfileId: json['workoutProfileId'] as String?,
       status: json['status'] as String,
       notes: json['notes'] as String?,
-      dayPlans: (json['dayPlans'] as List<dynamic>?)
+      dayPlans: (json['days'] as List<dynamic>?)
               ?.map((e) => DayPlanModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
@@ -26,5 +26,5 @@ Map<String, dynamic> _$WeeklyPlanModelToJson(WeeklyPlanModel instance) =>
       'workoutProfileId': instance.workoutProfileId,
       'status': instance.status,
       'notes': instance.notes,
-      'dayPlans': instance.dayPlans,
+      'days': instance.dayPlans,
     };

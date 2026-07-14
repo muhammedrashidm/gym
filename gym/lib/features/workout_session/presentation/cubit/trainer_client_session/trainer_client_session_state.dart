@@ -16,6 +16,7 @@ class TrainerClientSessionState with _$TrainerClientSessionState {
     required DayPlan dayPlan,
     required SessionDraft draft,
     required String clientName,
+    @Default(<int, SessionStatus>{}) Map<int, SessionStatus> weekDayStatus,
   }) = TrainerSessionLoaded;
   const factory TrainerClientSessionState.noPlan({
     required String clientName,
@@ -25,6 +26,7 @@ class TrainerClientSessionState with _$TrainerClientSessionState {
     required DayPlan dayPlan,
     required SessionDraft draft,
     required String clientName,
+    @Default(<int, SessionStatus>{}) Map<int, SessionStatus> weekDayStatus,
   }) = TrainerSessionSubmitting;
   const factory TrainerClientSessionState.submitted({
     required WorkoutSessionLog sessionLog,
@@ -35,5 +37,6 @@ class TrainerClientSessionState with _$TrainerClientSessionState {
     WorkoutProfile? profile,
     DayPlan? dayPlan,
     SessionDraft? draft,
+    @Default(<int, SessionStatus>{}) Map<int, SessionStatus> weekDayStatus,
   }) = TrainerSessionError;
 }

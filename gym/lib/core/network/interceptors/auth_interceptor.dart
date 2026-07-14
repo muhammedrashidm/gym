@@ -51,9 +51,9 @@ class AuthInterceptor extends Interceptor {
 
       switch (result) {
         case RefreshSuccess(:final token):
-          handler.resolve(await _retry(err.requestOptions, token.accessToken));
+          await _resolveWithRetry(handler, err.requestOptions, token.accessToken);
           for (final (options, pendingHandler) in _pendingRequests) {
-            pendingHandler.resolve(await _retry(options, token.accessToken));
+            await _resolveWithRetry(pendingHandler, options, token.accessToken);
           }
         case RefreshRejected():
           // Server explicitly rejected the refresh token — this is the one
@@ -70,6 +70,25 @@ class AuthInterceptor extends Interceptor {
     } finally {
       _isRefreshing = false;
       _pendingRequests.clear();
+    }
+  }
+
+  // Resolves [handler] with the retried response, or rejects it if the
+  // retry itself fails — without this, a failing retry would leave the
+  // handler (and its caller's request Future) pending forever.
+  Future<void> _resolveWithRetry(
+    ErrorInterceptorHandler handler,
+    RequestOptions options,
+    String token,
+  ) async {
+    try {
+      handler.resolve(await _retry(options, token));
+    } on DioException catch (e) {
+      handler.reject(e);
+    } catch (e, stackTrace) {
+      handler.reject(
+        DioException(requestOptions: options, error: e, stackTrace: stackTrace),
+      );
     }
   }
 

@@ -20,16 +20,29 @@ mixin _$TrainerClientSessionState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,16 +50,29 @@ mixin _$TrainerClientSessionState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,16 +80,29 @@ mixin _$TrainerClientSessionState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) =>
@@ -166,16 +205,29 @@ class _$TrainerSessionInitialImpl implements TrainerSessionInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) {
     return initial();
@@ -186,16 +238,29 @@ class _$TrainerSessionInitialImpl implements TrainerSessionInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) {
     return initial?.call();
@@ -206,16 +271,29 @@ class _$TrainerSessionInitialImpl implements TrainerSessionInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) {
@@ -319,16 +397,29 @@ class _$TrainerSessionLoadingImpl implements TrainerSessionLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) {
     return loading();
@@ -339,16 +430,29 @@ class _$TrainerSessionLoadingImpl implements TrainerSessionLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) {
     return loading?.call();
@@ -359,16 +463,29 @@ class _$TrainerSessionLoadingImpl implements TrainerSessionLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) {
@@ -439,7 +556,8 @@ abstract class _$$TrainerSessionLoadedImplCopyWith<$Res> {
       {WorkoutProfile profile,
       DayPlan dayPlan,
       SessionDraft draft,
-      String clientName});
+      String clientName,
+      Map<int, SessionStatus> weekDayStatus});
 
   $WorkoutProfileCopyWith<$Res> get profile;
   $DayPlanCopyWith<$Res> get dayPlan;
@@ -462,6 +580,7 @@ class __$$TrainerSessionLoadedImplCopyWithImpl<$Res>
     Object? dayPlan = null,
     Object? draft = null,
     Object? clientName = null,
+    Object? weekDayStatus = null,
   }) {
     return _then(_$TrainerSessionLoadedImpl(
       profile: null == profile
@@ -480,6 +599,10 @@ class __$$TrainerSessionLoadedImplCopyWithImpl<$Res>
           ? _value.clientName
           : clientName // ignore: cast_nullable_to_non_nullable
               as String,
+      weekDayStatus: null == weekDayStatus
+          ? _value._weekDayStatus
+          : weekDayStatus // ignore: cast_nullable_to_non_nullable
+              as Map<int, SessionStatus>,
     ));
   }
 
@@ -515,7 +638,10 @@ class _$TrainerSessionLoadedImpl implements TrainerSessionLoaded {
       {required this.profile,
       required this.dayPlan,
       required this.draft,
-      required this.clientName});
+      required this.clientName,
+      final Map<int, SessionStatus> weekDayStatus =
+          const <int, SessionStatus>{}})
+      : _weekDayStatus = weekDayStatus;
 
   @override
   final WorkoutProfile profile;
@@ -525,10 +651,18 @@ class _$TrainerSessionLoadedImpl implements TrainerSessionLoaded {
   final SessionDraft draft;
   @override
   final String clientName;
+  final Map<int, SessionStatus> _weekDayStatus;
+  @override
+  @JsonKey()
+  Map<int, SessionStatus> get weekDayStatus {
+    if (_weekDayStatus is EqualUnmodifiableMapView) return _weekDayStatus;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_weekDayStatus);
+  }
 
   @override
   String toString() {
-    return 'TrainerClientSessionState.loaded(profile: $profile, dayPlan: $dayPlan, draft: $draft, clientName: $clientName)';
+    return 'TrainerClientSessionState.loaded(profile: $profile, dayPlan: $dayPlan, draft: $draft, clientName: $clientName, weekDayStatus: $weekDayStatus)';
   }
 
   @override
@@ -540,12 +674,14 @@ class _$TrainerSessionLoadedImpl implements TrainerSessionLoaded {
             (identical(other.dayPlan, dayPlan) || other.dayPlan == dayPlan) &&
             (identical(other.draft, draft) || other.draft == draft) &&
             (identical(other.clientName, clientName) ||
-                other.clientName == clientName));
+                other.clientName == clientName) &&
+            const DeepCollectionEquality()
+                .equals(other._weekDayStatus, _weekDayStatus));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, profile, dayPlan, draft, clientName);
+  int get hashCode => Object.hash(runtimeType, profile, dayPlan, draft,
+      clientName, const DeepCollectionEquality().hash(_weekDayStatus));
 
   @JsonKey(ignore: true)
   @override
@@ -560,19 +696,32 @@ class _$TrainerSessionLoadedImpl implements TrainerSessionLoaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) {
-    return loaded(profile, dayPlan, draft, clientName);
+    return loaded(profile, dayPlan, draft, clientName, weekDayStatus);
   }
 
   @override
@@ -580,19 +729,32 @@ class _$TrainerSessionLoadedImpl implements TrainerSessionLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) {
-    return loaded?.call(profile, dayPlan, draft, clientName);
+    return loaded?.call(profile, dayPlan, draft, clientName, weekDayStatus);
   }
 
   @override
@@ -600,21 +762,34 @@ class _$TrainerSessionLoadedImpl implements TrainerSessionLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(profile, dayPlan, draft, clientName);
+      return loaded(profile, dayPlan, draft, clientName, weekDayStatus);
     }
     return orElse();
   }
@@ -668,15 +843,18 @@ class _$TrainerSessionLoadedImpl implements TrainerSessionLoaded {
 
 abstract class TrainerSessionLoaded implements TrainerClientSessionState {
   const factory TrainerSessionLoaded(
-      {required final WorkoutProfile profile,
-      required final DayPlan dayPlan,
-      required final SessionDraft draft,
-      required final String clientName}) = _$TrainerSessionLoadedImpl;
+          {required final WorkoutProfile profile,
+          required final DayPlan dayPlan,
+          required final SessionDraft draft,
+          required final String clientName,
+          final Map<int, SessionStatus> weekDayStatus}) =
+      _$TrainerSessionLoadedImpl;
 
   WorkoutProfile get profile;
   DayPlan get dayPlan;
   SessionDraft get draft;
   String get clientName;
+  Map<int, SessionStatus> get weekDayStatus;
   @JsonKey(ignore: true)
   _$$TrainerSessionLoadedImplCopyWith<_$TrainerSessionLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -752,16 +930,29 @@ class _$TrainerSessionNoPlanImpl implements TrainerSessionNoPlan {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) {
     return noPlan(clientName);
@@ -772,16 +963,29 @@ class _$TrainerSessionNoPlanImpl implements TrainerSessionNoPlan {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) {
     return noPlan?.call(clientName);
@@ -792,16 +996,29 @@ class _$TrainerSessionNoPlanImpl implements TrainerSessionNoPlan {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) {
@@ -879,7 +1096,8 @@ abstract class _$$TrainerSessionSubmittingImplCopyWith<$Res> {
       {WorkoutProfile profile,
       DayPlan dayPlan,
       SessionDraft draft,
-      String clientName});
+      String clientName,
+      Map<int, SessionStatus> weekDayStatus});
 
   $WorkoutProfileCopyWith<$Res> get profile;
   $DayPlanCopyWith<$Res> get dayPlan;
@@ -903,6 +1121,7 @@ class __$$TrainerSessionSubmittingImplCopyWithImpl<$Res>
     Object? dayPlan = null,
     Object? draft = null,
     Object? clientName = null,
+    Object? weekDayStatus = null,
   }) {
     return _then(_$TrainerSessionSubmittingImpl(
       profile: null == profile
@@ -921,6 +1140,10 @@ class __$$TrainerSessionSubmittingImplCopyWithImpl<$Res>
           ? _value.clientName
           : clientName // ignore: cast_nullable_to_non_nullable
               as String,
+      weekDayStatus: null == weekDayStatus
+          ? _value._weekDayStatus
+          : weekDayStatus // ignore: cast_nullable_to_non_nullable
+              as Map<int, SessionStatus>,
     ));
   }
 
@@ -956,7 +1179,10 @@ class _$TrainerSessionSubmittingImpl implements TrainerSessionSubmitting {
       {required this.profile,
       required this.dayPlan,
       required this.draft,
-      required this.clientName});
+      required this.clientName,
+      final Map<int, SessionStatus> weekDayStatus =
+          const <int, SessionStatus>{}})
+      : _weekDayStatus = weekDayStatus;
 
   @override
   final WorkoutProfile profile;
@@ -966,10 +1192,18 @@ class _$TrainerSessionSubmittingImpl implements TrainerSessionSubmitting {
   final SessionDraft draft;
   @override
   final String clientName;
+  final Map<int, SessionStatus> _weekDayStatus;
+  @override
+  @JsonKey()
+  Map<int, SessionStatus> get weekDayStatus {
+    if (_weekDayStatus is EqualUnmodifiableMapView) return _weekDayStatus;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_weekDayStatus);
+  }
 
   @override
   String toString() {
-    return 'TrainerClientSessionState.submitting(profile: $profile, dayPlan: $dayPlan, draft: $draft, clientName: $clientName)';
+    return 'TrainerClientSessionState.submitting(profile: $profile, dayPlan: $dayPlan, draft: $draft, clientName: $clientName, weekDayStatus: $weekDayStatus)';
   }
 
   @override
@@ -981,12 +1215,14 @@ class _$TrainerSessionSubmittingImpl implements TrainerSessionSubmitting {
             (identical(other.dayPlan, dayPlan) || other.dayPlan == dayPlan) &&
             (identical(other.draft, draft) || other.draft == draft) &&
             (identical(other.clientName, clientName) ||
-                other.clientName == clientName));
+                other.clientName == clientName) &&
+            const DeepCollectionEquality()
+                .equals(other._weekDayStatus, _weekDayStatus));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, profile, dayPlan, draft, clientName);
+  int get hashCode => Object.hash(runtimeType, profile, dayPlan, draft,
+      clientName, const DeepCollectionEquality().hash(_weekDayStatus));
 
   @JsonKey(ignore: true)
   @override
@@ -1000,19 +1236,32 @@ class _$TrainerSessionSubmittingImpl implements TrainerSessionSubmitting {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) {
-    return submitting(profile, dayPlan, draft, clientName);
+    return submitting(profile, dayPlan, draft, clientName, weekDayStatus);
   }
 
   @override
@@ -1020,19 +1269,32 @@ class _$TrainerSessionSubmittingImpl implements TrainerSessionSubmitting {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) {
-    return submitting?.call(profile, dayPlan, draft, clientName);
+    return submitting?.call(profile, dayPlan, draft, clientName, weekDayStatus);
   }
 
   @override
@@ -1040,21 +1302,34 @@ class _$TrainerSessionSubmittingImpl implements TrainerSessionSubmitting {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) {
     if (submitting != null) {
-      return submitting(profile, dayPlan, draft, clientName);
+      return submitting(profile, dayPlan, draft, clientName, weekDayStatus);
     }
     return orElse();
   }
@@ -1108,15 +1383,18 @@ class _$TrainerSessionSubmittingImpl implements TrainerSessionSubmitting {
 
 abstract class TrainerSessionSubmitting implements TrainerClientSessionState {
   const factory TrainerSessionSubmitting(
-      {required final WorkoutProfile profile,
-      required final DayPlan dayPlan,
-      required final SessionDraft draft,
-      required final String clientName}) = _$TrainerSessionSubmittingImpl;
+          {required final WorkoutProfile profile,
+          required final DayPlan dayPlan,
+          required final SessionDraft draft,
+          required final String clientName,
+          final Map<int, SessionStatus> weekDayStatus}) =
+      _$TrainerSessionSubmittingImpl;
 
   WorkoutProfile get profile;
   DayPlan get dayPlan;
   SessionDraft get draft;
   String get clientName;
+  Map<int, SessionStatus> get weekDayStatus;
   @JsonKey(ignore: true)
   _$$TrainerSessionSubmittingImplCopyWith<_$TrainerSessionSubmittingImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -1203,16 +1481,29 @@ class _$TrainerSessionSubmittedImpl implements TrainerSessionSubmitted {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) {
     return submitted(sessionLog);
@@ -1223,16 +1514,29 @@ class _$TrainerSessionSubmittedImpl implements TrainerSessionSubmitted {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) {
     return submitted?.call(sessionLog);
@@ -1243,16 +1547,29 @@ class _$TrainerSessionSubmittedImpl implements TrainerSessionSubmitted {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) {
@@ -1331,7 +1648,8 @@ abstract class _$$TrainerSessionErrorImplCopyWith<$Res> {
       String? clientName,
       WorkoutProfile? profile,
       DayPlan? dayPlan,
-      SessionDraft? draft});
+      SessionDraft? draft,
+      Map<int, SessionStatus> weekDayStatus});
 
   $FailureCopyWith<$Res> get failure;
   $WorkoutProfileCopyWith<$Res>? get profile;
@@ -1356,6 +1674,7 @@ class __$$TrainerSessionErrorImplCopyWithImpl<$Res>
     Object? profile = freezed,
     Object? dayPlan = freezed,
     Object? draft = freezed,
+    Object? weekDayStatus = null,
   }) {
     return _then(_$TrainerSessionErrorImpl(
       failure: null == failure
@@ -1378,6 +1697,10 @@ class __$$TrainerSessionErrorImplCopyWithImpl<$Res>
           ? _value.draft
           : draft // ignore: cast_nullable_to_non_nullable
               as SessionDraft?,
+      weekDayStatus: null == weekDayStatus
+          ? _value._weekDayStatus
+          : weekDayStatus // ignore: cast_nullable_to_non_nullable
+              as Map<int, SessionStatus>,
     ));
   }
 
@@ -1434,7 +1757,10 @@ class _$TrainerSessionErrorImpl implements TrainerSessionError {
       this.clientName,
       this.profile,
       this.dayPlan,
-      this.draft});
+      this.draft,
+      final Map<int, SessionStatus> weekDayStatus =
+          const <int, SessionStatus>{}})
+      : _weekDayStatus = weekDayStatus;
 
   @override
   final Failure failure;
@@ -1446,10 +1772,18 @@ class _$TrainerSessionErrorImpl implements TrainerSessionError {
   final DayPlan? dayPlan;
   @override
   final SessionDraft? draft;
+  final Map<int, SessionStatus> _weekDayStatus;
+  @override
+  @JsonKey()
+  Map<int, SessionStatus> get weekDayStatus {
+    if (_weekDayStatus is EqualUnmodifiableMapView) return _weekDayStatus;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_weekDayStatus);
+  }
 
   @override
   String toString() {
-    return 'TrainerClientSessionState.error(failure: $failure, clientName: $clientName, profile: $profile, dayPlan: $dayPlan, draft: $draft)';
+    return 'TrainerClientSessionState.error(failure: $failure, clientName: $clientName, profile: $profile, dayPlan: $dayPlan, draft: $draft, weekDayStatus: $weekDayStatus)';
   }
 
   @override
@@ -1462,12 +1796,14 @@ class _$TrainerSessionErrorImpl implements TrainerSessionError {
                 other.clientName == clientName) &&
             (identical(other.profile, profile) || other.profile == profile) &&
             (identical(other.dayPlan, dayPlan) || other.dayPlan == dayPlan) &&
-            (identical(other.draft, draft) || other.draft == draft));
+            (identical(other.draft, draft) || other.draft == draft) &&
+            const DeepCollectionEquality()
+                .equals(other._weekDayStatus, _weekDayStatus));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, failure, clientName, profile, dayPlan, draft);
+  int get hashCode => Object.hash(runtimeType, failure, clientName, profile,
+      dayPlan, draft, const DeepCollectionEquality().hash(_weekDayStatus));
 
   @JsonKey(ignore: true)
   @override
@@ -1481,19 +1817,32 @@ class _$TrainerSessionErrorImpl implements TrainerSessionError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         loaded,
     required TResult Function(String clientName) noPlan,
-    required TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)
+    required TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)
         error,
   }) {
-    return error(failure, clientName, profile, dayPlan, draft);
+    return error(failure, clientName, profile, dayPlan, draft, weekDayStatus);
   }
 
   @override
@@ -1501,19 +1850,33 @@ class _$TrainerSessionErrorImpl implements TrainerSessionError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult? Function(String clientName)? noPlan,
-    TResult? Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult? Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
   }) {
-    return error?.call(failure, clientName, profile, dayPlan, draft);
+    return error?.call(
+        failure, clientName, profile, dayPlan, draft, weekDayStatus);
   }
 
   @override
@@ -1521,21 +1884,34 @@ class _$TrainerSessionErrorImpl implements TrainerSessionError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         loaded,
     TResult Function(String clientName)? noPlan,
-    TResult Function(WorkoutProfile profile, DayPlan dayPlan,
-            SessionDraft draft, String clientName)?
+    TResult Function(
+            WorkoutProfile profile,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            String clientName,
+            Map<int, SessionStatus> weekDayStatus)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, String? clientName,
-            WorkoutProfile? profile, DayPlan? dayPlan, SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            String? clientName,
+            WorkoutProfile? profile,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, SessionStatus> weekDayStatus)?
         error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(failure, clientName, profile, dayPlan, draft);
+      return error(failure, clientName, profile, dayPlan, draft, weekDayStatus);
     }
     return orElse();
   }
@@ -1593,13 +1969,15 @@ abstract class TrainerSessionError implements TrainerClientSessionState {
       final String? clientName,
       final WorkoutProfile? profile,
       final DayPlan? dayPlan,
-      final SessionDraft? draft}) = _$TrainerSessionErrorImpl;
+      final SessionDraft? draft,
+      final Map<int, SessionStatus> weekDayStatus}) = _$TrainerSessionErrorImpl;
 
   Failure get failure;
   String? get clientName;
   WorkoutProfile? get profile;
   DayPlan? get dayPlan;
   SessionDraft? get draft;
+  Map<int, SessionStatus> get weekDayStatus;
   @JsonKey(ignore: true)
   _$$TrainerSessionErrorImplCopyWith<_$TrainerSessionErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;

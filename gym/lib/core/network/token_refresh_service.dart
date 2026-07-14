@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import '../config/app_config.dart';
 import '../storage/secure_storage.dart';
 import '../../features/auth/domain/entities/auth_token.dart';
+import 'interceptors/logger_interceptor.dart';
 import 'token_refresh_result.dart';
 
 /// Single source of truth for refreshing the access/refresh token pair.
@@ -19,7 +20,14 @@ class TokenRefreshService {
   Future<RefreshResult>? _inFlight;
 
   TokenRefreshService(this._secureStorage, AppConfig config)
-      : _dio = Dio(BaseOptions(baseUrl: config.baseUrl));
+      : _dio = Dio(BaseOptions(baseUrl: config.baseUrl)) {
+    // No AuthInterceptor here (see class doc), but attach the logger so
+    // refresh calls and retried requests are still visible in logs instead
+    // of silently succeeding after a logged 401 from the original attempt.
+    if (config.enableLogging) {
+      _dio.interceptors.add(LoggerInterceptor());
+    }
+  }
 
   /// A bare Dio instance (no auth interceptor) for replaying requests after a
   /// successful refresh.

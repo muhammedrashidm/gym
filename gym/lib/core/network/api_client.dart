@@ -25,7 +25,10 @@ class ApiClient {
       _dio.interceptors.add(LoggerInterceptor());
     }
 
-    // Auth interceptor must come after logger so retried requests are also logged
+    // Retried requests are replayed on TokenRefreshService.bareDio (a
+    // separate Dio instance, to avoid recursing back into this interceptor),
+    // which attaches its own LoggerInterceptor — so they're logged there,
+    // not by this chain's ordering.
     _dio.interceptors.add(authInterceptor);
   }
 

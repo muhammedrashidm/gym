@@ -213,6 +213,7 @@ class _LoadedScaffold extends StatelessWidget {
     int completedCount = taskDrafts.length;
     double completionPercent = tasks.isEmpty ? 0 : completedCount / tasks.length;
     bool hasAnyActuals = taskDrafts.isNotEmpty;
+    bool canComplete = hasAnyActuals || dayPlan.isRestDay;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -391,99 +392,42 @@ class _LoadedScaffold extends StatelessWidget {
           ),
 
           // Bottom actions
-          if (tasks.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 52,
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: outlineColor, width: 1.5),
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero),
-                          foregroundColor: textPrimary,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      canComplete ? slateDark : const Color(0xFF6B7280),
+                  foregroundColor: Colors.white,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero),
+                ),
+                onPressed: isSubmitting || !canComplete
+                    ? null
+                    : () => context
+                        .read<MemberWorkoutSessionCubit>()
+                        .completeSession(),
+                child: isSubmitting
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
                         ),
-                        onPressed: isSubmitting
-                            ? null
-                            : () => _confirmSkip(context),
-                        child: Text(
-                          'SKIP TODAY',
-                          style: GoogleFonts.manrope(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 1.5),
-                        ),
+                      )
+                    : Text(
+                        'COMPLETE SESSION',
+                        style: GoogleFonts.manrope(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.5),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: SizedBox(
-                      height: 52,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              hasAnyActuals ? slateDark : const Color(0xFF6B7280),
-                          foregroundColor: Colors.white,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero),
-                        ),
-                        onPressed: isSubmitting || !hasAnyActuals
-                            ? null
-                            : () => context
-                                .read<MemberWorkoutSessionCubit>()
-                                .completeSession(),
-                        child: isSubmitting
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(
-                                'COMPLETE SESSION',
-                                style: GoogleFonts.manrope(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 1.5),
-                              ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
-        ],
-      ),
-    );
-  }
-
-  void _confirmSkip(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('SKIP TODAY?',
-            style: GoogleFonts.manrope(fontWeight: FontWeight.w900)),
-        content: Text(
-          'This will mark today\'s session as skipped. No task data will be recorded.',
-          style: GoogleFonts.inter(fontSize: 14),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('CANCEL'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              context.read<MemberWorkoutSessionCubit>().skipSession();
-            },
-            child: const Text('SKIP'),
           ),
         ],
       ),

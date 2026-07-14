@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../cubit/trainer_client_session/trainer_client_session_cubit.dart';
 import '../cubit/trainer_client_session/trainer_client_session_state.dart';
 import '../../../workout/domain/entities/task.dart';
+import '../../domain/entities/workout_session_log.dart';
 
 class TrainerClientSessionPage extends StatefulWidget {
   final String clientId;
@@ -54,7 +55,7 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
             ));
             context.pop();
           },
-          error: (failure, clientName, profile, dayPlan, draft) {
+          error: (failure, clientName, profile, dayPlan, draft, weekDayStatus) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: const Color(0xFFBA1A1A),
               content: Text(
@@ -82,23 +83,23 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
             _buildNoPlan(context, clientName),
             clientName: clientName,
           ),
-          loaded: (profile, dayPlan, draft, clientName) => _buildShell(
+          loaded: (profile, dayPlan, draft, clientName, weekDayStatus) => _buildShell(
             context,
-            _buildContent(context, profile, dayPlan, draft, clientName, false),
+            _buildContent(context, profile, dayPlan, draft, clientName, false, weekDayStatus),
             clientName: clientName,
           ),
-          submitting: (profile, dayPlan, draft, clientName) => _buildShell(
+          submitting: (profile, dayPlan, draft, clientName, weekDayStatus) => _buildShell(
             context,
-            _buildContent(context, profile, dayPlan, draft, clientName, true),
+            _buildContent(context, profile, dayPlan, draft, clientName, true, weekDayStatus),
             clientName: clientName,
           ),
           submitted: (_) => _buildShell(context, _buildLoading(), clientName: widget.clientName),
-          error: (failure, clientName, profile, dayPlan, draft) {
+          error: (failure, clientName, profile, dayPlan, draft, weekDayStatus) {
             if (profile != null && dayPlan != null && draft != null) {
               return _buildShell(
                 context,
-                _buildContent(
-                    context, profile, dayPlan, draft, clientName ?? widget.clientName, false),
+                _buildContent(context, profile, dayPlan, draft,
+                    clientName ?? widget.clientName, false, weekDayStatus),
                 clientName: clientName ?? widget.clientName,
               );
             }
@@ -225,6 +226,7 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
     dynamic draft,
     String clientName,
     bool isSubmitting,
+    Map<int, SessionStatus> weekDayStatus,
   ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -240,6 +242,7 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
     final completedCount = taskDrafts.length;
     final completionPercent = tasks.isEmpty ? 0.0 : completedCount / tasks.length;
     final hasAnyActuals = taskDrafts.isNotEmpty;
+    final canComplete = hasAnyActuals || dayPlan.isRestDay;
 
     return Column(
       children: [
@@ -260,7 +263,7 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Day ${profile.currentDayIndex}  ·  ${draft.dayPlanLabel ?? 'Today'}',
+                'Day ${dayPlan.dayIndex}  ·  ${draft.dayPlanLabel ?? 'Today'}',
                 style: GoogleFonts.inter(fontSize: 13, color: textSecondary),
               ),
               const SizedBox(height: 16),
@@ -271,23 +274,56 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
                   scrollDirection: Axis.horizontal,
                   itemCount: 7,
                   itemBuilder: (context, i) {
-                    final isToday = profile.currentDayIndex == i + 1;
+                    final dayIndex = i + 1;
+                    final isToday = dayPlan.dayIndex == dayIndex;
+                    final status = weekDayStatus[dayIndex];
+                    const skippedColor = Color(0xFFBA1A1A);
+
+                    Color bg;
+                    Color border;
+                    Color fg;
+                    IconData? icon;
+
+                    if (isToday) {
+                      bg = textPrimary;
+                      border = outlineColor;
+                      fg = isDark ? const Color(0xFF131313) : Colors.white;
+                      icon = null;
+                    } else if (status == SessionStatus.completed) {
+                      bg = sinewGreen.withValues(alpha: 0.12);
+                      border = sinewGreen;
+                      fg = sinewGreen;
+                      icon = Icons.check;
+                    } else if (status == SessionStatus.skipped) {
+                      bg = skippedColor.withValues(alpha: 0.10);
+                      border = skippedColor;
+                      fg = skippedColor;
+                      icon = Icons.close;
+                    } else {
+                      bg = Colors.transparent;
+                      border = outlineColor;
+                      fg = textSecondary;
+                      icon = null;
+                    }
+
                     return Container(
                       margin: const EdgeInsets.only(right: 4),
                       width: 40,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: isToday ? textPrimary : Colors.transparent,
-                        border: Border.all(color: outlineColor, width: 1),
+                        color: bg,
+                        border: Border.all(color: border, width: 1),
                       ),
-                      child: Text(
-                        'D${i + 1}',
-                        style: GoogleFonts.manrope(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                          color: isToday ? (isDark ? const Color(0xFF131313) : Colors.white) : textSecondary,
-                        ),
-                      ),
+                      child: icon != null
+                          ? Icon(icon, size: 14, color: fg)
+                          : Text(
+                              'D$dayIndex',
+                              style: GoogleFonts.manrope(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: fg,
+                              ),
+                            ),
                     );
                   },
                 ),
@@ -414,64 +450,37 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
         // Bottom actions
         Padding(
           padding: const EdgeInsets.all(24),
-          child: Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 52,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: outlineColor, width: 1.5),
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero),
-                      foregroundColor: textPrimary,
-                    ),
-                    onPressed: isSubmitting ? null : () => _confirmSkip(context),
-                    child: Text(
-                      'SKIP TODAY',
+          child: SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    canComplete ? slateDark : const Color(0xFF6B7280),
+                foregroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero),
+              ),
+              onPressed: isSubmitting || !canComplete
+                  ? null
+                  : () => context
+                      .read<TrainerClientSessionCubit>()
+                      .completeSession(),
+              child: isSubmitting
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white),
+                    )
+                  : Text(
+                      'COMPLETE SESSION',
                       style: GoogleFonts.manrope(
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1.5),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: SizedBox(
-                  height: 52,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          hasAnyActuals ? slateDark : const Color(0xFF6B7280),
-                      foregroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero),
-                    ),
-                    onPressed: isSubmitting || !hasAnyActuals
-                        ? null
-                        : () => context
-                            .read<TrainerClientSessionCubit>()
-                            .completeSession(),
-                    child: isSubmitting
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                                strokeWidth: 2, color: Colors.white),
-                          )
-                        : Text(
-                            'COMPLETE SESSION',
-                            style: GoogleFonts.manrope(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1.5),
-                          ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ],
@@ -613,31 +622,6 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
     );
   }
 
-  void _confirmSkip(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('SKIP SESSION?',
-            style: GoogleFonts.manrope(fontWeight: FontWeight.w900)),
-        content: Text(
-          'Skip today\'s session for ${widget.clientName}?',
-          style: GoogleFonts.inter(fontSize: 14),
-        ),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('CANCEL')),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              context.read<TrainerClientSessionCubit>().skipSession();
-            },
-            child: const Text('SKIP'),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class _TrainerInputField extends StatelessWidget {

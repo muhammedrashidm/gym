@@ -11,6 +11,7 @@ class WeeklyPlanModel {
   final String? workoutProfileId;
   final String status;
   final String? notes;
+  @JsonKey(name: 'days')
   final List<DayPlanModel> dayPlans;
 
   const WeeklyPlanModel({
