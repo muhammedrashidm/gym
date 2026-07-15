@@ -1,9 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../domain/entities/task.dart';
+import '../../../task_media/data/models/task_attachment_model.dart';
 
 part 'task_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class TaskModel {
   final String id;
   final String dayPlanId;
@@ -16,6 +17,8 @@ class TaskModel {
   final String reps;
   final int? restSeconds;
   final String? tempo;
+  @JsonKey(defaultValue: <TaskAttachmentModel>[])
+  final List<TaskAttachmentModel> attachments;
 
   const TaskModel({
     required this.id,
@@ -29,6 +32,7 @@ class TaskModel {
     required this.reps,
     this.restSeconds,
     this.tempo,
+    this.attachments = const [],
   });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) =>
@@ -49,6 +53,7 @@ class TaskModel {
       reps: reps,
       restSeconds: restSeconds,
       tempo: tempo,
+      attachments: attachments.map((a) => a.toDomain()).toList(),
     );
   }
 }

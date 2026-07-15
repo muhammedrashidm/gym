@@ -22,7 +22,8 @@ enum AppRoute {
   dayPlanCreator(path: '/staff/clients/:clientId/workout/weekly-plan/:weeklyPlanId/edit', name: 'day-plan-creator'),
   taskExecution(path: '/member/train/task-execution', name: 'task-execution'),
   staffLiveSessions(path: '/staff/live-sessions', name: 'staff-live-sessions'),
-  clientSessionUpdate(path: '/staff/clients/:clientId/session', name: 'client-session-update');
+  clientSessionUpdate(path: '/staff/clients/:clientId/session', name: 'client-session-update'),
+  dayPreview(path: '/day-preview', name: 'day-preview');
 
   const AppRoute({required this.path, required this.name});
 

@@ -5,25 +5,47 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateDayPlanDto } from '../dto/day-plan.dto';
+import { TaskMediaService } from './task-media.service';
 import type { RequestContext } from '../../common/types/request-context.type';
 import type {
   WorkoutProfile,
   DayPlan,
   Task,
+  TaskAttachment,
   TaskMedia,
+  Media,
 } from 'generated/prisma/client';
 
+type FullTaskAttachment = TaskAttachment & {
+  taskMedia: TaskMedia & { media: Media };
+};
+
 export interface FullTask extends Task {
-  media: TaskMedia[];
+  attachments: FullTaskAttachment[];
 }
 
 export interface FullDayPlan extends DayPlan {
   tasks: FullTask[];
 }
 
+const taskInclude = {
+  tasks: {
+    orderBy: { sequenceIndex: 'asc' as const },
+    include: {
+      attachments: {
+        orderBy: { sequenceIndex: 'asc' as const },
+        include: { taskMedia: { include: { media: true } } },
+      },
+    },
+  },
+};
+
 @Injectable()
 export class DayPlanService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly taskMediaService: TaskMediaService,
+  ) {}
 
   async findOne(id: string, ctx: RequestContext) {
     const dayPlan = await this.prisma.dayPlan.findUnique({
@@ -32,14 +54,7 @@ export class DayPlanService {
         weeklyPlan: {
           include: { workoutProfile: true },
         },
-        tasks: {
-          orderBy: { sequenceIndex: 'asc' },
-          include: {
-            media: {
-              orderBy: { sequenceIndex: 'asc' },
-            },
-          },
-        },
+        ...taskInclude,
       },
     });
 
@@ -74,16 +89,7 @@ export class DayPlanService {
         label: dto.label,
         isRestDay: dto.isRestDay,
       },
-      include: {
-        tasks: {
-          orderBy: { sequenceIndex: 'asc' },
-          include: {
-            media: {
-              orderBy: { sequenceIndex: 'asc' },
-            },
-          },
-        },
-      },
+      include: taskInclude,
     });
 
     return this.mapToResponse(updated as unknown as FullDayPlan);
@@ -119,14 +125,9 @@ export class DayPlanService {
     }
   }
 
-  private mapToResponse(d: FullDayPlan) {
-    return {
-      id: d.id,
-      weeklyPlanId: d.weeklyPlanId,
-      dayIndex: d.dayIndex,
-      label: d.label,
-      isRestDay: d.isRestDay,
-      tasks: d.tasks.map((t) => ({
+  private async mapToResponse(d: FullDayPlan) {
+    const tasks = await Promise.all(
+      d.tasks.map(async (t) => ({
         id: t.id,
         dayPlanId: t.dayPlanId,
         sequenceIndex: t.sequenceIndex,
@@ -138,18 +139,29 @@ export class DayPlanService {
         reps: t.reps,
         restSeconds: t.restSeconds,
         tempo: t.tempo,
-        media: t.media.map((m) => ({
-          id: m.id,
-          taskId: m.taskId,
-          type: m.type,
-          url: m.url,
-          caption: m.caption,
-          sequenceIndex: m.sequenceIndex,
-          createdAt: m.createdAt,
-        })),
+        attachments: await Promise.all(
+          t.attachments.map(async (a) => ({
+            id: a.id,
+            taskId: a.taskId,
+            taskMediaId: a.taskMediaId,
+            caption: a.caption,
+            sequenceIndex: a.sequenceIndex,
+            createdAt: a.createdAt,
+            taskMedia: await this.taskMediaService.mapToResponse(a.taskMedia),
+          })),
+        ),
         createdAt: t.createdAt,
         updatedAt: t.updatedAt,
       })),
+    );
+
+    return {
+      id: d.id,
+      weeklyPlanId: d.weeklyPlanId,
+      dayIndex: d.dayIndex,
+      label: d.label,
+      isRestDay: d.isRestDay,
+      tasks,
       createdAt: d.createdAt,
       updatedAt: d.updatedAt,
     };

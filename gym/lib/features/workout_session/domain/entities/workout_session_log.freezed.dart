@@ -30,6 +30,8 @@ mixin _$WorkoutSessionLog {
   LoggedByRole get loggedByRole => throw _privateConstructorUsedError;
   String get loggedByUserId => throw _privateConstructorUsedError;
   int? get currentDayIndexAfter => throw _privateConstructorUsedError;
+  List<TaskCompletionEntry> get taskCompletionLogs =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WorkoutSessionLogCopyWith<WorkoutSessionLog> get copyWith =>
@@ -56,7 +58,8 @@ abstract class $WorkoutSessionLogCopyWith<$Res> {
       String? completedDate,
       LoggedByRole loggedByRole,
       String loggedByUserId,
-      int? currentDayIndexAfter});
+      int? currentDayIndexAfter,
+      List<TaskCompletionEntry> taskCompletionLogs});
 }
 
 /// @nodoc
@@ -86,6 +89,7 @@ class _$WorkoutSessionLogCopyWithImpl<$Res, $Val extends WorkoutSessionLog>
     Object? loggedByRole = null,
     Object? loggedByUserId = null,
     Object? currentDayIndexAfter = freezed,
+    Object? taskCompletionLogs = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -144,6 +148,10 @@ class _$WorkoutSessionLogCopyWithImpl<$Res, $Val extends WorkoutSessionLog>
           ? _value.currentDayIndexAfter
           : currentDayIndexAfter // ignore: cast_nullable_to_non_nullable
               as int?,
+      taskCompletionLogs: null == taskCompletionLogs
+          ? _value.taskCompletionLogs
+          : taskCompletionLogs // ignore: cast_nullable_to_non_nullable
+              as List<TaskCompletionEntry>,
     ) as $Val);
   }
 }
@@ -170,7 +178,8 @@ abstract class _$$WorkoutSessionLogImplCopyWith<$Res>
       String? completedDate,
       LoggedByRole loggedByRole,
       String loggedByUserId,
-      int? currentDayIndexAfter});
+      int? currentDayIndexAfter,
+      List<TaskCompletionEntry> taskCompletionLogs});
 }
 
 /// @nodoc
@@ -198,6 +207,7 @@ class __$$WorkoutSessionLogImplCopyWithImpl<$Res>
     Object? loggedByRole = null,
     Object? loggedByUserId = null,
     Object? currentDayIndexAfter = freezed,
+    Object? taskCompletionLogs = null,
   }) {
     return _then(_$WorkoutSessionLogImpl(
       id: null == id
@@ -256,6 +266,10 @@ class __$$WorkoutSessionLogImplCopyWithImpl<$Res>
           ? _value.currentDayIndexAfter
           : currentDayIndexAfter // ignore: cast_nullable_to_non_nullable
               as int?,
+      taskCompletionLogs: null == taskCompletionLogs
+          ? _value._taskCompletionLogs
+          : taskCompletionLogs // ignore: cast_nullable_to_non_nullable
+              as List<TaskCompletionEntry>,
     ));
   }
 }
@@ -277,7 +291,10 @@ class _$WorkoutSessionLogImpl implements _WorkoutSessionLog {
       this.completedDate,
       required this.loggedByRole,
       required this.loggedByUserId,
-      this.currentDayIndexAfter});
+      this.currentDayIndexAfter,
+      final List<TaskCompletionEntry> taskCompletionLogs =
+          const <TaskCompletionEntry>[]})
+      : _taskCompletionLogs = taskCompletionLogs;
 
   @override
   final String id;
@@ -307,10 +324,19 @@ class _$WorkoutSessionLogImpl implements _WorkoutSessionLog {
   final String loggedByUserId;
   @override
   final int? currentDayIndexAfter;
+  final List<TaskCompletionEntry> _taskCompletionLogs;
+  @override
+  @JsonKey()
+  List<TaskCompletionEntry> get taskCompletionLogs {
+    if (_taskCompletionLogs is EqualUnmodifiableListView)
+      return _taskCompletionLogs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_taskCompletionLogs);
+  }
 
   @override
   String toString() {
-    return 'WorkoutSessionLog(id: $id, workoutProfileId: $workoutProfileId, weeklyPlanId: $weeklyPlanId, weeklyPlanName: $weeklyPlanName, dayPlanId: $dayPlanId, dayPlanLabel: $dayPlanLabel, dayIndexAtTime: $dayIndexAtTime, cycleNumberAtTime: $cycleNumberAtTime, status: $status, scheduledDate: $scheduledDate, completedDate: $completedDate, loggedByRole: $loggedByRole, loggedByUserId: $loggedByUserId, currentDayIndexAfter: $currentDayIndexAfter)';
+    return 'WorkoutSessionLog(id: $id, workoutProfileId: $workoutProfileId, weeklyPlanId: $weeklyPlanId, weeklyPlanName: $weeklyPlanName, dayPlanId: $dayPlanId, dayPlanLabel: $dayPlanLabel, dayIndexAtTime: $dayIndexAtTime, cycleNumberAtTime: $cycleNumberAtTime, status: $status, scheduledDate: $scheduledDate, completedDate: $completedDate, loggedByRole: $loggedByRole, loggedByUserId: $loggedByUserId, currentDayIndexAfter: $currentDayIndexAfter, taskCompletionLogs: $taskCompletionLogs)';
   }
 
   @override
@@ -343,7 +369,9 @@ class _$WorkoutSessionLogImpl implements _WorkoutSessionLog {
             (identical(other.loggedByUserId, loggedByUserId) ||
                 other.loggedByUserId == loggedByUserId) &&
             (identical(other.currentDayIndexAfter, currentDayIndexAfter) ||
-                other.currentDayIndexAfter == currentDayIndexAfter));
+                other.currentDayIndexAfter == currentDayIndexAfter) &&
+            const DeepCollectionEquality()
+                .equals(other._taskCompletionLogs, _taskCompletionLogs));
   }
 
   @override
@@ -362,7 +390,8 @@ class _$WorkoutSessionLogImpl implements _WorkoutSessionLog {
       completedDate,
       loggedByRole,
       loggedByUserId,
-      currentDayIndexAfter);
+      currentDayIndexAfter,
+      const DeepCollectionEquality().hash(_taskCompletionLogs));
 
   @JsonKey(ignore: true)
   @override
@@ -374,20 +403,22 @@ class _$WorkoutSessionLogImpl implements _WorkoutSessionLog {
 
 abstract class _WorkoutSessionLog implements WorkoutSessionLog {
   const factory _WorkoutSessionLog(
-      {required final String id,
-      required final String workoutProfileId,
-      final String? weeklyPlanId,
-      final String? weeklyPlanName,
-      final String? dayPlanId,
-      final String? dayPlanLabel,
-      required final int dayIndexAtTime,
-      required final int cycleNumberAtTime,
-      required final SessionStatus status,
-      final String? scheduledDate,
-      final String? completedDate,
-      required final LoggedByRole loggedByRole,
-      required final String loggedByUserId,
-      final int? currentDayIndexAfter}) = _$WorkoutSessionLogImpl;
+          {required final String id,
+          required final String workoutProfileId,
+          final String? weeklyPlanId,
+          final String? weeklyPlanName,
+          final String? dayPlanId,
+          final String? dayPlanLabel,
+          required final int dayIndexAtTime,
+          required final int cycleNumberAtTime,
+          required final SessionStatus status,
+          final String? scheduledDate,
+          final String? completedDate,
+          required final LoggedByRole loggedByRole,
+          required final String loggedByUserId,
+          final int? currentDayIndexAfter,
+          final List<TaskCompletionEntry> taskCompletionLogs}) =
+      _$WorkoutSessionLogImpl;
 
   @override
   String get id;
@@ -417,6 +448,8 @@ abstract class _WorkoutSessionLog implements WorkoutSessionLog {
   String get loggedByUserId;
   @override
   int? get currentDayIndexAfter;
+  @override
+  List<TaskCompletionEntry> get taskCompletionLogs;
   @override
   @JsonKey(ignore: true)
   _$$WorkoutSessionLogImplCopyWith<_$WorkoutSessionLogImpl> get copyWith =>

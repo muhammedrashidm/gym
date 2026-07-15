@@ -5,69 +5,15 @@ import {
   IsOptional,
   IsInt,
   Min,
-  IsEnum,
-  IsUrl,
   ValidateNested,
   IsArray,
   ArrayMinSize,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { TaskMediaType } from 'generated/prisma/client';
-
-export class TaskMediaInputDto {
-  @ApiProperty({
-    description: 'Media type',
-    enum: TaskMediaType,
-  })
-  @IsEnum(TaskMediaType)
-  type: TaskMediaType;
-
-  @ApiProperty({
-    description: 'URL of the media file',
-    example: 'https://example.com/videos/squat.mp4',
-  })
-  @IsUrl()
-  url: string;
-
-  @ApiPropertyOptional({
-    description: 'Optional caption or instruction for the media',
-    example: 'Keep your chest up and heels planted.',
-  })
-  @IsOptional()
-  @IsString()
-  caption?: string;
-
-  @ApiProperty({
-    description: 'Ordering sequence number (starting from 1)',
-    example: 1,
-  })
-  @IsInt()
-  @Min(1)
-  sequenceIndex: number;
-}
-
-export class TaskMediaResponseDto {
-  @ApiProperty()
-  id: string;
-
-  @ApiProperty()
-  taskId: string;
-
-  @ApiProperty({ enum: TaskMediaType })
-  type: TaskMediaType;
-
-  @ApiProperty()
-  url: string;
-
-  @ApiProperty({ nullable: true })
-  caption: string | null;
-
-  @ApiProperty()
-  sequenceIndex: number;
-
-  @ApiProperty()
-  createdAt: Date;
-}
+import {
+  TaskAttachmentInputDto,
+  TaskAttachmentResponseDto,
+} from './task-media.dto';
 
 export class TaskInputDto {
   @ApiProperty({
@@ -146,13 +92,14 @@ export class TaskInputDto {
   tempo?: string;
 
   @ApiPropertyOptional({
-    description: 'Associated instructional media (images, videos, gifs)',
-    type: [TaskMediaInputDto],
+    description:
+      'References to reusable library TaskMedia items to attach to this task',
+    type: [TaskAttachmentInputDto],
   })
   @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => TaskMediaInputDto)
-  media?: TaskMediaInputDto[];
+  @Type(() => TaskAttachmentInputDto)
+  attachments?: TaskAttachmentInputDto[];
 }
 
 export class CreateTaskDto extends TaskInputDto {}
@@ -237,8 +184,8 @@ export class TaskResponseDto {
   @ApiProperty({ nullable: true })
   tempo: string | null;
 
-  @ApiProperty({ type: [TaskMediaResponseDto] })
-  media: TaskMediaResponseDto[];
+  @ApiProperty({ type: [TaskAttachmentResponseDto] })
+  attachments: TaskAttachmentResponseDto[];
 
   @ApiProperty()
   createdAt: Date;

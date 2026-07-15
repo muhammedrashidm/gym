@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +7,9 @@ import '../../../../core/router/app_routes.dart';
 import '../cubit/member_workout_session/member_workout_session_cubit.dart';
 import '../cubit/member_workout_session/member_workout_session_state.dart';
 import '../../../workout/domain/entities/task.dart';
+import '../../../workout/domain/entities/weekly_plan.dart';
+import '../../domain/entities/workout_session_log.dart';
+import 'day_preview_page.dart';
 
 class WeeklyPlanPage extends StatefulWidget {
   const WeeklyPlanPage({super.key});
@@ -45,7 +49,7 @@ class _WeeklyPlanPageState extends State<WeeklyPlanPage> {
             // Reload for next day
             context.read<MemberWorkoutSessionCubit>().loadSession();
           },
-          error: (failure, profile, dayPlan, draft) {
+          error: (failure, profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: const Color(0xFFBA1A1A),
               content: Text(
@@ -70,22 +74,36 @@ class _WeeklyPlanPageState extends State<WeeklyPlanPage> {
           initial: () => const _LoadingScaffold(),
           loading: () => const _LoadingScaffold(),
           noPlan: () => const _NoPlanScaffold(),
-          loaded: (profile, dayPlan, draft) => _LoadedScaffold(
+          loaded: (profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) =>
+              _LoadedScaffold(
             profile: profile,
+            weeklyPlan: weeklyPlan,
             dayPlan: dayPlan,
             draft: draft,
+            dayLogs: dayLogs,
+            activeDayIndex: activeDayIndex,
           ),
-          submitting: (profile, dayPlan, draft) => _LoadedScaffold(
+          submitting: (profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) =>
+              _LoadedScaffold(
             profile: profile,
+            weeklyPlan: weeklyPlan,
             dayPlan: dayPlan,
             draft: draft,
+            dayLogs: dayLogs,
+            activeDayIndex: activeDayIndex,
             isSubmitting: true,
           ),
           submitted: (_) => const _LoadingScaffold(),
-          error: (failure, profile, dayPlan, draft) {
-            if (profile != null && dayPlan != null && draft != null) {
+          error: (failure, profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) {
+            if (profile != null && weeklyPlan != null && dayPlan != null && draft != null) {
               return _LoadedScaffold(
-                  profile: profile, dayPlan: dayPlan, draft: draft);
+                profile: profile,
+                weeklyPlan: weeklyPlan,
+                dayPlan: dayPlan,
+                draft: draft,
+                dayLogs: dayLogs,
+                activeDayIndex: activeDayIndex,
+              );
             }
             return _ErrorScaffold(message: failure.maybeWhen(
               server: (code, msg) => msg ?? 'Server error',
@@ -184,14 +202,20 @@ class _NoPlanScaffold extends StatelessWidget {
 
 class _LoadedScaffold extends StatelessWidget {
   final dynamic profile;
+  final WeeklyPlan weeklyPlan;
   final dynamic dayPlan;
   final dynamic draft;
+  final Map<int, WorkoutSessionLog> dayLogs;
+  final int activeDayIndex;
   final bool isSubmitting;
 
   const _LoadedScaffold({
     required this.profile,
+    required this.weeklyPlan,
     required this.dayPlan,
     required this.draft,
+    this.dayLogs = const {},
+    this.activeDayIndex = 1,
     this.isSubmitting = false,
   });
 
@@ -286,7 +310,7 @@ class _LoadedScaffold extends StatelessWidget {
             ),
           ),
 
-          // Day strip (7-day cycle indicator, read-only)
+          // Day strip (7-day cycle indicator, tappable for a read-only preview)
           Container(
             height: 48,
             decoration: BoxDecoration(
@@ -296,25 +320,60 @@ class _LoadedScaffold extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: 7,
               itemBuilder: (context, index) {
-                final isToday = profile.currentDayIndex == index + 1;
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: isToday ? textPrimary : Colors.transparent,
-                        width: 2.0,
+                final dayIndex = index + 1;
+                final isToday = profile.currentDayIndex == dayIndex;
+                final log = dayLogs[dayIndex];
+                final status = log?.status;
+                const missedRed = Color(0xFFBA1A1A);
+
+                Color underline = Colors.transparent;
+                Color fg = textSecondary;
+                if (isToday) {
+                  underline = textPrimary;
+                  fg = textPrimary;
+                } else if (status == SessionStatus.completed ||
+                    status == SessionStatus.partial) {
+                  underline = sinewGreen;
+                  fg = sinewGreen;
+                } else if (status == SessionStatus.skipped) {
+                  underline = missedRed;
+                  fg = missedRed;
+                }
+
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: isToday
+                      ? null
+                      : () {
+                          final tappedDayPlan = weeklyPlan.dayPlans
+                              .firstWhereOrNull((d) => d.dayIndex == dayIndex);
+                          if (tappedDayPlan == null) return;
+                          context.push(
+                            AppRoute.dayPreview.path,
+                            extra: DayPreviewArgs(
+                              dayPlan: tappedDayPlan,
+                              log: log,
+                              isUpcoming: log == null && dayIndex >= activeDayIndex,
+                              weeklyPlanName: weeklyPlan.name,
+                            ),
+                          );
+                        },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: underline, width: 2.0),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    'D${index + 1}',
-                    style: GoogleFonts.manrope(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1.0,
-                      color: isToday ? textPrimary : textSecondary,
+                    child: Text(
+                      'D$dayIndex',
+                      style: GoogleFonts.manrope(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.0,
+                        color: fg,
+                      ),
                     ),
                   ),
                 );

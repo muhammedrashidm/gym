@@ -1,11 +1,15 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/router/app_routes.dart';
 import '../cubit/trainer_client_session/trainer_client_session_cubit.dart';
 import '../cubit/trainer_client_session/trainer_client_session_state.dart';
 import '../../../workout/domain/entities/task.dart';
+import '../../../workout/domain/entities/weekly_plan.dart';
 import '../../domain/entities/workout_session_log.dart';
+import 'day_preview_page.dart';
 
 class TrainerClientSessionPage extends StatefulWidget {
   final String clientId;
@@ -55,7 +59,8 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
             ));
             context.pop();
           },
-          error: (failure, clientName, profile, dayPlan, draft, weekDayStatus) {
+          error: (failure, clientName, profile, weeklyPlan, dayPlan, draft, dayLogs,
+              activeDayIndex) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: const Color(0xFFBA1A1A),
               content: Text(
@@ -83,23 +88,33 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
             _buildNoPlan(context, clientName),
             clientName: clientName,
           ),
-          loaded: (profile, dayPlan, draft, clientName, weekDayStatus) => _buildShell(
+          loaded: (profile, weeklyPlan, dayPlan, draft, clientName, dayLogs,
+                  activeDayIndex) =>
+              _buildShell(
             context,
-            _buildContent(context, profile, dayPlan, draft, clientName, false, weekDayStatus),
+            _buildContent(context, profile, weeklyPlan, dayPlan, draft, clientName,
+                false, dayLogs, activeDayIndex),
             clientName: clientName,
           ),
-          submitting: (profile, dayPlan, draft, clientName, weekDayStatus) => _buildShell(
+          submitting: (profile, weeklyPlan, dayPlan, draft, clientName, dayLogs,
+                  activeDayIndex) =>
+              _buildShell(
             context,
-            _buildContent(context, profile, dayPlan, draft, clientName, true, weekDayStatus),
+            _buildContent(context, profile, weeklyPlan, dayPlan, draft, clientName,
+                true, dayLogs, activeDayIndex),
             clientName: clientName,
           ),
           submitted: (_) => _buildShell(context, _buildLoading(), clientName: widget.clientName),
-          error: (failure, clientName, profile, dayPlan, draft, weekDayStatus) {
-            if (profile != null && dayPlan != null && draft != null) {
+          error: (failure, clientName, profile, weeklyPlan, dayPlan, draft, dayLogs,
+              activeDayIndex) {
+            if (profile != null &&
+                weeklyPlan != null &&
+                dayPlan != null &&
+                draft != null) {
               return _buildShell(
                 context,
-                _buildContent(context, profile, dayPlan, draft,
-                    clientName ?? widget.clientName, false, weekDayStatus),
+                _buildContent(context, profile, weeklyPlan, dayPlan, draft,
+                    clientName ?? widget.clientName, false, dayLogs, activeDayIndex),
                 clientName: clientName ?? widget.clientName,
               );
             }
@@ -222,11 +237,13 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
   Widget _buildContent(
     BuildContext context,
     dynamic profile,
+    WeeklyPlan weeklyPlan,
     dynamic dayPlan,
     dynamic draft,
     String clientName,
     bool isSubmitting,
-    Map<int, SessionStatus> weekDayStatus,
+    Map<int, WorkoutSessionLog> dayLogs,
+    int activeDayIndex,
   ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -276,7 +293,8 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
                   itemBuilder: (context, i) {
                     final dayIndex = i + 1;
                     final isToday = dayPlan.dayIndex == dayIndex;
-                    final status = weekDayStatus[dayIndex];
+                    final log = dayLogs[dayIndex];
+                    final status = log?.status;
                     const skippedColor = Color(0xFFBA1A1A);
 
                     Color bg;
@@ -289,7 +307,8 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
                       border = outlineColor;
                       fg = isDark ? const Color(0xFF131313) : Colors.white;
                       icon = null;
-                    } else if (status == SessionStatus.completed) {
+                    } else if (status == SessionStatus.completed ||
+                        status == SessionStatus.partial) {
                       bg = sinewGreen.withValues(alpha: 0.12);
                       border = sinewGreen;
                       fg = sinewGreen;
@@ -306,24 +325,44 @@ class _TrainerClientSessionPageState extends State<TrainerClientSessionPage> {
                       icon = null;
                     }
 
-                    return Container(
-                      margin: const EdgeInsets.only(right: 4),
-                      width: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: bg,
-                        border: Border.all(color: border, width: 1),
-                      ),
-                      child: icon != null
-                          ? Icon(icon, size: 14, color: fg)
-                          : Text(
-                              'D$dayIndex',
-                              style: GoogleFonts.manrope(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w800,
-                                color: fg,
+                    return InkWell(
+                      onTap: isToday
+                          ? null
+                          : () {
+                              final tappedDayPlan = weeklyPlan.dayPlans
+                                  .firstWhereOrNull((d) => d.dayIndex == dayIndex);
+                              if (tappedDayPlan == null) return;
+                              context.push(
+                                AppRoute.dayPreview.path,
+                                extra: DayPreviewArgs(
+                                  dayPlan: tappedDayPlan,
+                                  log: log,
+                                  isUpcoming:
+                                      log == null && dayIndex >= activeDayIndex,
+                                  weeklyPlanName: weeklyPlan.name,
+                                  clientName: clientName,
+                                ),
+                              );
+                            },
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 4),
+                        width: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: bg,
+                          border: Border.all(color: border, width: 1),
+                        ),
+                        child: icon != null
+                            ? Icon(icon, size: 14, color: fg)
+                            : Text(
+                                'D$dayIndex',
+                                style: GoogleFonts.manrope(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
+                                  color: fg,
+                                ),
                               ),
-                            ),
+                      ),
                     );
                   },
                 ),

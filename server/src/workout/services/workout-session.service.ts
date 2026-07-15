@@ -9,6 +9,7 @@ import {
   CompleteWorkoutSessionDto,
   SkipWorkoutSessionDto,
   WorkoutSessionResponseDto,
+  TaskCompletionEntryDto,
 } from '../dto/workout-session.dto';
 import type { RequestContext } from '../../common/types/request-context.type';
 import type { PaginationMeta } from '../../common/dto/api-response.dto';
@@ -245,13 +246,28 @@ export class WorkoutSessionService implements IWorkoutSessionService {
         include: {
           weeklyPlan: { select: { name: true } },
           dayPlan: { select: { label: true } },
+          taskCompletionLogs: {
+            select: {
+              taskId: true,
+              actualSets: true,
+              actualReps: true,
+              actualWeightKg: true,
+              notes: true,
+            },
+          },
         },
       }),
     ]);
 
     return {
       data: logs.map((l) =>
-        this.toResponseDto(l, l.weeklyPlan?.name ?? '', l.dayPlan?.label ?? null),
+        this.toResponseDto(
+          l,
+          l.weeklyPlan?.name ?? '',
+          l.dayPlan?.label ?? null,
+          undefined,
+          l.taskCompletionLogs,
+        ),
       ),
       meta: {
         total,
@@ -295,6 +311,7 @@ export class WorkoutSessionService implements IWorkoutSessionService {
     weeklyPlanName: string,
     dayPlanLabel: string | null,
     currentDayIndexAfter?: number,
+    taskCompletionLogs: TaskCompletionEntryDto[] = [],
   ): WorkoutSessionResponseDto {
     return {
       id: log.id,
@@ -310,6 +327,7 @@ export class WorkoutSessionService implements IWorkoutSessionService {
       completedDate: log.completedDate,
       loggedByRole: log.loggedByRole,
       loggedByUserId: log.loggedByUserId,
+      taskCompletionLogs,
       ...(currentDayIndexAfter !== undefined ? { currentDayIndexAfter } : {}),
     };
   }

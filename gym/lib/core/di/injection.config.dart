@@ -33,7 +33,7 @@ import 'package:gym/features/auth/domain/usecases/logout_command_handler.dart'
 import 'package:gym/features/auth/domain/usecases/send_otp_command_handler.dart'
     as _i30;
 import 'package:gym/features/auth/domain/usecases/verify_otp_command_handler.dart'
-    as _i35;
+    as _i38;
 import 'package:gym/features/auth/presentation/cubit/auth_cubit.dart' as _i12;
 import 'package:gym/features/profile/data/datasources/profile_remote_datasource.dart'
     as _i27;
@@ -42,9 +42,9 @@ import 'package:gym/features/profile/data/repositories/profile_repository_impl.d
 import 'package:gym/features/profile/domain/repositories/profile_repository.dart'
     as _i28;
 import 'package:gym/features/profile/domain/usecases/connect_to_trainer_command.dart'
-    as _i41;
+    as _i44;
 import 'package:gym/features/profile/domain/usecases/trainer_signup_command_handler.dart'
-    as _i34;
+    as _i37;
 import 'package:gym/features/profile/presentation/cubit/profile_cubit.dart'
     as _i6;
 import 'package:gym/features/staff/data/datasources/staff_remote_datasource.dart'
@@ -54,30 +54,38 @@ import 'package:gym/features/staff/data/repositories/staff_repository_impl.dart'
 import 'package:gym/features/staff/domain/repositories/staff_repository.dart'
     as _i32;
 import 'package:gym/features/staff/domain/usecases/get_qr_token_query.dart'
-    as _i45;
+    as _i49;
 import 'package:gym/features/staff/domain/usecases/list_staff_clients_query.dart'
-    as _i47;
+    as _i51;
 import 'package:gym/features/staff/domain/usecases/staff_create_profile_command.dart'
-    as _i48;
-import 'package:gym/features/workout/data/datasources/workout_remote_datasource.dart'
+    as _i52;
+import 'package:gym/features/task_media/data/datasources/task_media_remote_datasource.dart'
+    as _i34;
+import 'package:gym/features/task_media/data/repositories/task_media_repository_impl.dart'
     as _i36;
-import 'package:gym/features/workout/data/repositories/workout_repository_impl.dart'
-    as _i38;
-import 'package:gym/features/workout/domain/repositories/workout_repository.dart'
-    as _i37;
-import 'package:gym/features/workout/domain/usecases/manage_day_plans.dart'
-    as _i44;
-import 'package:gym/features/workout/domain/usecases/manage_tasks.dart' as _i42;
-import 'package:gym/features/workout/domain/usecases/manage_weekly_plans.dart'
+import 'package:gym/features/task_media/domain/repositories/task_media_repository.dart'
+    as _i35;
+import 'package:gym/features/task_media/domain/usecases/manage_task_media.dart'
+    as _i46;
+import 'package:gym/features/workout/data/datasources/workout_remote_datasource.dart'
     as _i39;
+import 'package:gym/features/workout/data/repositories/workout_repository_impl.dart'
+    as _i41;
+import 'package:gym/features/workout/domain/repositories/workout_repository.dart'
+    as _i40;
+import 'package:gym/features/workout/domain/usecases/manage_day_plans.dart'
+    as _i48;
+import 'package:gym/features/workout/domain/usecases/manage_tasks.dart' as _i45;
+import 'package:gym/features/workout/domain/usecases/manage_weekly_plans.dart'
+    as _i42;
 import 'package:gym/features/workout/domain/usecases/manage_workout_profiles.dart'
-    as _i43;
+    as _i47;
 import 'package:gym/features/workout_session/data/datasources/workout_session_local_datasource.dart'
     as _i11;
 import 'package:gym/features/workout_session/domain/usecases/get_today_plan_query.dart'
-    as _i46;
+    as _i50;
 import 'package:gym/features/workout_session/domain/usecases/member_session_commands.dart'
-    as _i40;
+    as _i43;
 import 'package:gym/features/workout_session/domain/usecases/trainer_session_commands.dart'
     as _i15;
 import 'package:gym/features/workout_session/presentation/cubit/member_workout_session/member_workout_session_cubit.dart'
@@ -165,72 +173,80 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i31.StaffRemoteDataSourceImpl(gh<_i21.ApiClient>()));
     gh.factory<_i32.StaffRepository>(
         () => _i33.StaffRepositoryImpl(gh<_i31.StaffRemoteDataSource>()));
-    gh.factory<_i34.TrainerSignupCommandHandler>(
-        () => _i34.TrainerSignupCommandHandler(gh<_i28.ProfileRepository>()));
-    gh.factory<_i35.VerifyOtpCommandHandler>(
-        () => _i35.VerifyOtpCommandHandler(gh<_i24.AuthRepository>()));
-    gh.singleton<_i36.WorkoutRemoteDataSource>(
-        () => _i36.WorkoutRemoteDataSourceImpl(gh<_i21.ApiClient>()));
-    gh.factory<_i37.WorkoutRepository>(
-        () => _i38.WorkoutRepositoryImpl(gh<_i36.WorkoutRemoteDataSource>()));
-    gh.factory<_i39.ActivateWeeklyPlanCommandHandler>(() =>
-        _i39.ActivateWeeklyPlanCommandHandler(gh<_i37.WorkoutRepository>()));
+    gh.singleton<_i34.TaskMediaRemoteDataSource>(
+        () => _i34.TaskMediaRemoteDataSourceImpl(gh<_i21.ApiClient>()));
+    gh.factory<_i35.TaskMediaRepository>(() =>
+        _i36.TaskMediaRepositoryImpl(gh<_i34.TaskMediaRemoteDataSource>()));
+    gh.factory<_i37.TrainerSignupCommandHandler>(
+        () => _i37.TrainerSignupCommandHandler(gh<_i28.ProfileRepository>()));
+    gh.factory<_i38.VerifyOtpCommandHandler>(
+        () => _i38.VerifyOtpCommandHandler(gh<_i24.AuthRepository>()));
+    gh.singleton<_i39.WorkoutRemoteDataSource>(
+        () => _i39.WorkoutRemoteDataSourceImpl(gh<_i21.ApiClient>()));
+    gh.factory<_i40.WorkoutRepository>(
+        () => _i41.WorkoutRepositoryImpl(gh<_i39.WorkoutRemoteDataSource>()));
+    gh.factory<_i42.ActivateWeeklyPlanCommandHandler>(() =>
+        _i42.ActivateWeeklyPlanCommandHandler(gh<_i40.WorkoutRepository>()));
     gh.factory<_i15.CompleteClientWorkoutSessionCommandHandler>(() =>
         _i15.CompleteClientWorkoutSessionCommandHandler(
-            gh<_i37.WorkoutRepository>()));
-    gh.factory<_i40.CompleteMemberWorkoutSessionCommandHandler>(() =>
-        _i40.CompleteMemberWorkoutSessionCommandHandler(
-            gh<_i37.WorkoutRepository>()));
-    gh.factory<_i41.ConnectToTrainerCommandHandler>(() =>
-        _i41.ConnectToTrainerCommandHandler(gh<_i28.ProfileRepository>()));
-    gh.factory<_i39.CreateFullWeeklyPlanCommandHandler>(() =>
-        _i39.CreateFullWeeklyPlanCommandHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i42.CreateTaskCommandHandler>(
-        () => _i42.CreateTaskCommandHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i39.CreateWeeklyPlanCommandHandler>(() =>
-        _i39.CreateWeeklyPlanCommandHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i43.CreateWorkoutProfileCommandHandler>(() =>
-        _i43.CreateWorkoutProfileCommandHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i42.DeleteTaskCommandHandler>(
-        () => _i42.DeleteTaskCommandHandler(gh<_i37.WorkoutRepository>()));
+            gh<_i40.WorkoutRepository>()));
+    gh.factory<_i43.CompleteMemberWorkoutSessionCommandHandler>(() =>
+        _i43.CompleteMemberWorkoutSessionCommandHandler(
+            gh<_i40.WorkoutRepository>()));
+    gh.factory<_i44.ConnectToTrainerCommandHandler>(() =>
+        _i44.ConnectToTrainerCommandHandler(gh<_i28.ProfileRepository>()));
+    gh.factory<_i42.CreateFullWeeklyPlanCommandHandler>(() =>
+        _i42.CreateFullWeeklyPlanCommandHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i45.CreateTaskCommandHandler>(
+        () => _i45.CreateTaskCommandHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i46.CreateTaskMediaCommandHandler>(() =>
+        _i46.CreateTaskMediaCommandHandler(gh<_i35.TaskMediaRepository>()));
+    gh.factory<_i42.CreateWeeklyPlanCommandHandler>(() =>
+        _i42.CreateWeeklyPlanCommandHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i47.CreateWorkoutProfileCommandHandler>(() =>
+        _i47.CreateWorkoutProfileCommandHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i45.DeleteTaskCommandHandler>(
+        () => _i45.DeleteTaskCommandHandler(gh<_i40.WorkoutRepository>()));
     gh.factory<_i15.GetClientWorkoutProfileQueryHandler>(() =>
-        _i15.GetClientWorkoutProfileQueryHandler(gh<_i37.WorkoutRepository>()));
+        _i15.GetClientWorkoutProfileQueryHandler(gh<_i40.WorkoutRepository>()));
     gh.factory<_i15.GetClientWorkoutSessionLogsQueryHandler>(() =>
         _i15.GetClientWorkoutSessionLogsQueryHandler(
-            gh<_i37.WorkoutRepository>()));
-    gh.factory<_i44.GetDayPlanDetailsQueryHandler>(
-        () => _i44.GetDayPlanDetailsQueryHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i40.GetMemberActiveProfileQueryHandler>(() =>
-        _i40.GetMemberActiveProfileQueryHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i40.GetMemberWorkoutSessionLogsQueryHandler>(() =>
-        _i40.GetMemberWorkoutSessionLogsQueryHandler(
-            gh<_i37.WorkoutRepository>()));
-    gh.factory<_i45.GetQrTokenQueryHandler>(
-        () => _i45.GetQrTokenQueryHandler(gh<_i32.StaffRepository>()));
-    gh.factory<_i46.GetTodayPlanQueryHandler>(
-        () => _i46.GetTodayPlanQueryHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i39.GetWeeklyPlanDetailsQueryHandler>(() =>
-        _i39.GetWeeklyPlanDetailsQueryHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i39.GetWeeklyPlansQueryHandler>(
-        () => _i39.GetWeeklyPlansQueryHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i43.GetWorkoutProfilesQueryHandler>(() =>
-        _i43.GetWorkoutProfilesQueryHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i47.ListStaffClientsQueryHandler>(
-        () => _i47.ListStaffClientsQueryHandler(gh<_i32.StaffRepository>()));
+            gh<_i40.WorkoutRepository>()));
+    gh.factory<_i48.GetDayPlanDetailsQueryHandler>(
+        () => _i48.GetDayPlanDetailsQueryHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i43.GetMemberActiveProfileQueryHandler>(() =>
+        _i43.GetMemberActiveProfileQueryHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i43.GetMemberWorkoutSessionLogsQueryHandler>(() =>
+        _i43.GetMemberWorkoutSessionLogsQueryHandler(
+            gh<_i40.WorkoutRepository>()));
+    gh.factory<_i49.GetQrTokenQueryHandler>(
+        () => _i49.GetQrTokenQueryHandler(gh<_i32.StaffRepository>()));
+    gh.factory<_i50.GetTodayPlanQueryHandler>(
+        () => _i50.GetTodayPlanQueryHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i42.GetWeeklyPlanDetailsQueryHandler>(() =>
+        _i42.GetWeeklyPlanDetailsQueryHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i42.GetWeeklyPlansQueryHandler>(
+        () => _i42.GetWeeklyPlansQueryHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i47.GetWorkoutProfilesQueryHandler>(() =>
+        _i47.GetWorkoutProfilesQueryHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i51.ListStaffClientsQueryHandler>(
+        () => _i51.ListStaffClientsQueryHandler(gh<_i32.StaffRepository>()));
+    gh.factory<_i46.SearchTaskMediaQueryHandler>(
+        () => _i46.SearchTaskMediaQueryHandler(gh<_i35.TaskMediaRepository>()));
     gh.factory<_i15.SkipClientWorkoutSessionCommandHandler>(() =>
         _i15.SkipClientWorkoutSessionCommandHandler(
-            gh<_i37.WorkoutRepository>()));
-    gh.factory<_i40.SkipMemberWorkoutSessionCommandHandler>(() =>
-        _i40.SkipMemberWorkoutSessionCommandHandler(
-            gh<_i37.WorkoutRepository>()));
-    gh.factory<_i48.StaffCreateProfileCommandHandler>(() =>
-        _i48.StaffCreateProfileCommandHandler(gh<_i32.StaffRepository>()));
-    gh.factory<_i44.UpdateDayPlanCommandHandler>(
-        () => _i44.UpdateDayPlanCommandHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i42.UpdateTaskCommandHandler>(
-        () => _i42.UpdateTaskCommandHandler(gh<_i37.WorkoutRepository>()));
-    gh.factory<_i43.UpdateWorkoutProfileCommandHandler>(() =>
-        _i43.UpdateWorkoutProfileCommandHandler(gh<_i37.WorkoutRepository>()));
+            gh<_i40.WorkoutRepository>()));
+    gh.factory<_i43.SkipMemberWorkoutSessionCommandHandler>(() =>
+        _i43.SkipMemberWorkoutSessionCommandHandler(
+            gh<_i40.WorkoutRepository>()));
+    gh.factory<_i52.StaffCreateProfileCommandHandler>(() =>
+        _i52.StaffCreateProfileCommandHandler(gh<_i32.StaffRepository>()));
+    gh.factory<_i48.UpdateDayPlanCommandHandler>(
+        () => _i48.UpdateDayPlanCommandHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i45.UpdateTaskCommandHandler>(
+        () => _i45.UpdateTaskCommandHandler(gh<_i40.WorkoutRepository>()));
+    gh.factory<_i47.UpdateWorkoutProfileCommandHandler>(() =>
+        _i47.UpdateWorkoutProfileCommandHandler(gh<_i40.WorkoutRepository>()));
     return this;
   }
 }

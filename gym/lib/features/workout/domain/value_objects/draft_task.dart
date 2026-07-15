@@ -1,4 +1,5 @@
 import 'package:uuid/uuid.dart';
+import 'draft_task_attachment.dart';
 
 class DraftTask {
   final String localId;
@@ -11,6 +12,7 @@ class DraftTask {
   final String reps;
   final int? restSeconds;
   final String? tempo;
+  final List<DraftTaskAttachment> attachments;
 
   DraftTask({
     String? localId,
@@ -23,6 +25,7 @@ class DraftTask {
     required this.reps,
     this.restSeconds,
     this.tempo,
+    this.attachments = const [],
   }) : localId = localId ?? const Uuid().v4();
 
   DraftTask copyWith({
@@ -35,6 +38,7 @@ class DraftTask {
     String? reps,
     int? restSeconds,
     String? tempo,
+    List<DraftTaskAttachment>? attachments,
   }) {
     return DraftTask(
       localId: localId,
@@ -47,6 +51,7 @@ class DraftTask {
       reps: reps ?? this.reps,
       restSeconds: restSeconds ?? this.restSeconds,
       tempo: tempo ?? this.tempo,
+      attachments: attachments ?? this.attachments,
     );
   }
 
@@ -60,5 +65,7 @@ class DraftTask {
         'reps': reps,
         if (restSeconds != null) 'restSeconds': restSeconds,
         if (tempo != null && tempo!.isNotEmpty) 'tempo': tempo,
+        if (attachments.isNotEmpty)
+          'attachments': attachments.map((a) => a.toJson()).toList(),
       };
 }

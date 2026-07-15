@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../task_media/domain/entities/task_attachment.dart';
 
 part 'task.freezed.dart';
 
@@ -16,5 +17,6 @@ class Task with _$Task {
     required String reps,
     int? restSeconds,
     String? tempo,
+    @Default(<TaskAttachment>[]) List<TaskAttachment> attachments,
   }) = _Task;
 }

@@ -14,10 +14,14 @@ import {
 import type { RequestContext } from '../../common/types/request-context.type';
 import type { WorkoutProfile } from 'generated/prisma/client';
 import { Prisma } from 'generated/prisma/client';
+import { TaskMediaService } from './task-media.service';
 
 @Injectable()
 export class WorkoutProfileService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly taskMediaService: TaskMediaService,
+  ) {}
 
   async create(dto: CreateWorkoutProfileDto, ctx: RequestContext) {
     const trainerProfileId = dto.trainerProfileId || ctx.staffProfileId;
@@ -141,15 +145,36 @@ export class WorkoutProfileService {
         tasks: {
           orderBy: { sequenceIndex: 'asc' },
           include: {
-            media: {
+            attachments: {
               orderBy: { sequenceIndex: 'asc' },
+              include: { taskMedia: { include: { media: true } } },
             },
           },
         },
       },
     });
 
-    return dayPlan;
+    if (!dayPlan) return null;
+
+    // Resolve fresh media URLs for each task's attachments.
+    const tasks = await Promise.all(
+      dayPlan.tasks.map(async (t) => ({
+        ...t,
+        attachments: await Promise.all(
+          t.attachments.map(async (a) => ({
+            id: a.id,
+            taskId: a.taskId,
+            taskMediaId: a.taskMediaId,
+            caption: a.caption,
+            sequenceIndex: a.sequenceIndex,
+            createdAt: a.createdAt,
+            taskMedia: await this.taskMediaService.mapToResponse(a.taskMedia),
+          })),
+        ),
+      })),
+    );
+
+    return { ...dayPlan, tasks };
   }
 
   async findAll(query: WorkoutProfileQueryDto, ctx: RequestContext) {

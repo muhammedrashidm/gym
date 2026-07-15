@@ -72,3 +72,8 @@ This reference file contains a list of all screens available in the Stitch proje
 ### Trainer — Client Session Update (§9.3)
 - Trainer Client Session Logging — Light Mode (`80390354c11a4bf798f43c2d55a30d03`)
 - Trainer Client Session Logging — Dark Mode (`bd666160e71945368e9c0af57a32dd4a`)
+
+## Task Media Library (Protocol Creator: search/attach + upload)
+
+- Task Media Library - Slate & Sinew Refinement (`e3dd085f58e24aa0b1281e08710a9bfb`)
+- Add Task Media - Slate & Sinew Refinement (`84f42edbdafe4859a1ce7298aec56bf1`)

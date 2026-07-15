@@ -12,9 +12,11 @@ import {
   UpdateTaskDto,
   TaskResponseDto,
   ReorderTasksDto,
-  TaskMediaInputDto,
-  TaskMediaResponseDto,
 } from '../dto/task.dto';
+import {
+  AttachTaskMediaDto,
+  TaskAttachmentResponseDto,
+} from '../dto/task-media.dto';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { SYSTEM_ROLES } from '../../auth/constants/roles';
 import { ReqContext } from '../../common/decorators/request-context.decorator';
@@ -96,9 +98,9 @@ export class TaskController {
     return { success: true, data };
   }
 
-  @ApiOperation({ summary: 'Add instructional media to a task' })
-  @ApiCreatedResponse({ type: TaskMediaResponseDto })
-  @Post('tasks/:taskId/media')
+  @ApiOperation({ summary: 'Attach a library media item to a task' })
+  @ApiCreatedResponse({ type: TaskAttachmentResponseDto })
+  @Post('tasks/:taskId/attachments')
   @Roles(
     SYSTEM_ROLES.TRAINER,
     SYSTEM_ROLES.STAFF,
@@ -106,17 +108,17 @@ export class TaskController {
     SYSTEM_ROLES.OWNER,
     SYSTEM_ROLES.ADMIN,
   )
-  async addMedia(
+  async addAttachment(
     @Param('taskId') taskId: string,
-    @Body() dto: TaskMediaInputDto,
+    @Body() dto: AttachTaskMediaDto,
     @ReqContext() ctx: RequestContext,
   ) {
-    const data = await this.taskService.addMedia(taskId, dto, ctx);
+    const data = await this.taskService.addAttachment(taskId, dto, ctx);
     return { success: true, data };
   }
 
-  @ApiOperation({ summary: 'Remove instructional media from a task' })
-  @Delete('task-media/:id')
+  @ApiOperation({ summary: 'Detach a media item from a task (library item survives)' })
+  @Delete('task-attachments/:id')
   @Roles(
     SYSTEM_ROLES.TRAINER,
     SYSTEM_ROLES.STAFF,
@@ -124,10 +126,10 @@ export class TaskController {
     SYSTEM_ROLES.OWNER,
     SYSTEM_ROLES.ADMIN,
   )
-  async removeMedia(
+  async removeAttachment(
     @Param('id') id: string,
     @ReqContext() ctx: RequestContext,
   ) {
-    return this.taskService.removeMedia(id, ctx);
+    return this.taskService.removeAttachment(id, ctx);
   }
 }

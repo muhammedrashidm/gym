@@ -179,7 +179,7 @@ model Task {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  media               TaskMedia[]
+  attachments         TaskAttachment[]
   taskCompletionLogs  TaskCompletionLog[]
 
   @@unique([dayPlanId, sequenceIndex])
@@ -187,24 +187,55 @@ model Task {
 }
 
 // ----------------------------------------------------------------------------
+// TaskAttachment
+// Join row linking a Task to a reusable library TaskMedia item. One row per
+// media-on-a-task; sequenceIndex orders multiple media items within a single
+// task's gallery. The same TaskMedia can be attached to many tasks.
+// ----------------------------------------------------------------------------
+
+model TaskAttachment {
+  id            String    @id @default(cuid())
+  taskId        String
+  task          Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskMediaId   String
+  taskMedia     TaskMedia @relation(fields: [taskMediaId], references: [id], onDelete: Cascade)
+
+  caption       String?
+  sequenceIndex Int
+  createdById   String
+
+  createdAt     DateTime  @default(now())
+
+  @@unique([taskId, sequenceIndex])
+  @@unique([taskId, taskMediaId])
+  @@map("task_attachments")
+}
+
+// ----------------------------------------------------------------------------
 // TaskMedia
-// One row per attachment. sequenceIndex orders multiple media items within
-// a single task's gallery.
+// Reusable, searchable media library entry. Created once by a trainer (with a
+// name/description/keywords + one uploaded Media file), then referenced from
+// any number of tasks via TaskAttachment. isPrivate hides it from other
+// trainers' library searches (but not from tasks it's already attached to).
 // ----------------------------------------------------------------------------
 
 model TaskMedia {
-  id            String        @id @default(cuid())
-  taskId        String
-  task          Task          @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  id          String        @id @default(cuid())
+  mediaId     String        @unique
+  media       Media         @relation(fields: [mediaId], references: [id])
 
-  type          TaskMediaType
-  url           String
-  caption       String?
-  sequenceIndex Int
+  type        TaskMediaType
+  name        String
+  description String?
+  keywords    String[] // stored lowercased/trimmed for consistent search
+  createdById String
+  isPrivate   Boolean       @default(false)
 
-  createdAt     DateTime      @default(now())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
-  @@unique([taskId, sequenceIndex])
+  attachments TaskAttachment[]
+
   @@map("task_media")
 }
 

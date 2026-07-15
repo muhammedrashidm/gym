@@ -8,9 +8,21 @@ datasource db {
   provider = "postgresql"
 }
 
+enum MediaVisibility {
+  PUBLIC // avatars, gym logos — permanent, directly-linkable URL
+  PROTECTED // task media — signed-URL-only access, resolved fresh on every read
+}
+
 model Media {
-  id        String   @id @default(uuid())
-  url       String
-  type      String
-  createdAt DateTime @default(now())
+  id          String          @id @default(uuid())
+  storageKey  String // local relative path OR S3 object key — never a fixed public URL for PROTECTED
+  mimeType    String // e.g. "video/mp4", "image/png"
+  sizeBytes   Int?
+  visibility  MediaVisibility @default(PUBLIC)
+  createdById String
+  createdAt   DateTime        @default(now())
+
+  taskMedia TaskMedia?
+
+  @@map("media")
 }

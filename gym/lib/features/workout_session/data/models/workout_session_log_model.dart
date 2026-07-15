@@ -1,7 +1,40 @@
 import 'package:json_annotation/json_annotation.dart';
+import '../../domain/entities/task_completion_entry.dart';
 import '../../domain/entities/workout_session_log.dart';
 
 part 'workout_session_log_model.g.dart';
+
+@JsonSerializable()
+class TaskCompletionEntryModel {
+  final String taskId;
+  final int? actualSets;
+  final String? actualReps;
+  final double? actualWeightKg;
+  final String? notes;
+
+  const TaskCompletionEntryModel({
+    required this.taskId,
+    this.actualSets,
+    this.actualReps,
+    this.actualWeightKg,
+    this.notes,
+  });
+
+  factory TaskCompletionEntryModel.fromJson(Map<String, dynamic> json) =>
+      _$TaskCompletionEntryModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TaskCompletionEntryModelToJson(this);
+
+  TaskCompletionEntry toDomain() {
+    return TaskCompletionEntry(
+      taskId: taskId,
+      actualSets: actualSets,
+      actualReps: actualReps,
+      actualWeightKg: actualWeightKg,
+      notes: notes,
+    );
+  }
+}
 
 @JsonSerializable()
 class WorkoutSessionLogModel {
@@ -19,6 +52,7 @@ class WorkoutSessionLogModel {
   final String loggedByRole;
   final String loggedByUserId;
   final int? currentDayIndexAfter;
+  final List<TaskCompletionEntryModel>? taskCompletionLogs;
 
   const WorkoutSessionLogModel({
     required this.id,
@@ -35,6 +69,7 @@ class WorkoutSessionLogModel {
     required this.loggedByRole,
     required this.loggedByUserId,
     this.currentDayIndexAfter,
+    this.taskCompletionLogs,
   });
 
   factory WorkoutSessionLogModel.fromJson(Map<String, dynamic> json) =>
@@ -58,12 +93,15 @@ class WorkoutSessionLogModel {
       loggedByRole: _parseRole(loggedByRole),
       loggedByUserId: loggedByUserId,
       currentDayIndexAfter: currentDayIndexAfter,
+      taskCompletionLogs:
+          taskCompletionLogs?.map((e) => e.toDomain()).toList() ?? const [],
     );
   }
 
   static SessionStatus _parseStatus(String s) => switch (s.toUpperCase()) {
         'COMPLETED' => SessionStatus.completed,
         'SKIPPED' => SessionStatus.skipped,
+        'PARTIAL' => SessionStatus.partial,
         _ => SessionStatus.inProgress,
       };
 

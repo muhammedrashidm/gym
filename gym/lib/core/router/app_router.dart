@@ -29,6 +29,7 @@ import '../../features/workout/presentation/pages/week_plan_creator_page.dart';
 import '../../features/workout_session/presentation/pages/task_execution_page.dart';
 import '../../features/workout_session/presentation/pages/trainer_live_clients_page.dart';
 import '../../features/workout_session/presentation/pages/trainer_client_session_page.dart';
+import '../../features/workout_session/presentation/pages/day_preview_page.dart';
 import '../../features/workout_session/presentation/cubit/member_workout_session/member_workout_session_cubit.dart';
 import '../../features/workout_session/presentation/cubit/trainer_live_clients/trainer_live_clients_cubit.dart';
 import '../../features/workout_session/presentation/cubit/trainer_client_session/trainer_client_session_cubit.dart';
@@ -151,9 +152,14 @@ class AppRouter {
             GoRoute(
               path: AppRoute.taskExecution.path,
               name: AppRoute.taskExecution.name,
-              builder: (context, state) => TaskExecutionPage(
-                taskData: state.extra as Map<String, dynamic>,
+              builder: (context, state) => BlocProvider(
+                create: (_) => GetIt.I<MemberWorkoutSessionCubit>(),
+                child:  TaskExecutionPage(                taskData: state.extra as Map<String, dynamic>,
+                ),
               ),
+              // builder: (context, state) => TaskExecutionPage(
+              //   taskData: state.extra as Map<String, dynamic>,
+              // ),
             ),
             GoRoute(
               path: AppRoute.recovery.path,
@@ -206,6 +212,13 @@ class AppRouter {
               clientId: state.pathParameters['clientId']!,
               clientName: state.extra as String? ?? '',
             ),
+          ),
+        ),
+        GoRoute(
+          path: AppRoute.dayPreview.path,
+          name: AppRoute.dayPreview.name,
+          builder: (context, state) => DayPreviewPage(
+            args: state.extra as DayPreviewArgs,
           ),
         ),
       ],

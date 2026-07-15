@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart';
 import 'package:dart_mediatr/dart_mediatr.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,12 +7,14 @@ import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../workout/domain/entities/day_plan.dart';
+import '../../../../workout/domain/entities/weekly_plan.dart';
 import '../../../../workout/domain/entities/workout_profile.dart';
+import '../../../../workout/domain/usecases/manage_weekly_plans.dart';
 import '../../../domain/entities/session_draft.dart';
 import '../../../domain/entities/task_completion_draft.dart';
 import '../../../domain/entities/workout_session_log.dart';
-import '../../../domain/usecases/get_today_plan_query.dart';
 import '../../../domain/usecases/member_session_commands.dart';
+import '../../../domain/week_progress_calculator.dart';
 import '../../../data/datasources/workout_session_local_datasource.dart';
 import 'member_workout_session_state.dart';
 
@@ -52,20 +55,57 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
     }
     final profile = resolvedProfile;
 
-    final dayPlanResult = await _mediator.sendCommand(
-      GetTodayPlanQuery(profile.id),
-    ) as Either<Failure, DayPlan?>;
-
-    final dayPlan = dayPlanResult.fold(
-      (failure) {
-        emit(MemberWorkoutSessionState.error(failure: failure, profile: profile));
-        return null;
-      },
-      (dp) => dp,
-    );
-    if (isClosed) return;
-    if (dayPlan == null) {
+    final activeWeeklyPlanId = profile.activeWeeklyPlanId;
+    if (activeWeeklyPlanId == null) {
       emit(const MemberWorkoutSessionState.noPlan());
+      return;
+    }
+
+    final results = await Future.wait([
+      _mediator.sendCommand(GetWeeklyPlanDetailsQuery(activeWeeklyPlanId))
+          as Future<Either<Failure, WeeklyPlan>>,
+      _mediator.sendCommand(GetMemberWorkoutSessionLogsQuery(
+        workoutProfileId: profile.id,
+        pageSize: 50,
+      )) as Future<
+          Either<Failure,
+              ({List<WorkoutSessionLog> logs, int total, int page, int pageSize})>>,
+    ]);
+
+    if (isClosed) return;
+
+    final weeklyPlanResult = results[0] as Either<Failure, WeeklyPlan>;
+    final logsResult = results[1] as Either<Failure,
+        ({List<WorkoutSessionLog> logs, int total, int page, int pageSize})>;
+
+    final weeklyPlanFailure = weeklyPlanResult.fold((f) => f, (_) => null);
+    if (weeklyPlanFailure != null) {
+      emit(MemberWorkoutSessionState.error(
+        failure: weeklyPlanFailure,
+        profile: profile,
+      ));
+      return;
+    }
+    final weeklyPlan = weeklyPlanResult.fold((_) => null, (p) => p)!;
+
+    // Log fetch is supplementary (day-strip status + active-day derivation)
+    // — a failure here must not block the member from logging today's
+    // session. Falling back to day 1 keeps the loaded state internally
+    // consistent (empty strip paired with day 1 active).
+    final progress = logsResult.fold(
+      (_) => const WeekProgress(dayLogs: {}, activeDayIndex: 1),
+      (r) => computeWeekProgress(r.logs, activeWeeklyPlanId),
+    );
+
+    final dayPlan = _resolveActiveDayPlan(weeklyPlan, progress.activeDayIndex);
+    if (dayPlan == null) {
+      // A plan is assigned but has no day plans configured — malformed
+      // data, distinct from "no plan assigned" (noPlan).
+      emit(MemberWorkoutSessionState.error(
+        failure: const Failure.unknown(
+            message: 'Weekly plan has no day plans configured.'),
+        profile: profile,
+      ));
       return;
     }
 
@@ -73,7 +113,7 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
     await _localDataSource.startOrResumeDraft(SessionDraft(
       workoutProfileId: profile.id,
       clientProfileId: profile.clientProfileId,
-      dayIndexAtTime: profile.currentDayIndex,
+      dayIndexAtTime: dayPlan.dayIndex,
       dayPlanId: dayPlan.id,
       dayPlanLabel: dayPlan.label,
       weeklyPlanName: profile.activeWeeklyPlan?.name,
@@ -87,11 +127,28 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
       if (draft != null && !isClosed && state is! MemberSessionSubmitting) {
         emit(MemberWorkoutSessionState.loaded(
           profile: profile,
+          weeklyPlan: weeklyPlan,
           dayPlan: dayPlan,
           draft: draft,
+          dayLogs: progress.dayLogs,
+          activeDayIndex: progress.activeDayIndex,
         ));
       }
     });
+  }
+
+  /// Resolves the DayPlan for [activeDayIndex]. Falls back to the
+  /// lowest-index day plan if the exact index isn't found (shouldn't
+  /// happen given the 7-day invariant, but the plan is untrusted network
+  /// input). Returns null only if the plan has zero day plans configured.
+  DayPlan? _resolveActiveDayPlan(WeeklyPlan weeklyPlan, int activeDayIndex) {
+    final exact = weeklyPlan.dayPlans
+        .firstWhereOrNull((d) => d.dayIndex == activeDayIndex);
+    if (exact != null) return exact;
+    if (weeklyPlan.dayPlans.isEmpty) return null;
+    final sorted = [...weeklyPlan.dayPlans]
+      ..sort((a, b) => a.dayIndex.compareTo(b.dayIndex));
+    return sorted.first;
   }
 
   /// Save actuals for one task immediately to local storage.
@@ -121,8 +178,11 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
 
     emit(MemberWorkoutSessionState.submitting(
       profile: loaded.profile,
+      weeklyPlan: loaded.weeklyPlan,
       dayPlan: loaded.dayPlan,
       draft: loaded.draft,
+      dayLogs: loaded.dayLogs,
+      activeDayIndex: loaded.activeDayIndex,
     ));
 
     final completions = loaded.draft.taskDrafts
@@ -148,8 +208,11 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
         emit(MemberWorkoutSessionState.error(
           failure: failure,
           profile: loaded.profile,
+          weeklyPlan: loaded.weeklyPlan,
           dayPlan: loaded.dayPlan,
           draft: loaded.draft,
+          dayLogs: loaded.dayLogs,
+          activeDayIndex: loaded.activeDayIndex,
         ));
       },
       (sessionLog) async {
@@ -166,8 +229,11 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
 
     emit(MemberWorkoutSessionState.submitting(
       profile: loaded.profile,
+      weeklyPlan: loaded.weeklyPlan,
       dayPlan: loaded.dayPlan,
       draft: loaded.draft,
+      dayLogs: loaded.dayLogs,
+      activeDayIndex: loaded.activeDayIndex,
     ));
 
     final result = await _mediator.sendCommand(
@@ -182,8 +248,11 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
         emit(MemberWorkoutSessionState.error(
           failure: failure,
           profile: loaded.profile,
+          weeklyPlan: loaded.weeklyPlan,
           dayPlan: loaded.dayPlan,
           draft: loaded.draft,
+          dayLogs: loaded.dayLogs,
+          activeDayIndex: loaded.activeDayIndex,
         ));
       },
       (sessionLog) async {
@@ -193,14 +262,23 @@ class MemberWorkoutSessionCubit extends Cubit<MemberWorkoutSessionState> {
     );
   }
 
-  ({WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft})?
-      _currentLoaded() {
+  ({
+    WorkoutProfile profile,
+    WeeklyPlan weeklyPlan,
+    DayPlan dayPlan,
+    SessionDraft draft,
+    Map<int, WorkoutSessionLog> dayLogs,
+    int activeDayIndex,
+  })? _currentLoaded() {
     final current = state;
     if (current is MemberSessionLoaded) {
       return (
         profile: current.profile,
+        weeklyPlan: current.weeklyPlan,
         dayPlan: current.dayPlan,
-        draft: current.draft
+        draft: current.draft,
+        dayLogs: current.dayLogs,
+        activeDayIndex: current.activeDayIndex,
       );
     }
     return null;

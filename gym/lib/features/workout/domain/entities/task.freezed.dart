@@ -27,6 +27,7 @@ mixin _$Task {
   String get reps => throw _privateConstructorUsedError;
   int? get restSeconds => throw _privateConstructorUsedError;
   String? get tempo => throw _privateConstructorUsedError;
+  List<TaskAttachment> get attachments => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TaskCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
@@ -48,7 +49,8 @@ abstract class $TaskCopyWith<$Res> {
       int sets,
       String reps,
       int? restSeconds,
-      String? tempo});
+      String? tempo,
+      List<TaskAttachment> attachments});
 }
 
 /// @nodoc
@@ -75,6 +77,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? reps = null,
     Object? restSeconds = freezed,
     Object? tempo = freezed,
+    Object? attachments = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -121,6 +124,10 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.tempo
           : tempo // ignore: cast_nullable_to_non_nullable
               as String?,
+      attachments: null == attachments
+          ? _value.attachments
+          : attachments // ignore: cast_nullable_to_non_nullable
+              as List<TaskAttachment>,
     ) as $Val);
   }
 }
@@ -143,7 +150,8 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       int sets,
       String reps,
       int? restSeconds,
-      String? tempo});
+      String? tempo,
+      List<TaskAttachment> attachments});
 }
 
 /// @nodoc
@@ -167,6 +175,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? reps = null,
     Object? restSeconds = freezed,
     Object? tempo = freezed,
+    Object? attachments = null,
   }) {
     return _then(_$TaskImpl(
       id: null == id
@@ -213,6 +222,10 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.tempo
           : tempo // ignore: cast_nullable_to_non_nullable
               as String?,
+      attachments: null == attachments
+          ? _value._attachments
+          : attachments // ignore: cast_nullable_to_non_nullable
+              as List<TaskAttachment>,
     ));
   }
 }
@@ -231,7 +244,9 @@ class _$TaskImpl implements _Task {
       required this.sets,
       required this.reps,
       this.restSeconds,
-      this.tempo});
+      this.tempo,
+      final List<TaskAttachment> attachments = const <TaskAttachment>[]})
+      : _attachments = attachments;
 
   @override
   final String id;
@@ -255,10 +270,18 @@ class _$TaskImpl implements _Task {
   final int? restSeconds;
   @override
   final String? tempo;
+  final List<TaskAttachment> _attachments;
+  @override
+  @JsonKey()
+  List<TaskAttachment> get attachments {
+    if (_attachments is EqualUnmodifiableListView) return _attachments;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_attachments);
+  }
 
   @override
   String toString() {
-    return 'Task(id: $id, dayPlanId: $dayPlanId, sequenceIndex: $sequenceIndex, name: $name, description: $description, machineDetails: $machineDetails, notes: $notes, sets: $sets, reps: $reps, restSeconds: $restSeconds, tempo: $tempo)';
+    return 'Task(id: $id, dayPlanId: $dayPlanId, sequenceIndex: $sequenceIndex, name: $name, description: $description, machineDetails: $machineDetails, notes: $notes, sets: $sets, reps: $reps, restSeconds: $restSeconds, tempo: $tempo, attachments: $attachments)';
   }
 
   @override
@@ -281,12 +304,26 @@ class _$TaskImpl implements _Task {
             (identical(other.reps, reps) || other.reps == reps) &&
             (identical(other.restSeconds, restSeconds) ||
                 other.restSeconds == restSeconds) &&
-            (identical(other.tempo, tempo) || other.tempo == tempo));
+            (identical(other.tempo, tempo) || other.tempo == tempo) &&
+            const DeepCollectionEquality()
+                .equals(other._attachments, _attachments));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, dayPlanId, sequenceIndex,
-      name, description, machineDetails, notes, sets, reps, restSeconds, tempo);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      dayPlanId,
+      sequenceIndex,
+      name,
+      description,
+      machineDetails,
+      notes,
+      sets,
+      reps,
+      restSeconds,
+      tempo,
+      const DeepCollectionEquality().hash(_attachments));
 
   @JsonKey(ignore: true)
   @override
@@ -307,7 +344,8 @@ abstract class _Task implements Task {
       required final int sets,
       required final String reps,
       final int? restSeconds,
-      final String? tempo}) = _$TaskImpl;
+      final String? tempo,
+      final List<TaskAttachment> attachments}) = _$TaskImpl;
 
   @override
   String get id;
@@ -331,6 +369,8 @@ abstract class _Task implements Task {
   int? get restSeconds;
   @override
   String? get tempo;
+  @override
+  List<TaskAttachment> get attachments;
   @override
   @JsonKey(ignore: true)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>

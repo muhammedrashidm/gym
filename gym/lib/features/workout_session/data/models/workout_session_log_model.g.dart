@@ -6,6 +6,26 @@ part of 'workout_session_log_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+TaskCompletionEntryModel _$TaskCompletionEntryModelFromJson(
+        Map<String, dynamic> json) =>
+    TaskCompletionEntryModel(
+      taskId: json['taskId'] as String,
+      actualSets: (json['actualSets'] as num?)?.toInt(),
+      actualReps: json['actualReps'] as String?,
+      actualWeightKg: (json['actualWeightKg'] as num?)?.toDouble(),
+      notes: json['notes'] as String?,
+    );
+
+Map<String, dynamic> _$TaskCompletionEntryModelToJson(
+        TaskCompletionEntryModel instance) =>
+    <String, dynamic>{
+      'taskId': instance.taskId,
+      'actualSets': instance.actualSets,
+      'actualReps': instance.actualReps,
+      'actualWeightKg': instance.actualWeightKg,
+      'notes': instance.notes,
+    };
+
 WorkoutSessionLogModel _$WorkoutSessionLogModelFromJson(
         Map<String, dynamic> json) =>
     WorkoutSessionLogModel(
@@ -23,6 +43,10 @@ WorkoutSessionLogModel _$WorkoutSessionLogModelFromJson(
       loggedByRole: json['loggedByRole'] as String,
       loggedByUserId: json['loggedByUserId'] as String,
       currentDayIndexAfter: (json['currentDayIndexAfter'] as num?)?.toInt(),
+      taskCompletionLogs: (json['taskCompletionLogs'] as List<dynamic>?)
+          ?.map((e) =>
+              TaskCompletionEntryModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$WorkoutSessionLogModelToJson(
@@ -42,4 +66,5 @@ Map<String, dynamic> _$WorkoutSessionLogModelToJson(
       'loggedByRole': instance.loggedByRole,
       'loggedByUserId': instance.loggedByUserId,
       'currentDayIndexAfter': instance.currentDayIndexAfter,
+      'taskCompletionLogs': instance.taskCompletionLogs,
     };

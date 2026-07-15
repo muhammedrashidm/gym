@@ -18,6 +18,11 @@ TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
       reps: json['reps'] as String,
       restSeconds: (json['restSeconds'] as num?)?.toInt(),
       tempo: json['tempo'] as String?,
+      attachments: (json['attachments'] as List<dynamic>?)
+              ?.map((e) =>
+                  TaskAttachmentModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{
@@ -32,4 +37,5 @@ Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{
       'reps': instance.reps,
       'restSeconds': instance.restSeconds,
       'tempo': instance.tempo,
+      'attachments': instance.attachments.map((e) => e.toJson()).toList(),
     };

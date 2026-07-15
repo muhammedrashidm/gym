@@ -21,15 +21,31 @@ mixin _$MemberWorkoutSessionState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) =>
       throw _privateConstructorUsedError;
@@ -38,15 +54,31 @@ mixin _$MemberWorkoutSessionState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) =>
       throw _privateConstructorUsedError;
@@ -55,15 +87,31 @@ mixin _$MemberWorkoutSessionState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) =>
@@ -166,15 +214,31 @@ class _$MemberSessionInitialImpl implements MemberSessionInitial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) {
     return initial();
@@ -186,15 +250,31 @@ class _$MemberSessionInitialImpl implements MemberSessionInitial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) {
     return initial?.call();
@@ -206,15 +286,31 @@ class _$MemberSessionInitialImpl implements MemberSessionInitial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) {
@@ -318,15 +414,31 @@ class _$MemberSessionLoadingImpl implements MemberSessionLoading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) {
     return loading();
@@ -338,15 +450,31 @@ class _$MemberSessionLoadingImpl implements MemberSessionLoading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) {
     return loading?.call();
@@ -358,15 +486,31 @@ class _$MemberSessionLoadingImpl implements MemberSessionLoading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) {
@@ -433,9 +577,16 @@ abstract class _$$MemberSessionLoadedImplCopyWith<$Res> {
           $Res Function(_$MemberSessionLoadedImpl) then) =
       __$$MemberSessionLoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft});
+  $Res call(
+      {WorkoutProfile profile,
+      WeeklyPlan weeklyPlan,
+      DayPlan dayPlan,
+      SessionDraft draft,
+      Map<int, WorkoutSessionLog> dayLogs,
+      int activeDayIndex});
 
   $WorkoutProfileCopyWith<$Res> get profile;
+  $WeeklyPlanCopyWith<$Res> get weeklyPlan;
   $DayPlanCopyWith<$Res> get dayPlan;
   $SessionDraftCopyWith<$Res> get draft;
 }
@@ -453,14 +604,21 @@ class __$$MemberSessionLoadedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? profile = null,
+    Object? weeklyPlan = null,
     Object? dayPlan = null,
     Object? draft = null,
+    Object? dayLogs = null,
+    Object? activeDayIndex = null,
   }) {
     return _then(_$MemberSessionLoadedImpl(
       profile: null == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as WorkoutProfile,
+      weeklyPlan: null == weeklyPlan
+          ? _value.weeklyPlan
+          : weeklyPlan // ignore: cast_nullable_to_non_nullable
+              as WeeklyPlan,
       dayPlan: null == dayPlan
           ? _value.dayPlan
           : dayPlan // ignore: cast_nullable_to_non_nullable
@@ -469,6 +627,14 @@ class __$$MemberSessionLoadedImplCopyWithImpl<$Res>
           ? _value.draft
           : draft // ignore: cast_nullable_to_non_nullable
               as SessionDraft,
+      dayLogs: null == dayLogs
+          ? _value._dayLogs
+          : dayLogs // ignore: cast_nullable_to_non_nullable
+              as Map<int, WorkoutSessionLog>,
+      activeDayIndex: null == activeDayIndex
+          ? _value.activeDayIndex
+          : activeDayIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
@@ -477,6 +643,14 @@ class __$$MemberSessionLoadedImplCopyWithImpl<$Res>
   $WorkoutProfileCopyWith<$Res> get profile {
     return $WorkoutProfileCopyWith<$Res>(_value.profile, (value) {
       return _then(_value.copyWith(profile: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $WeeklyPlanCopyWith<$Res> get weeklyPlan {
+    return $WeeklyPlanCopyWith<$Res>(_value.weeklyPlan, (value) {
+      return _then(_value.copyWith(weeklyPlan: value));
     });
   }
 
@@ -501,18 +675,39 @@ class __$$MemberSessionLoadedImplCopyWithImpl<$Res>
 
 class _$MemberSessionLoadedImpl implements MemberSessionLoaded {
   const _$MemberSessionLoadedImpl(
-      {required this.profile, required this.dayPlan, required this.draft});
+      {required this.profile,
+      required this.weeklyPlan,
+      required this.dayPlan,
+      required this.draft,
+      final Map<int, WorkoutSessionLog> dayLogs =
+          const <int, WorkoutSessionLog>{},
+      this.activeDayIndex = 1})
+      : _dayLogs = dayLogs;
 
   @override
   final WorkoutProfile profile;
   @override
+  final WeeklyPlan weeklyPlan;
+  @override
   final DayPlan dayPlan;
   @override
   final SessionDraft draft;
+  final Map<int, WorkoutSessionLog> _dayLogs;
+  @override
+  @JsonKey()
+  Map<int, WorkoutSessionLog> get dayLogs {
+    if (_dayLogs is EqualUnmodifiableMapView) return _dayLogs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_dayLogs);
+  }
+
+  @override
+  @JsonKey()
+  final int activeDayIndex;
 
   @override
   String toString() {
-    return 'MemberWorkoutSessionState.loaded(profile: $profile, dayPlan: $dayPlan, draft: $draft)';
+    return 'MemberWorkoutSessionState.loaded(profile: $profile, weeklyPlan: $weeklyPlan, dayPlan: $dayPlan, draft: $draft, dayLogs: $dayLogs, activeDayIndex: $activeDayIndex)';
   }
 
   @override
@@ -521,12 +716,18 @@ class _$MemberSessionLoadedImpl implements MemberSessionLoaded {
         (other.runtimeType == runtimeType &&
             other is _$MemberSessionLoadedImpl &&
             (identical(other.profile, profile) || other.profile == profile) &&
+            (identical(other.weeklyPlan, weeklyPlan) ||
+                other.weeklyPlan == weeklyPlan) &&
             (identical(other.dayPlan, dayPlan) || other.dayPlan == dayPlan) &&
-            (identical(other.draft, draft) || other.draft == draft));
+            (identical(other.draft, draft) || other.draft == draft) &&
+            const DeepCollectionEquality().equals(other._dayLogs, _dayLogs) &&
+            (identical(other.activeDayIndex, activeDayIndex) ||
+                other.activeDayIndex == activeDayIndex));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, profile, dayPlan, draft);
+  int get hashCode => Object.hash(runtimeType, profile, weeklyPlan, dayPlan,
+      draft, const DeepCollectionEquality().hash(_dayLogs), activeDayIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -541,18 +742,34 @@ class _$MemberSessionLoadedImpl implements MemberSessionLoaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) {
-    return loaded(profile, dayPlan, draft);
+    return loaded(profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
   }
 
   @override
@@ -561,18 +778,35 @@ class _$MemberSessionLoadedImpl implements MemberSessionLoaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) {
-    return loaded?.call(profile, dayPlan, draft);
+    return loaded?.call(
+        profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
   }
 
   @override
@@ -581,20 +815,37 @@ class _$MemberSessionLoadedImpl implements MemberSessionLoaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(profile, dayPlan, draft);
+      return loaded(
+          profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
     }
     return orElse();
   }
@@ -649,12 +900,18 @@ class _$MemberSessionLoadedImpl implements MemberSessionLoaded {
 abstract class MemberSessionLoaded implements MemberWorkoutSessionState {
   const factory MemberSessionLoaded(
       {required final WorkoutProfile profile,
+      required final WeeklyPlan weeklyPlan,
       required final DayPlan dayPlan,
-      required final SessionDraft draft}) = _$MemberSessionLoadedImpl;
+      required final SessionDraft draft,
+      final Map<int, WorkoutSessionLog> dayLogs,
+      final int activeDayIndex}) = _$MemberSessionLoadedImpl;
 
   WorkoutProfile get profile;
+  WeeklyPlan get weeklyPlan;
   DayPlan get dayPlan;
   SessionDraft get draft;
+  Map<int, WorkoutSessionLog> get dayLogs;
+  int get activeDayIndex;
   @JsonKey(ignore: true)
   _$$MemberSessionLoadedImplCopyWith<_$MemberSessionLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -703,15 +960,31 @@ class _$MemberSessionNoPlanImpl implements MemberSessionNoPlan {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) {
     return noPlan();
@@ -723,15 +996,31 @@ class _$MemberSessionNoPlanImpl implements MemberSessionNoPlan {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) {
     return noPlan?.call();
@@ -743,15 +1032,31 @@ class _$MemberSessionNoPlanImpl implements MemberSessionNoPlan {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) {
@@ -819,9 +1124,16 @@ abstract class _$$MemberSessionSubmittingImplCopyWith<$Res> {
           $Res Function(_$MemberSessionSubmittingImpl) then) =
       __$$MemberSessionSubmittingImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft});
+  $Res call(
+      {WorkoutProfile profile,
+      WeeklyPlan weeklyPlan,
+      DayPlan dayPlan,
+      SessionDraft draft,
+      Map<int, WorkoutSessionLog> dayLogs,
+      int activeDayIndex});
 
   $WorkoutProfileCopyWith<$Res> get profile;
+  $WeeklyPlanCopyWith<$Res> get weeklyPlan;
   $DayPlanCopyWith<$Res> get dayPlan;
   $SessionDraftCopyWith<$Res> get draft;
 }
@@ -840,14 +1152,21 @@ class __$$MemberSessionSubmittingImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? profile = null,
+    Object? weeklyPlan = null,
     Object? dayPlan = null,
     Object? draft = null,
+    Object? dayLogs = null,
+    Object? activeDayIndex = null,
   }) {
     return _then(_$MemberSessionSubmittingImpl(
       profile: null == profile
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as WorkoutProfile,
+      weeklyPlan: null == weeklyPlan
+          ? _value.weeklyPlan
+          : weeklyPlan // ignore: cast_nullable_to_non_nullable
+              as WeeklyPlan,
       dayPlan: null == dayPlan
           ? _value.dayPlan
           : dayPlan // ignore: cast_nullable_to_non_nullable
@@ -856,6 +1175,14 @@ class __$$MemberSessionSubmittingImplCopyWithImpl<$Res>
           ? _value.draft
           : draft // ignore: cast_nullable_to_non_nullable
               as SessionDraft,
+      dayLogs: null == dayLogs
+          ? _value._dayLogs
+          : dayLogs // ignore: cast_nullable_to_non_nullable
+              as Map<int, WorkoutSessionLog>,
+      activeDayIndex: null == activeDayIndex
+          ? _value.activeDayIndex
+          : activeDayIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
@@ -864,6 +1191,14 @@ class __$$MemberSessionSubmittingImplCopyWithImpl<$Res>
   $WorkoutProfileCopyWith<$Res> get profile {
     return $WorkoutProfileCopyWith<$Res>(_value.profile, (value) {
       return _then(_value.copyWith(profile: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $WeeklyPlanCopyWith<$Res> get weeklyPlan {
+    return $WeeklyPlanCopyWith<$Res>(_value.weeklyPlan, (value) {
+      return _then(_value.copyWith(weeklyPlan: value));
     });
   }
 
@@ -888,18 +1223,39 @@ class __$$MemberSessionSubmittingImplCopyWithImpl<$Res>
 
 class _$MemberSessionSubmittingImpl implements MemberSessionSubmitting {
   const _$MemberSessionSubmittingImpl(
-      {required this.profile, required this.dayPlan, required this.draft});
+      {required this.profile,
+      required this.weeklyPlan,
+      required this.dayPlan,
+      required this.draft,
+      final Map<int, WorkoutSessionLog> dayLogs =
+          const <int, WorkoutSessionLog>{},
+      this.activeDayIndex = 1})
+      : _dayLogs = dayLogs;
 
   @override
   final WorkoutProfile profile;
   @override
+  final WeeklyPlan weeklyPlan;
+  @override
   final DayPlan dayPlan;
   @override
   final SessionDraft draft;
+  final Map<int, WorkoutSessionLog> _dayLogs;
+  @override
+  @JsonKey()
+  Map<int, WorkoutSessionLog> get dayLogs {
+    if (_dayLogs is EqualUnmodifiableMapView) return _dayLogs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_dayLogs);
+  }
+
+  @override
+  @JsonKey()
+  final int activeDayIndex;
 
   @override
   String toString() {
-    return 'MemberWorkoutSessionState.submitting(profile: $profile, dayPlan: $dayPlan, draft: $draft)';
+    return 'MemberWorkoutSessionState.submitting(profile: $profile, weeklyPlan: $weeklyPlan, dayPlan: $dayPlan, draft: $draft, dayLogs: $dayLogs, activeDayIndex: $activeDayIndex)';
   }
 
   @override
@@ -908,12 +1264,18 @@ class _$MemberSessionSubmittingImpl implements MemberSessionSubmitting {
         (other.runtimeType == runtimeType &&
             other is _$MemberSessionSubmittingImpl &&
             (identical(other.profile, profile) || other.profile == profile) &&
+            (identical(other.weeklyPlan, weeklyPlan) ||
+                other.weeklyPlan == weeklyPlan) &&
             (identical(other.dayPlan, dayPlan) || other.dayPlan == dayPlan) &&
-            (identical(other.draft, draft) || other.draft == draft));
+            (identical(other.draft, draft) || other.draft == draft) &&
+            const DeepCollectionEquality().equals(other._dayLogs, _dayLogs) &&
+            (identical(other.activeDayIndex, activeDayIndex) ||
+                other.activeDayIndex == activeDayIndex));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, profile, dayPlan, draft);
+  int get hashCode => Object.hash(runtimeType, profile, weeklyPlan, dayPlan,
+      draft, const DeepCollectionEquality().hash(_dayLogs), activeDayIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -928,18 +1290,35 @@ class _$MemberSessionSubmittingImpl implements MemberSessionSubmitting {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) {
-    return submitting(profile, dayPlan, draft);
+    return submitting(
+        profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
   }
 
   @override
@@ -948,18 +1327,35 @@ class _$MemberSessionSubmittingImpl implements MemberSessionSubmitting {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) {
-    return submitting?.call(profile, dayPlan, draft);
+    return submitting?.call(
+        profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
   }
 
   @override
@@ -968,20 +1364,37 @@ class _$MemberSessionSubmittingImpl implements MemberSessionSubmitting {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) {
     if (submitting != null) {
-      return submitting(profile, dayPlan, draft);
+      return submitting(
+          profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
     }
     return orElse();
   }
@@ -1036,12 +1449,18 @@ class _$MemberSessionSubmittingImpl implements MemberSessionSubmitting {
 abstract class MemberSessionSubmitting implements MemberWorkoutSessionState {
   const factory MemberSessionSubmitting(
       {required final WorkoutProfile profile,
+      required final WeeklyPlan weeklyPlan,
       required final DayPlan dayPlan,
-      required final SessionDraft draft}) = _$MemberSessionSubmittingImpl;
+      required final SessionDraft draft,
+      final Map<int, WorkoutSessionLog> dayLogs,
+      final int activeDayIndex}) = _$MemberSessionSubmittingImpl;
 
   WorkoutProfile get profile;
+  WeeklyPlan get weeklyPlan;
   DayPlan get dayPlan;
   SessionDraft get draft;
+  Map<int, WorkoutSessionLog> get dayLogs;
+  int get activeDayIndex;
   @JsonKey(ignore: true)
   _$$MemberSessionSubmittingImplCopyWith<_$MemberSessionSubmittingImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -1129,15 +1548,31 @@ class _$MemberSessionSubmittedImpl implements MemberSessionSubmitted {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) {
     return submitted(sessionLog);
@@ -1149,15 +1584,31 @@ class _$MemberSessionSubmittedImpl implements MemberSessionSubmitted {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) {
     return submitted?.call(sessionLog);
@@ -1169,15 +1620,31 @@ class _$MemberSessionSubmittedImpl implements MemberSessionSubmitted {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) {
@@ -1254,11 +1721,15 @@ abstract class _$$MemberSessionErrorImplCopyWith<$Res> {
   $Res call(
       {Failure failure,
       WorkoutProfile? profile,
+      WeeklyPlan? weeklyPlan,
       DayPlan? dayPlan,
-      SessionDraft? draft});
+      SessionDraft? draft,
+      Map<int, WorkoutSessionLog> dayLogs,
+      int activeDayIndex});
 
   $FailureCopyWith<$Res> get failure;
   $WorkoutProfileCopyWith<$Res>? get profile;
+  $WeeklyPlanCopyWith<$Res>? get weeklyPlan;
   $DayPlanCopyWith<$Res>? get dayPlan;
   $SessionDraftCopyWith<$Res>? get draft;
 }
@@ -1277,8 +1748,11 @@ class __$$MemberSessionErrorImplCopyWithImpl<$Res>
   $Res call({
     Object? failure = null,
     Object? profile = freezed,
+    Object? weeklyPlan = freezed,
     Object? dayPlan = freezed,
     Object? draft = freezed,
+    Object? dayLogs = null,
+    Object? activeDayIndex = null,
   }) {
     return _then(_$MemberSessionErrorImpl(
       failure: null == failure
@@ -1289,6 +1763,10 @@ class __$$MemberSessionErrorImplCopyWithImpl<$Res>
           ? _value.profile
           : profile // ignore: cast_nullable_to_non_nullable
               as WorkoutProfile?,
+      weeklyPlan: freezed == weeklyPlan
+          ? _value.weeklyPlan
+          : weeklyPlan // ignore: cast_nullable_to_non_nullable
+              as WeeklyPlan?,
       dayPlan: freezed == dayPlan
           ? _value.dayPlan
           : dayPlan // ignore: cast_nullable_to_non_nullable
@@ -1297,6 +1775,14 @@ class __$$MemberSessionErrorImplCopyWithImpl<$Res>
           ? _value.draft
           : draft // ignore: cast_nullable_to_non_nullable
               as SessionDraft?,
+      dayLogs: null == dayLogs
+          ? _value._dayLogs
+          : dayLogs // ignore: cast_nullable_to_non_nullable
+              as Map<int, WorkoutSessionLog>,
+      activeDayIndex: null == activeDayIndex
+          ? _value.activeDayIndex
+          : activeDayIndex // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 
@@ -1317,6 +1803,18 @@ class __$$MemberSessionErrorImplCopyWithImpl<$Res>
 
     return $WorkoutProfileCopyWith<$Res>(_value.profile!, (value) {
       return _then(_value.copyWith(profile: value));
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $WeeklyPlanCopyWith<$Res>? get weeklyPlan {
+    if (_value.weeklyPlan == null) {
+      return null;
+    }
+
+    return $WeeklyPlanCopyWith<$Res>(_value.weeklyPlan!, (value) {
+      return _then(_value.copyWith(weeklyPlan: value));
     });
   }
 
@@ -1349,7 +1847,15 @@ class __$$MemberSessionErrorImplCopyWithImpl<$Res>
 
 class _$MemberSessionErrorImpl implements MemberSessionError {
   const _$MemberSessionErrorImpl(
-      {required this.failure, this.profile, this.dayPlan, this.draft});
+      {required this.failure,
+      this.profile,
+      this.weeklyPlan,
+      this.dayPlan,
+      this.draft,
+      final Map<int, WorkoutSessionLog> dayLogs =
+          const <int, WorkoutSessionLog>{},
+      this.activeDayIndex = 1})
+      : _dayLogs = dayLogs;
 
   @override
   final Failure failure;
@@ -1357,13 +1863,27 @@ class _$MemberSessionErrorImpl implements MemberSessionError {
   @override
   final WorkoutProfile? profile;
   @override
+  final WeeklyPlan? weeklyPlan;
+  @override
   final DayPlan? dayPlan;
   @override
   final SessionDraft? draft;
+  final Map<int, WorkoutSessionLog> _dayLogs;
+  @override
+  @JsonKey()
+  Map<int, WorkoutSessionLog> get dayLogs {
+    if (_dayLogs is EqualUnmodifiableMapView) return _dayLogs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_dayLogs);
+  }
+
+  @override
+  @JsonKey()
+  final int activeDayIndex;
 
   @override
   String toString() {
-    return 'MemberWorkoutSessionState.error(failure: $failure, profile: $profile, dayPlan: $dayPlan, draft: $draft)';
+    return 'MemberWorkoutSessionState.error(failure: $failure, profile: $profile, weeklyPlan: $weeklyPlan, dayPlan: $dayPlan, draft: $draft, dayLogs: $dayLogs, activeDayIndex: $activeDayIndex)';
   }
 
   @override
@@ -1373,13 +1893,25 @@ class _$MemberSessionErrorImpl implements MemberSessionError {
             other is _$MemberSessionErrorImpl &&
             (identical(other.failure, failure) || other.failure == failure) &&
             (identical(other.profile, profile) || other.profile == profile) &&
+            (identical(other.weeklyPlan, weeklyPlan) ||
+                other.weeklyPlan == weeklyPlan) &&
             (identical(other.dayPlan, dayPlan) || other.dayPlan == dayPlan) &&
-            (identical(other.draft, draft) || other.draft == draft));
+            (identical(other.draft, draft) || other.draft == draft) &&
+            const DeepCollectionEquality().equals(other._dayLogs, _dayLogs) &&
+            (identical(other.activeDayIndex, activeDayIndex) ||
+                other.activeDayIndex == activeDayIndex));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, failure, profile, dayPlan, draft);
+  int get hashCode => Object.hash(
+      runtimeType,
+      failure,
+      profile,
+      weeklyPlan,
+      dayPlan,
+      draft,
+      const DeepCollectionEquality().hash(_dayLogs),
+      activeDayIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -1394,18 +1926,35 @@ class _$MemberSessionErrorImpl implements MemberSessionError {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         loaded,
     required TResult Function() noPlan,
     required TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         submitting,
     required TResult Function(WorkoutSessionLog sessionLog) submitted,
-    required TResult Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)
+    required TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)
         error,
   }) {
-    return error(failure, profile, dayPlan, draft);
+    return error(
+        failure, profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
   }
 
   @override
@@ -1414,18 +1963,35 @@ class _$MemberSessionErrorImpl implements MemberSessionError {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult? Function()? noPlan,
     TResult? Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult? Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult? Function(Failure failure, WorkoutProfile? profile,
-            DayPlan? dayPlan, SessionDraft? draft)?
+    TResult? Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
   }) {
-    return error?.call(failure, profile, dayPlan, draft);
+    return error?.call(
+        failure, profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex);
   }
 
   @override
@@ -1434,20 +2000,37 @@ class _$MemberSessionErrorImpl implements MemberSessionError {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         loaded,
     TResult Function()? noPlan,
     TResult Function(
-            WorkoutProfile profile, DayPlan dayPlan, SessionDraft draft)?
+            WorkoutProfile profile,
+            WeeklyPlan weeklyPlan,
+            DayPlan dayPlan,
+            SessionDraft draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         submitting,
     TResult Function(WorkoutSessionLog sessionLog)? submitted,
-    TResult Function(Failure failure, WorkoutProfile? profile, DayPlan? dayPlan,
-            SessionDraft? draft)?
+    TResult Function(
+            Failure failure,
+            WorkoutProfile? profile,
+            WeeklyPlan? weeklyPlan,
+            DayPlan? dayPlan,
+            SessionDraft? draft,
+            Map<int, WorkoutSessionLog> dayLogs,
+            int activeDayIndex)?
         error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(failure, profile, dayPlan, draft);
+      return error(failure, profile, weeklyPlan, dayPlan, draft, dayLogs,
+          activeDayIndex);
     }
     return orElse();
   }
@@ -1503,14 +2086,20 @@ abstract class MemberSessionError implements MemberWorkoutSessionState {
   const factory MemberSessionError(
       {required final Failure failure,
       final WorkoutProfile? profile,
+      final WeeklyPlan? weeklyPlan,
       final DayPlan? dayPlan,
-      final SessionDraft? draft}) = _$MemberSessionErrorImpl;
+      final SessionDraft? draft,
+      final Map<int, WorkoutSessionLog> dayLogs,
+      final int activeDayIndex}) = _$MemberSessionErrorImpl;
 
   Failure
       get failure; // Preserve current data so user can retry without data loss
   WorkoutProfile? get profile;
+  WeeklyPlan? get weeklyPlan;
   DayPlan? get dayPlan;
   SessionDraft? get draft;
+  Map<int, WorkoutSessionLog> get dayLogs;
+  int get activeDayIndex;
   @JsonKey(ignore: true)
   _$$MemberSessionErrorImplCopyWith<_$MemberSessionErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;

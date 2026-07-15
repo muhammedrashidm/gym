@@ -84,6 +84,23 @@ export class SkipWorkoutSessionDto {
   reason?: string;
 }
 
+export class TaskCompletionEntryDto {
+  @ApiProperty()
+  taskId: string;
+
+  @ApiPropertyOptional({ nullable: true })
+  actualSets: number | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  actualReps: string | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  actualWeightKg: number | null;
+
+  @ApiPropertyOptional({ nullable: true })
+  notes: string | null;
+}
+
 export class WorkoutSessionResponseDto {
   @ApiProperty()
   id: string;
@@ -142,4 +159,10 @@ export class WorkoutSessionResponseDto {
       'The updated currentDayIndex cursor value, returned on complete-session response',
   })
   currentDayIndexAfter?: number;
+
+  @ApiProperty({
+    type: [TaskCompletionEntryDto],
+    description: 'Per-exercise actuals logged for this session, if any',
+  })
+  taskCompletionLogs: TaskCompletionEntryDto[];
 }
