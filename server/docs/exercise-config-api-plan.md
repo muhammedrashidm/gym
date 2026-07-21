@@ -63,6 +63,27 @@ Config media uses the **`PUBLIC`** storage profile (`MediaVisibility.PUBLIC`), n
 
 Purely additive: one new table, one nullable FK column, one new enum. No existing data touched — same low-risk shape as the `task_media` migration earlier this session. `npx prisma migrate dev` generates and applies cleanly against the current schema.
 
+## Module structure
+
+A new, standalone **`server/src/exercise-config/`** module — not folded into `WorkoutModule`. Admin-only authoring is a distinct concern from trainer-authored plan content, and keeping it separate means its role-gating (`ADMIN`/`OWNER` only) can't accidentally leak the looser `TRAINER_ROLES` pattern used everywhere else in `workout/`.
+
+```
+server/src/exercise-config/
+├── controllers/
+│   └── exercise-config.controller.ts   # all 5 endpoints below
+├── services/
+│   └── exercise-config.service.ts      # create/update/remove/search/findOne, @Inject(PUBLIC_STORAGE_SERVICE)
+├── dto/
+│   └── exercise-config.dto.ts          # CreateExerciseConfigDto, UpdateExerciseConfigDto,
+│                                        # SearchExerciseConfigQueryDto, ExerciseConfigResponseDto,
+│                                        # ExerciseConfigSummaryDto
+└── exercise-config.module.ts           # imports [PrismaModule, AuthModule]; exports ExerciseConfigService
+                                         # (exported so WorkoutModule's TaskService can inject it for the
+                                         #  exerciseConfigId validation described below)
+```
+
+Registered in `AppModule` alongside `WorkoutModule`, `MediaModule`, etc. `WorkoutModule` gets `ExerciseConfigModule` added to its `imports` so `TaskService`/`WeeklyPlanService` can inject `ExerciseConfigService` for the existence/`isActive` check on `exerciseConfigId` (mirrors how those services already depend on `TaskMediaService` for the equivalent `assertUsable` check on attachments).
+
 ## API — Admin (create/manage configs)
 
 Gated `@Roles(SYSTEM_ROLES.ADMIN, SYSTEM_ROLES.OWNER)` only — matches "creating a config is an admin-side task." Distinct from every other `@Roles(...)` list in `workout/`, which includes `TRAINER`/`STAFF`/`MANAGER` — configs are deliberately not trainer-authorable.
@@ -175,8 +196,12 @@ Both existing task-mutation surfaces need the field — confirmed this session t
 
 This closes the gap for the new field everywhere a task can be created or edited, rather than only in the flashier whole-plan-creation path.
 
-## Open questions before implementation
+## Resolved decisions
 
-1. **Hard-delete cascade**: should `DELETE /exercise-configs/:id` also delete its `Media` row (matching `TaskMediaService.remove`'s behavior), or leave orphaned media for manual cleanup? Leaning toward cascading it, same as `task_media`.
-2. **`aiConfigJson` validation**: plan assumes service-layer validation per `analyzerType` (e.g. a `class-validator` discriminated shape or a runtime schema check) rather than a rigid Prisma-level shape — worth confirming that's the right amount of structure before the JSON schema itself gets designed in a follow-up pass.
-3. **Module placement**: new `server/src/exercise-config/` module (mirrors `workout/`'s layout — controller/service/dto) registered in `AppModule`, or folded into `WorkoutModule` alongside `TaskMediaController`? Leaning toward a separate module since admin-only authoring is a distinct concern from trainer-authored plan content, but either is a small decision to make at implementation time.
+- **Hard delete does not cascade to `Media`** — see §3 above.
+- **`aiConfigJson` validation** lives at the service layer, per `analyzerType` (a `class-validator` discriminated shape or a runtime schema check), not as a rigid Prisma-level shape — keeps the schema itself stable as new exercise types/rule shapes are added, no migration required to support them.
+- **Module placement**: standalone `server/src/exercise-config/` module — see "Module structure" above.
+
+## Next step
+
+This plan is ready to implement: Prisma migration → `exercise-config` module (service/controller/DTOs) → extend `task.dto.ts`/`TaskService`/`WeeklyPlanService` for the `exerciseConfigId` field and validation, in that order (schema first, since the module and the Task-integration changes both depend on the new model existing).
