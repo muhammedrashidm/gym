@@ -133,39 +133,42 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceContainerHigh,
-                        border: Border.all(
-                          color: _isPhoneFocused
-                              ? colorScheme.primary
-                              : Colors.transparent,
-                          width: 1,
+                    Semantics(
+                      identifier: 'auth_login_phone_field',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainerHigh,
+                          border: Border.all(
+                            color: _isPhoneFocused
+                                ? colorScheme.primary
+                                : Colors.transparent,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 16,
-                      ),
-                      child: TextField(
-                        controller: _phoneController,
-                        focusNode: _phoneFocus,
-                        keyboardType: TextInputType.phone,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'[0-9+]'),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
+                        ),
+                        child: TextField(
+                          controller: _phoneController,
+                          focusNode: _phoneFocus,
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9+]'),
+                            ),
+                          ],
+                          style: textTheme.titleMedium,
+                          decoration: InputDecoration(
+                            hintText: '+1234567890',
+                            hintStyle: textTheme.titleMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant
+                                  .withValues(alpha: 0.5),
+                            ),
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
                           ),
-                        ],
-                        style: textTheme.titleMedium,
-                        decoration: InputDecoration(
-                          hintText: '+1234567890',
-                          hintStyle: textTheme.titleMedium?.copyWith(
-                            color:
-                                colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-                          ),
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: EdgeInsets.zero,
                         ),
                       ),
                     ),
@@ -173,33 +176,36 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 64),
 
                     // Send OTP Button
-                    ElevatedButton(
-                      onPressed: isLoading
-                          ? null
-                          : () {
-                              final phone = _phoneController.text.trim();
-                              if (phone.isEmpty) return;
-                              context.read<AuthCubit>().sendOtp(
-                                    phoneNumber: phone,
-                                  );
-                            },
-                      child: isLoading
-                          ? SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: colorScheme.onPrimary,
+                    Semantics(
+                      identifier: 'auth_login_send_code_button',
+                      child: ElevatedButton(
+                        onPressed: isLoading
+                            ? null
+                            : () {
+                                final phone = _phoneController.text.trim();
+                                if (phone.isEmpty) return;
+                                context.read<AuthCubit>().sendOtp(
+                                      phoneNumber: phone,
+                                    );
+                              },
+                        child: isLoading
+                            ? SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: colorScheme.onPrimary,
+                                ),
+                              )
+                            : Text(
+                                'SEND CODE',
+                                style: textTheme.labelLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 2.0,
+                                  color: colorScheme.onPrimary,
+                                ),
                               ),
-                            )
-                          : Text(
-                              'SEND CODE',
-                              style: textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 2.0,
-                                color: colorScheme.onPrimary,
-                              ),
-                            ),
+                      ),
                     ),
                   ],
                 ),

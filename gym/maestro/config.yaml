@@ -1,0 +1,14 @@
+# Maestro workspace config for the Kinetic (gym/) Flutter app.
+#
+# This is a placeholder written during initial setup — no flows exist yet.
+# Once flow files are added under flows/, this can drive `maestro test` /
+# Maestro Cloud runs by pointing at this file's directory.
+
+flows:
+  - "flows/**/*.yaml"
+
+# Flavor -> Android applicationId (from android/app/build.gradle.kts).
+# Reference the right one in each flow's top-level `appId:` field.
+#   dev:     com.capecode.kinetic.gym.dev
+#   staging: com.capecode.kinetic.gym.staging
+#   prod:    com.capecode.kinetic.gym

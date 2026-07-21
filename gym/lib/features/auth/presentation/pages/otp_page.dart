@@ -135,79 +135,85 @@ class _OtpPageState extends State<OtpPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceContainerHigh,
-                        border: Border.all(
-                          color: _isOtpFocused
-                              ? colorScheme.primary
-                              : Colors.transparent,
-                          width: 1,
+                    Semantics(
+                      identifier: 'auth_otp_code_field',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainerHigh,
+                          border: Border.all(
+                            color: _isOtpFocused
+                                ? colorScheme.primary
+                                : Colors.transparent,
+                            width: 1,
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 16,
-                      ),
-                      child: TextField(
-                        controller: _otpController,
-                        focusNode: _otpFocus,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        maxLength: 6,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        style: textTheme.headlineMedium?.copyWith(
-                          letterSpacing: 24.0,
-                          fontWeight: FontWeight.w800,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
                         ),
-                        decoration: InputDecoration(
-                          hintText: '••••',
-                          hintStyle: textTheme.headlineMedium?.copyWith(
+                        child: TextField(
+                          controller: _otpController,
+                          focusNode: _otpFocus,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          maxLength: 6,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          style: textTheme.headlineMedium?.copyWith(
                             letterSpacing: 24.0,
                             fontWeight: FontWeight.w800,
-                            color:
-                                colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
                           ),
-                          counterText: '',
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: EdgeInsets.zero,
+                          decoration: InputDecoration(
+                            hintText: '••••',
+                            hintStyle: textTheme.headlineMedium?.copyWith(
+                              letterSpacing: 24.0,
+                              fontWeight: FontWeight.w800,
+                              color: colorScheme.onSurfaceVariant
+                                  .withValues(alpha: 0.5),
+                            ),
+                            counterText: '',
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                          ),
                         ),
                       ),
                     ),
 
                     const SizedBox(height: 64),
 
-                    ElevatedButton(
-                      onPressed: isLoading
-                          ? null
-                          : () {
-                              final otp = _otpController.text.trim();
-                              if (otp.isEmpty) return;
-                              context.read<AuthCubit>().verifyOtp(
-                                    phoneNumber: widget.phoneNumber,
-                                    otp: otp,
-                                  );
-                            },
-                      child: isLoading
-                          ? SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: colorScheme.onPrimary,
+                    Semantics(
+                      identifier: 'auth_otp_verify_button',
+                      child: ElevatedButton(
+                        onPressed: isLoading
+                            ? null
+                            : () {
+                                final otp = _otpController.text.trim();
+                                if (otp.isEmpty) return;
+                                context.read<AuthCubit>().verifyOtp(
+                                      phoneNumber: widget.phoneNumber,
+                                      otp: otp,
+                                    );
+                              },
+                        child: isLoading
+                            ? SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: colorScheme.onPrimary,
+                                ),
+                              )
+                            : Text(
+                                'ENTER',
+                                style: textTheme.labelLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 2.0,
+                                  color: colorScheme.onPrimary,
+                                ),
                               ),
-                            )
-                          : Text(
-                              'ENTER',
-                              style: textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 2.0,
-                                color: colorScheme.onPrimary,
-                              ),
-                            ),
+                      ),
                     ),
 
                     const SizedBox(height: 40),
@@ -224,37 +230,40 @@ class _OtpPageState extends State<OtpPage> {
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
-                          TextButton(
-                            onPressed: isLoading
-                                ? null
-                                : () {
-                                    context.read<AuthCubit>().sendOtp(
-                                          phoneNumber: widget.phoneNumber,
-                                        );
-                                  },
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              foregroundColor: colorScheme.primary,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
-                              ),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: colorScheme.primary,
-                                    width: 1,
-                                  ),
+                          Semantics(
+                            identifier: 'auth_otp_resend_button',
+                            child: TextButton(
+                              onPressed: isLoading
+                                  ? null
+                                  : () {
+                                      context.read<AuthCubit>().sendOtp(
+                                            phoneNumber: widget.phoneNumber,
+                                          );
+                                    },
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                minimumSize: Size.zero,
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                foregroundColor: colorScheme.primary,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero,
                                 ),
                               ),
-                              child: Text(
-                                'Resend',
-                                style: textTheme.bodyMedium?.copyWith(
-                                  color: colorScheme.primary,
-                                  fontWeight: FontWeight.w600,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: colorScheme.primary,
+                                      width: 1,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Resend',
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),

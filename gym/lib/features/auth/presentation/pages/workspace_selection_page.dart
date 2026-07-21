@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gym/features/auth/domain/entities/user_role.dart';
 import '../../../../core/di/injection.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
@@ -44,44 +45,48 @@ class WorkspaceSelectionPage extends StatelessWidget {
                 final roleName = role.roleName.toUpperCase();
                 final isActive = state.activeRole.roleId == role.roleId;
 
-                return Card(
-                  elevation: 0,
-                  color: isActive
-                      ? colorScheme.primaryContainer.withValues(alpha: 0.4)
-                      : colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(
-                      color: isActive
-                          ? colorScheme.primary.withValues(alpha: 0.6)
-                          : colorScheme.outline.withValues(alpha: 0.2),
-                      width: isActive ? 1.5 : 1.0,
-                    ),
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                    title: Text(
-                      roleName,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                return Semantics(
+                  identifier: 'auth_workspace_role_${role.roleEnum?.name}',
+                  child: Card(
+                    elevation: 0,
+                    color: isActive
+                        ? colorScheme.primaryContainer.withValues(alpha: 0.4)
+                        : colorScheme.surfaceContainerHighest
+                            .withValues(alpha: 0.3),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(
+                        color: isActive
+                            ? colorScheme.primary.withValues(alpha: 0.6)
+                            : colorScheme.outline.withValues(alpha: 0.2),
+                        width: isActive ? 1.5 : 1.0,
                       ),
                     ),
-                    subtitle: role.gymId != null
-                        ? Text('Gym ID: ${role.gymId}')
-                        : const Text('Global Access'),
-                    trailing: isActive
-                        ? Icon(Icons.check_circle, color: colorScheme.primary)
-                        : Icon(
-                            Icons.arrow_forward_ios,
-                            size: 16,
-                            color: colorScheme.primary,
-                          ),
-                    onTap: () {
-                      getIt<AuthCubit>().selectRole(role);
-                    },
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
+                      title: Text(
+                        roleName,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: role.gymId != null
+                          ? Text('Gym ID: ${role.gymId}')
+                          : const Text('Global Access'),
+                      trailing: isActive
+                          ? Icon(Icons.check_circle, color: colorScheme.primary)
+                          : Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                              color: colorScheme.primary,
+                            ),
+                      onTap: () {
+                        getIt<AuthCubit>().selectRole(role);
+                      },
+                    ),
                   ),
                 );
               },
