@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../exercise_config/domain/entities/exercise_config.dart';
 import '../../../task_media/domain/entities/task_attachment.dart';
 
 part 'task.freezed.dart';
@@ -18,5 +19,6 @@ class Task with _$Task {
     int? restSeconds,
     String? tempo,
     @Default(<TaskAttachment>[]) List<TaskAttachment> attachments,
+    ExerciseConfig? exerciseConfig,
   }) = _Task;
 }

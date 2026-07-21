@@ -40,6 +40,16 @@ enum SessionLogActorRole {
   STAFF
 }
 
+// Which pose-analysis strategy an ExerciseConfig uses. The Flutter analyzer
+// factory switches on this — never a per-exercise class (no SquatService,
+// no BenchPressService).
+enum AnalyzerType {
+  DYNAMIC_REP        // e.g. squat, curl — rep counted via angle threshold crossings
+  STATIC_HOLD        // e.g. plank — timed hold, no rep count
+  COMPOUND_MOVEMENT  // e.g. burpee — multi-phase movement
+  CARDIO_MOVEMENT    // e.g. jumping jacks — cadence-based
+}
+
 // ----------------------------------------------------------------------------
 // WorkoutProfile
 // One per client. Holds the pointer to the currently active plan and the
@@ -176,6 +186,14 @@ model Task {
   restSeconds   Int?
   tempo         String?  // e.g. "3-1-1"
 
+  // Optional AI "Watch Me" config selected by the trainer for this task, from
+  // the admin-curated exercise_configs library. At most one per task (unlike
+  // TaskAttachment, which is many-per-task) — a plain nullable FK, not a join.
+  // onDelete: SetNull so retiring/deleting a config never breaks a task that
+  // already referenced it.
+  exerciseConfigId String?
+  exerciseConfig   ExerciseConfig? @relation(fields: [exerciseConfigId], references: [id], onDelete: SetNull)
+
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -237,6 +255,43 @@ model TaskMedia {
   attachments TaskAttachment[]
 
   @@map("task_media")
+}
+
+// ----------------------------------------------------------------------------
+// ExerciseConfig
+// Admin-curated "Watch Me" AI config library. Bundles the pose-analysis JSON
+// payload with one demonstration video/gif and search keywords. A trainer
+// attaches at most one to a Task (see Task.exerciseConfigId) — never created
+// or edited by trainers, only searched/selected. Hard delete never cascades
+// to its Media row (unlike TaskMedia) since the media is PUBLIC/non-private
+// and may be worth keeping around after a config entry itself is retired.
+// ----------------------------------------------------------------------------
+
+model ExerciseConfig {
+  id           String       @id @default(cuid())
+
+  name         String
+  description  String?
+  analyzerType AnalyzerType
+  keywords     String[] // stored lowercased/trimmed for consistent search
+
+  mediaId      String       @unique
+  media        Media        @relation(fields: [mediaId], references: [id]) // the video/gif
+
+  // Landmarks/angles/thresholds/state-machine/feedback-rules payload. Left as
+  // Json (not a rigid Prisma shape) so new exercises/rule shapes never need a
+  // migration — validated at the service layer per analyzerType instead.
+  aiConfigJson Json
+
+  isActive     Boolean      @default(true) // soft "retire" flag — false hides it from trainer search
+  createdById  String
+
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  tasks        Task[]
+
+  @@map("exercise_configs")
 }
 
 // ----------------------------------------------------------------------------

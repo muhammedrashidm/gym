@@ -15,12 +15,14 @@ import type { RequestContext } from '../../common/types/request-context.type';
 import type { WorkoutProfile } from 'generated/prisma/client';
 import { Prisma } from 'generated/prisma/client';
 import { TaskMediaService } from './task-media.service';
+import { ExerciseConfigService } from '../../exercise-config/services/exercise-config.service';
 
 @Injectable()
 export class WorkoutProfileService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly taskMediaService: TaskMediaService,
+    private readonly exerciseConfigService: ExerciseConfigService,
   ) {}
 
   async create(dto: CreateWorkoutProfileDto, ctx: RequestContext) {
@@ -149,6 +151,9 @@ export class WorkoutProfileService {
               orderBy: { sequenceIndex: 'asc' },
               include: { taskMedia: { include: { media: true } } },
             },
+            exerciseConfig: {
+              include: { media: true },
+            },
           },
         },
       },
@@ -156,7 +161,7 @@ export class WorkoutProfileService {
 
     if (!dayPlan) return null;
 
-    // Resolve fresh media URLs for each task's attachments.
+    // Resolve fresh media URLs for each task's attachments + exercise config.
     const tasks = await Promise.all(
       dayPlan.tasks.map(async (t) => ({
         ...t,
@@ -171,6 +176,9 @@ export class WorkoutProfileService {
             taskMedia: await this.taskMediaService.mapToResponse(a.taskMedia),
           })),
         ),
+        exerciseConfig: t.exerciseConfig
+          ? await this.exerciseConfigService.mapToSummary(t.exerciseConfig)
+          : null,
       })),
     );
 

@@ -6,6 +6,7 @@ import { MediaModule } from './media/media.module';
 import { UsersModule } from './users/users.module';
 import { GymModule } from './gym/gym.module';
 import { WorkoutModule } from './workout/workout.module';
+import { ExerciseConfigModule } from './exercise-config/exercise-config.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { WorkoutModule } from './workout/workout.module';
     MediaModule,
     UsersModule,
     GymModule,
+    ExerciseConfigModule,
     WorkoutModule,
   ],
 })

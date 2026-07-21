@@ -49,13 +49,15 @@ class _WeeklyPlanPageState extends State<WeeklyPlanPage> {
             // Reload for next day
             context.read<MemberWorkoutSessionCubit>().loadSession();
           },
-          error: (failure, profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) {
+          error: (failure, profile, weeklyPlan, dayPlan, draft, dayLogs,
+              activeDayIndex) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: const Color(0xFFBA1A1A),
               content: Text(
                 failure.maybeWhen(
                   server: (code, msg) => msg ?? 'Server error',
-                  network: (msg) => msg ?? 'Network error. Check your connection.',
+                  network: (msg) =>
+                      msg ?? 'Network error. Check your connection.',
                   orElse: () => 'An error occurred. Please try again.',
                 ),
                 style: GoogleFonts.manrope(
@@ -74,8 +76,9 @@ class _WeeklyPlanPageState extends State<WeeklyPlanPage> {
           initial: () => const _LoadingScaffold(),
           loading: () => const _LoadingScaffold(),
           noPlan: () => const _NoPlanScaffold(),
-          loaded: (profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) =>
-              _LoadedScaffold(
+          loaded:
+              (profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) =>
+                  _LoadedScaffold(
             profile: profile,
             weeklyPlan: weeklyPlan,
             dayPlan: dayPlan,
@@ -83,8 +86,9 @@ class _WeeklyPlanPageState extends State<WeeklyPlanPage> {
             dayLogs: dayLogs,
             activeDayIndex: activeDayIndex,
           ),
-          submitting: (profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) =>
-              _LoadedScaffold(
+          submitting:
+              (profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) =>
+                  _LoadedScaffold(
             profile: profile,
             weeklyPlan: weeklyPlan,
             dayPlan: dayPlan,
@@ -94,8 +98,12 @@ class _WeeklyPlanPageState extends State<WeeklyPlanPage> {
             isSubmitting: true,
           ),
           submitted: (_) => const _LoadingScaffold(),
-          error: (failure, profile, weeklyPlan, dayPlan, draft, dayLogs, activeDayIndex) {
-            if (profile != null && weeklyPlan != null && dayPlan != null && draft != null) {
+          error: (failure, profile, weeklyPlan, dayPlan, draft, dayLogs,
+              activeDayIndex) {
+            if (profile != null &&
+                weeklyPlan != null &&
+                dayPlan != null &&
+                draft != null) {
               return _LoadedScaffold(
                 profile: profile,
                 weeklyPlan: weeklyPlan,
@@ -105,7 +113,8 @@ class _WeeklyPlanPageState extends State<WeeklyPlanPage> {
                 activeDayIndex: activeDayIndex,
               );
             }
-            return _ErrorScaffold(message: failure.maybeWhen(
+            return _ErrorScaffold(
+                message: failure.maybeWhen(
               server: (code, msg) => msg ?? 'Server error',
               orElse: () => 'Failed to load workout',
             ));
@@ -124,9 +133,11 @@ class _LoadingScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textPrimary = isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
+    final textPrimary =
+        isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF131313) : const Color(0xFFF7F9FD),
+      backgroundColor:
+          isDark ? const Color(0xFF131313) : const Color(0xFFF7F9FD),
       appBar: _buildAppBar(context, isDark, textPrimary),
       body: const Center(child: CircularProgressIndicator()),
     );
@@ -142,9 +153,11 @@ class _ErrorScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textPrimary = isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
+    final textPrimary =
+        isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF131313) : const Color(0xFFF7F9FD),
+      backgroundColor:
+          isDark ? const Color(0xFF131313) : const Color(0xFFF7F9FD),
       appBar: _buildAppBar(context, isDark, textPrimary),
       body: Center(
         child: Text(message,
@@ -162,10 +175,13 @@ class _NoPlanScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textPrimary = isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
-    final textSecondary = isDark ? const Color(0xFFA1A1A1) : const Color(0xFF5F5E5E);
+    final textPrimary =
+        isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
+    final textSecondary =
+        isDark ? const Color(0xFFA1A1A1) : const Color(0xFF5F5E5E);
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF131313) : const Color(0xFFF7F9FD),
+      backgroundColor:
+          isDark ? const Color(0xFF131313) : const Color(0xFFF7F9FD),
       appBar: _buildAppBar(context, isDark, textPrimary),
       body: Center(
         child: Padding(
@@ -173,7 +189,8 @@ class _NoPlanScaffold extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.fitness_center_outlined, size: 64, color: textSecondary),
+              Icon(Icons.fitness_center_outlined,
+                  size: 64, color: textSecondary),
               const SizedBox(height: 24),
               Text(
                 'NO ACTIVE PROGRAM',
@@ -188,7 +205,8 @@ class _NoPlanScaffold extends StatelessWidget {
               Text(
                 'Your trainer hasn\'t assigned a program yet. Check back soon.',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(fontSize: 14, color: textSecondary, height: 1.5),
+                style: GoogleFonts.inter(
+                    fontSize: 14, color: textSecondary, height: 1.5),
               ),
             ],
           ),
@@ -224,18 +242,23 @@ class _LoadedScaffold extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     const sinewGreen = Color(0xFF34D399);
-    final slateDark = isDark ? const Color(0xFF0E0E0E) : const Color(0xFF111827);
-    final outlineColor = isDark ? const Color(0xFF444748) : const Color(0xFFE5E7EB);
+    final slateDark =
+        isDark ? const Color(0xFF0E0E0E) : const Color(0xFF111827);
+    final outlineColor =
+        isDark ? const Color(0xFF444748) : const Color(0xFFE5E7EB);
     final cardBg = isDark ? const Color(0xFF1C1B1B) : Colors.white;
-    final textPrimary = isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
-    final textSecondary = isDark ? const Color(0xFFA1A1A1) : const Color(0xFF5F5E5E);
+    final textPrimary =
+        isDark ? const Color(0xFFE5E2E1) : const Color(0xFF111827);
+    final textSecondary =
+        isDark ? const Color(0xFFA1A1A1) : const Color(0xFF5F5E5E);
     final bgColor = isDark ? const Color(0xFF131313) : const Color(0xFFF7F9FD);
 
     final tasks = (dayPlan.tasks as List<Task>?) ?? [];
     final taskDrafts = draft.taskDrafts as List;
 
     int completedCount = taskDrafts.length;
-    double completionPercent = tasks.isEmpty ? 0 : completedCount / tasks.length;
+    double completionPercent =
+        tasks.isEmpty ? 0 : completedCount / tasks.length;
     bool hasAnyActuals = taskDrafts.isNotEmpty;
     bool canComplete = hasAnyActuals || dayPlan.isRestDay;
 
@@ -314,7 +337,8 @@ class _LoadedScaffold extends StatelessWidget {
           Container(
             height: 48,
             decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: outlineColor, width: 1.0)),
+              border:
+                  Border(bottom: BorderSide(color: outlineColor, width: 1.0)),
             ),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -353,7 +377,8 @@ class _LoadedScaffold extends StatelessWidget {
                             extra: DayPreviewArgs(
                               dayPlan: tappedDayPlan,
                               log: log,
-                              isUpcoming: log == null && dayIndex >= activeDayIndex,
+                              isUpcoming:
+                                  log == null && dayIndex >= activeDayIndex,
                               weeklyPlanName: weeklyPlan.name,
                             ),
                           );
@@ -390,7 +415,8 @@ class _LoadedScaffold extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.self_improvement, size: 64, color: textSecondary),
+                          Icon(Icons.self_improvement,
+                              size: 64, color: textSecondary),
                           const SizedBox(height: 16),
                           Text('REST DAY',
                               style: GoogleFonts.manrope(
@@ -402,7 +428,8 @@ class _LoadedScaffold extends StatelessWidget {
                           Text(
                             'No protocols today. Focus on rest and recovery.',
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.inter(fontSize: 13, color: textSecondary),
+                            style: GoogleFonts.inter(
+                                fontSize: 13, color: textSecondary),
                           ),
                         ],
                       ),
@@ -413,9 +440,11 @@ class _LoadedScaffold extends StatelessWidget {
                     itemCount: tasks.length,
                     itemBuilder: (context, index) {
                       final task = tasks[index];
-                      final taskDraft = taskDrafts.where(
-                        (d) => d.taskId == task.id,
-                      ).firstOrNull;
+                      final taskDraft = taskDrafts
+                          .where(
+                            (d) => d.taskId == task.id,
+                          )
+                          .firstOrNull;
                       final isCompleted = taskDraft != null;
 
                       return _TaskRow(
@@ -439,6 +468,7 @@ class _LoadedScaffold extends StatelessWidget {
                             'notes': task.notes,
                             'workoutProfileId': profile.id,
                             'existingDraft': taskDraft,
+                            'aiConfig': task.exerciseConfig
                           };
                           await context.push(
                             AppRoute.taskExecution.path,
@@ -544,7 +574,8 @@ class _TaskRow extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
                         color: textPrimary,
-                        decoration: isCompleted ? TextDecoration.lineThrough : null,
+                        decoration:
+                            isCompleted ? TextDecoration.lineThrough : null,
                       ),
                     ),
                   ),
@@ -608,11 +639,15 @@ class _StatChip extends StatelessWidget {
         children: [
           Text(label,
               style: GoogleFonts.manrope(
-                  fontSize: 9, fontWeight: FontWeight.w800, color: textSecondary)),
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  color: textSecondary)),
           const SizedBox(height: 2),
           Text(value,
               style: GoogleFonts.manrope(
-                  fontSize: 13, fontWeight: FontWeight.w800, color: textPrimary)),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                  color: textPrimary)),
         ],
       ),
     );
@@ -644,7 +679,8 @@ AppBar _buildAppBar(BuildContext context, bool isDark, Color textPrimary) {
         padding: const EdgeInsets.only(right: 16),
         child: CircleAvatar(
           radius: 18,
-          backgroundColor: isDark ? const Color(0xFF0E0E0E) : const Color(0xFF111827),
+          backgroundColor:
+              isDark ? const Color(0xFF0E0E0E) : const Color(0xFF111827),
           child: const Icon(Icons.person, color: Colors.white, size: 18),
         ),
       ),

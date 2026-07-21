@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/di/injection.dart';
+import '../../../exercise_config/domain/entities/exercise_config.dart';
+import '../../../exercise_config/presentation/cubit/exercise_config_picker_cubit.dart';
+import '../../../exercise_config/presentation/widgets/exercise_config_picker_sheet.dart';
 import '../../../task_media/domain/entities/task_media.dart';
 import '../../../task_media/presentation/cubit/task_media_picker_cubit.dart';
 import '../../../task_media/presentation/widgets/task_media_picker_sheet.dart';
@@ -39,6 +42,7 @@ class _ProtocolFormPageState extends State<ProtocolFormPage> {
   final _formKey = GlobalKey<FormState>();
 
   late List<DraftTaskAttachment> _attachments;
+  ExerciseConfig? _selectedExerciseConfig;
 
   bool get _isEditing => widget.existingTask != null;
 
@@ -55,6 +59,7 @@ class _ProtocolFormPageState extends State<ProtocolFormPage> {
     _restCtrl = TextEditingController(text: t?.restSeconds != null ? '${t!.restSeconds}' : '90');
     _tempoCtrl = TextEditingController(text: t?.tempo ?? '3-0-1-0');
     _attachments = List<DraftTaskAttachment>.from(t?.attachments ?? const []);
+    _selectedExerciseConfig = t?.exerciseConfig;
   }
 
   Future<void> _openMediaPicker() async {
@@ -86,6 +91,25 @@ class _ProtocolFormPageState extends State<ProtocolFormPage> {
               ))
           .toList();
     });
+  }
+
+  Future<void> _openExerciseConfigPicker() async {
+    final result = await showModalBottomSheet<ExerciseConfigSelection>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => BlocProvider(
+        create: (_) => ExerciseConfigPickerCubit(
+          getIt<Mediator>(),
+          preselected: _selectedExerciseConfig,
+        )..search(),
+        child: const ExerciseConfigPickerSheet(),
+      ),
+    );
+    // A bare null is a dismiss (backdrop / back gesture) — leave state alone.
+    // Any selection, including one wrapping null, is an explicit confirm.
+    if (result == null || !mounted) return;
+    setState(() => _selectedExerciseConfig = result.config);
   }
 
   void _removeAttachment(String taskMediaId) {
@@ -127,6 +151,7 @@ class _ProtocolFormPageState extends State<ProtocolFormPage> {
       restSeconds: int.tryParse(_restCtrl.text.trim()),
       tempo: _tempoCtrl.text.trim().isEmpty ? null : _tempoCtrl.text.trim(),
       attachments: _attachments,
+      exerciseConfig: _selectedExerciseConfig,
     );
     Navigator.of(context).pop(task);
   }
@@ -430,6 +455,60 @@ class _ProtocolFormPageState extends State<ProtocolFormPage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 28),
+
+              // ── AI CONFIGURATION ───────────────────────────────────────────
+              _SectionLabel('AI CONFIGURATION', mutedCol),
+              const SizedBox(height: 8),
+              if (_selectedExerciseConfig != null)
+                _ExerciseConfigCard(
+                  config: _selectedExerciseConfig!,
+                  textCol: textCol,
+                  mutedCol: mutedCol,
+                  cardColor: cardColor,
+                  borderCol: borderCol,
+                  isDark: isDark,
+                  onChange: _openExerciseConfigPicker,
+                  onClear: () => setState(() => _selectedExerciseConfig = null),
+                )
+              else
+                GestureDetector(
+                  onTap: _openExerciseConfigPicker,
+                  child: CustomPaint(
+                    painter: _DashedBorderPainter(color: borderCol),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                      color: Colors.transparent,
+                      child: Column(
+                        children: [
+                          Icon(Icons.videocam_outlined, size: 24, color: mutedCol),
+                          const SizedBox(height: 10),
+                          Text(
+                            'SELECT A WATCH ME CONFIGURATION',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w900,
+                              color: textCol,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'OPTIONAL — ENABLES FORM ANALYSIS',
+                            style: GoogleFonts.inter(
+                              fontSize: 8,
+                              fontWeight: FontWeight.bold,
+                              color: mutedCol,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               const SizedBox(height: 32),
             ],
           ),
@@ -599,6 +678,107 @@ class _AttachmentCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The singular counterpart to [_AttachmentCard] — shows the one selected
+/// config, with CHANGE (reopens the picker) and × (clears) affordances.
+class _ExerciseConfigCard extends StatelessWidget {
+  final ExerciseConfig config;
+  final Color textCol;
+  final Color mutedCol;
+  final Color cardColor;
+  final Color borderCol;
+  final bool isDark;
+  final VoidCallback onChange;
+  final VoidCallback onClear;
+
+  const _ExerciseConfigCard({
+    required this.config,
+    required this.textCol,
+    required this.mutedCol,
+    required this.cardColor,
+    required this.borderCol,
+    required this.isDark,
+    required this.onChange,
+    required this.onClear,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final thumbBg = isDark ? const Color(0xFF121212) : const Color(0xFFF1F1F1);
+
+    return GestureDetector(
+      onTap: onChange,
+      child: Container(
+        decoration: BoxDecoration(
+          color: cardColor,
+          border: Border.all(color: borderCol),
+          borderRadius: BorderRadius.zero,
+        ),
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: thumbBg,
+                border: Border.all(color: borderCol),
+                borderRadius: BorderRadius.zero,
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: Icon(Icons.videocam_outlined, size: 18, color: mutedCol),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    config.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.manrope(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: textCol,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    analyzerTypeLabel(config.analyzerType),
+                    style: GoogleFonts.inter(
+                      fontSize: 8,
+                      fontWeight: FontWeight.w900,
+                      color: mutedCol,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              'CHANGE',
+              style: GoogleFonts.inter(
+                fontSize: 8,
+                fontWeight: FontWeight.w900,
+                color: textCol,
+                letterSpacing: 1.0,
+              ),
+            ),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: onClear,
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Icon(Icons.close, size: 18, color: mutedCol),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

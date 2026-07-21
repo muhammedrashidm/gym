@@ -10,6 +10,7 @@ import {
   UpdateWeeklyPlanDto,
 } from '../dto/weekly-plan.dto';
 import { TaskMediaService } from './task-media.service';
+import { ExerciseConfigService } from '../../exercise-config/services/exercise-config.service';
 import type { RequestContext } from '../../common/types/request-context.type';
 import {
   WeeklyPlanStatus,
@@ -19,6 +20,7 @@ import {
   TaskAttachment,
   TaskMedia,
   Media,
+  ExerciseConfig,
   WorkoutProfile,
 } from 'generated/prisma/client';
 
@@ -28,6 +30,7 @@ type FullTaskAttachment = TaskAttachment & {
 
 export interface FullTask extends Task {
   attachments: FullTaskAttachment[];
+  exerciseConfig: (ExerciseConfig & { media: Media }) | null;
 }
 
 export interface FullDayPlan extends DayPlan {
@@ -50,6 +53,9 @@ const weeklyPlanInclude = {
             orderBy: { sequenceIndex: 'asc' as const },
             include: { taskMedia: { include: { media: true } } },
           },
+          exerciseConfig: {
+            include: { media: true },
+          },
         },
       },
     },
@@ -61,6 +67,7 @@ export class WeeklyPlanService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly taskMediaService: TaskMediaService,
+    private readonly exerciseConfigService: ExerciseConfigService,
   ) {}
 
   async create(
@@ -88,6 +95,12 @@ export class WeeklyPlanService {
       ),
     );
     await this.taskMediaService.assertUsable(referencedMediaIds, ctx);
+
+    // 2c. Every referenced exercise config must exist and be active.
+    const referencedConfigIds = dto.days.flatMap((d) =>
+      (d.tasks || []).map((t) => t.exerciseConfigId),
+    );
+    await this.exerciseConfigService.assertAllUsable(referencedConfigIds);
 
     // 3. Prepare the nested day plans structure
     const status = dto.activateImmediately
@@ -156,6 +169,7 @@ export class WeeklyPlanService {
                     reps: t.reps,
                     restSeconds: t.restSeconds || undefined,
                     tempo: t.tempo || undefined,
+                    exerciseConfigId: t.exerciseConfigId || undefined,
                     attachments: {
                       create: (t.attachments || []).map((a) => ({
                         taskMediaId: a.taskMediaId,
@@ -436,6 +450,9 @@ export class WeeklyPlanService {
                 ),
               })),
             ),
+            exerciseConfig: t.exerciseConfig
+              ? await this.exerciseConfigService.mapToResponse(t.exerciseConfig)
+              : null,
             createdAt: t.createdAt,
             updatedAt: t.updatedAt,
           })),

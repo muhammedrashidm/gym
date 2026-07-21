@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from '../auth/auth.module';
+import { ExerciseConfigModule } from '../exercise-config/exercise-config.module';
 
 import { WorkoutProfileController } from './controllers/workout-profile.controller';
 import { WeeklyPlanController } from './controllers/weekly-plan.controller';
@@ -17,7 +18,7 @@ import { TaskMediaService } from './services/task-media.service';
 import { WorkoutSessionService } from './services/workout-session.service';
 
 @Module({
-  imports: [PrismaModule, AuthModule],
+  imports: [PrismaModule, AuthModule, ExerciseConfigModule],
   controllers: [
     WorkoutProfileController,
     WeeklyPlanController,

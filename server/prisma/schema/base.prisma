@@ -22,7 +22,8 @@ model Media {
   createdById String
   createdAt   DateTime        @default(now())
 
-  taskMedia TaskMedia?
+  taskMedia      TaskMedia?
+  exerciseConfig ExerciseConfig?
 
   @@map("media")
 }

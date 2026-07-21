@@ -1,4 +1,5 @@
 import 'package:uuid/uuid.dart';
+import '../../../exercise_config/domain/entities/exercise_config.dart';
 import 'draft_task_attachment.dart';
 
 class DraftTask {
@@ -13,6 +14,9 @@ class DraftTask {
   final int? restSeconds;
   final String? tempo;
   final List<DraftTaskAttachment> attachments;
+  // Stored as the entity, not an id — the form needs the name/analyzer type to
+  // render the selection, and only the id is serialized on submit.
+  final ExerciseConfig? exerciseConfig;
 
   DraftTask({
     String? localId,
@@ -26,6 +30,7 @@ class DraftTask {
     this.restSeconds,
     this.tempo,
     this.attachments = const [],
+    this.exerciseConfig,
   }) : localId = localId ?? const Uuid().v4();
 
   DraftTask copyWith({
@@ -39,6 +44,7 @@ class DraftTask {
     int? restSeconds,
     String? tempo,
     List<DraftTaskAttachment>? attachments,
+    ExerciseConfig? exerciseConfig,
   }) {
     return DraftTask(
       localId: localId,
@@ -52,6 +58,7 @@ class DraftTask {
       restSeconds: restSeconds ?? this.restSeconds,
       tempo: tempo ?? this.tempo,
       attachments: attachments ?? this.attachments,
+      exerciseConfig: exerciseConfig ?? this.exerciseConfig,
     );
   }
 
@@ -67,5 +74,6 @@ class DraftTask {
         if (tempo != null && tempo!.isNotEmpty) 'tempo': tempo,
         if (attachments.isNotEmpty)
           'attachments': attachments.map((a) => a.toJson()).toList(),
+        if (exerciseConfig != null) 'exerciseConfigId': exerciseConfig!.id,
       };
 }

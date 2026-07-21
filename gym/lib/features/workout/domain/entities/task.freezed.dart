@@ -28,6 +28,7 @@ mixin _$Task {
   int? get restSeconds => throw _privateConstructorUsedError;
   String? get tempo => throw _privateConstructorUsedError;
   List<TaskAttachment> get attachments => throw _privateConstructorUsedError;
+  ExerciseConfig? get exerciseConfig => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TaskCopyWith<Task> get copyWith => throw _privateConstructorUsedError;
@@ -50,7 +51,10 @@ abstract class $TaskCopyWith<$Res> {
       String reps,
       int? restSeconds,
       String? tempo,
-      List<TaskAttachment> attachments});
+      List<TaskAttachment> attachments,
+      ExerciseConfig? exerciseConfig});
+
+  $ExerciseConfigCopyWith<$Res>? get exerciseConfig;
 }
 
 /// @nodoc
@@ -78,6 +82,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? restSeconds = freezed,
     Object? tempo = freezed,
     Object? attachments = null,
+    Object? exerciseConfig = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -128,7 +133,23 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.attachments
           : attachments // ignore: cast_nullable_to_non_nullable
               as List<TaskAttachment>,
+      exerciseConfig: freezed == exerciseConfig
+          ? _value.exerciseConfig
+          : exerciseConfig // ignore: cast_nullable_to_non_nullable
+              as ExerciseConfig?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ExerciseConfigCopyWith<$Res>? get exerciseConfig {
+    if (_value.exerciseConfig == null) {
+      return null;
+    }
+
+    return $ExerciseConfigCopyWith<$Res>(_value.exerciseConfig!, (value) {
+      return _then(_value.copyWith(exerciseConfig: value) as $Val);
+    });
   }
 }
 
@@ -151,7 +172,11 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       String reps,
       int? restSeconds,
       String? tempo,
-      List<TaskAttachment> attachments});
+      List<TaskAttachment> attachments,
+      ExerciseConfig? exerciseConfig});
+
+  @override
+  $ExerciseConfigCopyWith<$Res>? get exerciseConfig;
 }
 
 /// @nodoc
@@ -176,6 +201,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? restSeconds = freezed,
     Object? tempo = freezed,
     Object? attachments = null,
+    Object? exerciseConfig = freezed,
   }) {
     return _then(_$TaskImpl(
       id: null == id
@@ -226,6 +252,10 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value._attachments
           : attachments // ignore: cast_nullable_to_non_nullable
               as List<TaskAttachment>,
+      exerciseConfig: freezed == exerciseConfig
+          ? _value.exerciseConfig
+          : exerciseConfig // ignore: cast_nullable_to_non_nullable
+              as ExerciseConfig?,
     ));
   }
 }
@@ -245,7 +275,8 @@ class _$TaskImpl implements _Task {
       required this.reps,
       this.restSeconds,
       this.tempo,
-      final List<TaskAttachment> attachments = const <TaskAttachment>[]})
+      final List<TaskAttachment> attachments = const <TaskAttachment>[],
+      this.exerciseConfig})
       : _attachments = attachments;
 
   @override
@@ -280,8 +311,11 @@ class _$TaskImpl implements _Task {
   }
 
   @override
+  final ExerciseConfig? exerciseConfig;
+
+  @override
   String toString() {
-    return 'Task(id: $id, dayPlanId: $dayPlanId, sequenceIndex: $sequenceIndex, name: $name, description: $description, machineDetails: $machineDetails, notes: $notes, sets: $sets, reps: $reps, restSeconds: $restSeconds, tempo: $tempo, attachments: $attachments)';
+    return 'Task(id: $id, dayPlanId: $dayPlanId, sequenceIndex: $sequenceIndex, name: $name, description: $description, machineDetails: $machineDetails, notes: $notes, sets: $sets, reps: $reps, restSeconds: $restSeconds, tempo: $tempo, attachments: $attachments, exerciseConfig: $exerciseConfig)';
   }
 
   @override
@@ -306,7 +340,9 @@ class _$TaskImpl implements _Task {
                 other.restSeconds == restSeconds) &&
             (identical(other.tempo, tempo) || other.tempo == tempo) &&
             const DeepCollectionEquality()
-                .equals(other._attachments, _attachments));
+                .equals(other._attachments, _attachments) &&
+            (identical(other.exerciseConfig, exerciseConfig) ||
+                other.exerciseConfig == exerciseConfig));
   }
 
   @override
@@ -323,7 +359,8 @@ class _$TaskImpl implements _Task {
       reps,
       restSeconds,
       tempo,
-      const DeepCollectionEquality().hash(_attachments));
+      const DeepCollectionEquality().hash(_attachments),
+      exerciseConfig);
 
   @JsonKey(ignore: true)
   @override
@@ -345,7 +382,8 @@ abstract class _Task implements Task {
       required final String reps,
       final int? restSeconds,
       final String? tempo,
-      final List<TaskAttachment> attachments}) = _$TaskImpl;
+      final List<TaskAttachment> attachments,
+      final ExerciseConfig? exerciseConfig}) = _$TaskImpl;
 
   @override
   String get id;
@@ -371,6 +409,8 @@ abstract class _Task implements Task {
   String? get tempo;
   @override
   List<TaskAttachment> get attachments;
+  @override
+  ExerciseConfig? get exerciseConfig;
   @override
   @JsonKey(ignore: true)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>

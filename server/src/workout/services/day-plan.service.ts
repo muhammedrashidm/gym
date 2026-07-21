@@ -6,6 +6,7 @@ import {
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdateDayPlanDto } from '../dto/day-plan.dto';
 import { TaskMediaService } from './task-media.service';
+import { ExerciseConfigService } from '../../exercise-config/services/exercise-config.service';
 import type { RequestContext } from '../../common/types/request-context.type';
 import type {
   WorkoutProfile,
@@ -14,6 +15,7 @@ import type {
   TaskAttachment,
   TaskMedia,
   Media,
+  ExerciseConfig,
 } from 'generated/prisma/client';
 
 type FullTaskAttachment = TaskAttachment & {
@@ -22,6 +24,7 @@ type FullTaskAttachment = TaskAttachment & {
 
 export interface FullTask extends Task {
   attachments: FullTaskAttachment[];
+  exerciseConfig: (ExerciseConfig & { media: Media }) | null;
 }
 
 export interface FullDayPlan extends DayPlan {
@@ -36,6 +39,9 @@ const taskInclude = {
         orderBy: { sequenceIndex: 'asc' as const },
         include: { taskMedia: { include: { media: true } } },
       },
+      exerciseConfig: {
+        include: { media: true },
+      },
     },
   },
 };
@@ -45,6 +51,7 @@ export class DayPlanService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly taskMediaService: TaskMediaService,
+    private readonly exerciseConfigService: ExerciseConfigService,
   ) {}
 
   async findOne(id: string, ctx: RequestContext) {
@@ -150,6 +157,9 @@ export class DayPlanService {
             taskMedia: await this.taskMediaService.mapToResponse(a.taskMedia),
           })),
         ),
+        exerciseConfig: t.exerciseConfig
+          ? await this.exerciseConfigService.mapToSummary(t.exerciseConfig)
+          : null,
         createdAt: t.createdAt,
         updatedAt: t.updatedAt,
       })),

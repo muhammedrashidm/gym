@@ -23,6 +23,10 @@ TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
                   TaskAttachmentModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      exerciseConfig: json['exerciseConfig'] == null
+          ? null
+          : ExerciseConfigModel.fromJson(
+              json['exerciseConfig'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{
@@ -38,4 +42,5 @@ Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{
       'restSeconds': instance.restSeconds,
       'tempo': instance.tempo,
       'attachments': instance.attachments.map((e) => e.toJson()).toList(),
+      'exerciseConfig': instance.exerciseConfig?.toJson(),
     };

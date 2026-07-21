@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../domain/entities/task.dart';
+import '../../../exercise_config/data/models/exercise_config_model.dart';
 import '../../../task_media/data/models/task_attachment_model.dart';
 
 part 'task_model.g.dart';
@@ -19,6 +20,7 @@ class TaskModel {
   final String? tempo;
   @JsonKey(defaultValue: <TaskAttachmentModel>[])
   final List<TaskAttachmentModel> attachments;
+  final ExerciseConfigModel? exerciseConfig;
 
   const TaskModel({
     required this.id,
@@ -33,6 +35,7 @@ class TaskModel {
     this.restSeconds,
     this.tempo,
     this.attachments = const [],
+    this.exerciseConfig,
   });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) =>
@@ -54,6 +57,7 @@ class TaskModel {
       restSeconds: restSeconds,
       tempo: tempo,
       attachments: attachments.map((a) => a.toDomain()).toList(),
+      exerciseConfig: exerciseConfig?.toDomain(),
     );
   }
 }

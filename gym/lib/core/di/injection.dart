@@ -18,6 +18,7 @@ import '../../features/workout/domain/usecases/manage_weekly_plans.dart';
 import '../../features/workout/domain/usecases/manage_day_plans.dart';
 import '../../features/workout/domain/usecases/manage_tasks.dart';
 import '../../features/task_media/domain/usecases/manage_task_media.dart';
+import '../../features/exercise_config/domain/usecases/manage_exercise_config.dart';
 import '../../features/workout_session/domain/usecases/get_today_plan_query.dart';
 import '../../features/workout_session/domain/usecases/member_session_commands.dart';
 import '../../features/workout_session/domain/usecases/trainer_session_commands.dart';
@@ -78,6 +79,9 @@ Future<void> configureDependencies(AppConfig config) async {
   // Task Media Handlers
   mediator.registerCommandHandler(getIt<SearchTaskMediaQueryHandler>());
   mediator.registerCommandHandler(getIt<CreateTaskMediaCommandHandler>());
+
+  // Exercise Config Handlers
+  mediator.registerCommandHandler(getIt<SearchExerciseConfigQueryHandler>());
 
   // Workout Session Handlers (shared)
   mediator.registerCommandHandler(getIt<GetTodayPlanQueryHandler>());

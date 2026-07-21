@@ -14,6 +14,7 @@ import {
   TaskAttachmentInputDto,
   TaskAttachmentResponseDto,
 } from './task-media.dto';
+import { ExerciseConfigSummaryDto } from '../../exercise-config/dto/exercise-config.dto';
 
 export class TaskInputDto {
   @ApiProperty({
@@ -100,6 +101,13 @@ export class TaskInputDto {
   @ValidateNested({ each: true })
   @Type(() => TaskAttachmentInputDto)
   attachments?: TaskAttachmentInputDto[];
+
+  @ApiPropertyOptional({
+    description: 'Selected AI "Watch Me" exercise config, if any (at most one per task)',
+  })
+  @IsOptional()
+  @IsString()
+  exerciseConfigId?: string;
 }
 
 export class CreateTaskDto extends TaskInputDto {}
@@ -148,6 +156,15 @@ export class UpdateTaskDto {
   @IsOptional()
   @IsString()
   tempo?: string;
+
+  @ApiPropertyOptional({
+    description:
+      'Selected AI "Watch Me" exercise config, if any. Pass null to clear.',
+    nullable: true,
+  })
+  @IsOptional()
+  @IsString()
+  exerciseConfigId?: string | null;
 }
 
 export class TaskResponseDto {
@@ -186,6 +203,9 @@ export class TaskResponseDto {
 
   @ApiProperty({ type: [TaskAttachmentResponseDto] })
   attachments: TaskAttachmentResponseDto[];
+
+  @ApiPropertyOptional({ type: ExerciseConfigSummaryDto, nullable: true })
+  exerciseConfig: ExerciseConfigSummaryDto | null;
 
   @ApiProperty()
   createdAt: Date;

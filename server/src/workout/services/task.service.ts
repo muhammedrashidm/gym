@@ -12,6 +12,7 @@ import {
 } from '../dto/task.dto';
 import { AttachTaskMediaDto } from '../dto/task-media.dto';
 import { TaskMediaService } from './task-media.service';
+import { ExerciseConfigService } from '../../exercise-config/services/exercise-config.service';
 import type { RequestContext } from '../../common/types/request-context.type';
 import type {
   WorkoutProfile,
@@ -19,6 +20,7 @@ import type {
   TaskAttachment,
   TaskMedia,
   Media,
+  ExerciseConfig,
 } from 'generated/prisma/client';
 
 type FullTaskAttachment = TaskAttachment & {
@@ -27,12 +29,16 @@ type FullTaskAttachment = TaskAttachment & {
 
 export interface FullTask extends Task {
   attachments: FullTaskAttachment[];
+  exerciseConfig: (ExerciseConfig & { media: Media }) | null;
 }
 
 const attachmentInclude = {
   attachments: {
     orderBy: { sequenceIndex: 'asc' as const },
     include: { taskMedia: { include: { media: true } } },
+  },
+  exerciseConfig: {
+    include: { media: true },
   },
 };
 
@@ -41,6 +47,7 @@ export class TaskService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly taskMediaService: TaskMediaService,
+    private readonly exerciseConfigService: ExerciseConfigService,
   ) {}
 
   async create(dayPlanId: string, dto: CreateTaskDto, ctx: RequestContext) {
@@ -62,6 +69,9 @@ export class TaskService {
       (dto.attachments || []).map((a) => a.taskMediaId),
       ctx,
     );
+    if (dto.exerciseConfigId) {
+      await this.exerciseConfigService.assertUsable(dto.exerciseConfigId);
+    }
 
     const createdTask = await this.prisma.$transaction(async (tx) => {
       // 1. Shift existing tasks with index >= dto.sequenceIndex in DESC order
@@ -93,6 +103,7 @@ export class TaskService {
           reps: dto.reps,
           restSeconds: dto.restSeconds || null,
           tempo: dto.tempo || null,
+          exerciseConfigId: dto.exerciseConfigId || null,
           attachments: {
             create: (dto.attachments || []).map((a) => ({
               taskMediaId: a.taskMediaId,
@@ -127,6 +138,10 @@ export class TaskService {
 
     this.checkTrainerOrAdminAccess(task.dayPlan.weeklyPlan.workoutProfile, ctx);
 
+    if (dto.exerciseConfigId) {
+      await this.exerciseConfigService.assertUsable(dto.exerciseConfigId);
+    }
+
     const updatedTask = await this.prisma.task.update({
       where: { id },
       data: {
@@ -138,6 +153,8 @@ export class TaskService {
         reps: dto.reps,
         restSeconds: dto.restSeconds,
         tempo: dto.tempo,
+        // undefined (not provided) leaves the column unchanged; null clears it.
+        exerciseConfigId: dto.exerciseConfigId,
       },
       include: attachmentInclude,
     });
@@ -375,6 +392,9 @@ export class TaskService {
     const attachments = await Promise.all(
       (t.attachments || []).map((a) => this.mapAttachmentToResponse(a)),
     );
+    const exerciseConfig = t.exerciseConfig
+      ? await this.exerciseConfigService.mapToSummary(t.exerciseConfig)
+      : null;
     return {
       id: t.id,
       dayPlanId: t.dayPlanId,
@@ -388,6 +408,7 @@ export class TaskService {
       restSeconds: t.restSeconds,
       tempo: t.tempo,
       attachments,
+      exerciseConfig,
       createdAt: t.createdAt,
       updatedAt: t.updatedAt,
     };

@@ -34,9 +34,12 @@ import '../../features/workout_session/presentation/cubit/member_workout_session
 import '../../features/workout_session/presentation/cubit/trainer_live_clients/trainer_live_clients_cubit.dart';
 import '../../features/workout_session/presentation/cubit/trainer_client_session/trainer_client_session_cubit.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-final GlobalKey<NavigatorState> _memberShellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'memberShell');
-final GlobalKey<NavigatorState> _staffShellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'staffShell');
+final GlobalKey<NavigatorState> _rootNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _memberShellNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'memberShell');
+final GlobalKey<NavigatorState> _staffShellNavigatorKey =
+    GlobalKey<NavigatorState>(debugLabel: 'staffShell');
 
 @singleton
 class AppRouter {
@@ -154,7 +157,8 @@ class AppRouter {
               name: AppRoute.taskExecution.name,
               builder: (context, state) => BlocProvider(
                 create: (_) => GetIt.I<MemberWorkoutSessionCubit>(),
-                child:  TaskExecutionPage(                taskData: state.extra as Map<String, dynamic>,
+                child: TaskExecutionPage(
+                  taskData: state.extra as Map<String, dynamic>,
                 ),
               ),
               // builder: (context, state) => TaskExecutionPage(
@@ -400,8 +404,8 @@ class _StaffShell extends StatelessWidget {
             buildNavItem(
                 0, Icons.dashboard, 'DASHBOARD', AppRoute.staffDashboard.path),
             buildNavItem(1, Icons.group, 'CLIENTS', AppRoute.staffClients.path),
-            buildNavItem(2, Icons.bolt, 'SESSIONS',
-                AppRoute.staffLiveSessions.path),
+            buildNavItem(
+                2, Icons.bolt, 'SESSIONS', AppRoute.staffLiveSessions.path),
             buildNavItem(
                 3, Icons.person, 'PROFILE', AppRoute.staffProfile.path),
           ],
