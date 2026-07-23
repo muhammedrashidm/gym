@@ -1,0 +1,101 @@
+name: Prod - Build Server & Deploy to AWS
+
+on:
+  pull_request:
+    types:
+      - closed # Runs when a PR is merged into the prod branch
+    branches:
+      - protected/prod
+  workflow_dispatch: {} # Allow manual runs from the Actions tab
+
+env:
+  ECR_REPOSITORY: gym-server # Update with your actual ECR repository name
+
+jobs:
+  build-and-deploy:
+    # Only run on a merged PR (not just any close), or on manual dispatch
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # Required for OIDC
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_PROD }}
+          aws-region: ${{ secrets.AWS_REGION_PROD }}
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and Push Docker Image
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+          ECR_REGISTRY="${{ secrets.AWS_ACCOUNT_ID_PROD }}.dkr.ecr.${{ secrets.AWS_REGION_PROD }}.amazonaws.com"
+          ECR_IMAGE="$ECR_REGISTRY/${ECR_REPOSITORY}"
+
+          echo "Building image: $ECR_IMAGE"
+          echo "Tag: $IMAGE_TAG"
+
+          # NestJS app lives in ./server — build context is the server folder
+          docker buildx build \
+            --platform linux/amd64 \
+            -t "$ECR_IMAGE:$IMAGE_TAG" \
+            -t "$ECR_IMAGE:latest" \
+            --push \
+            ./server
+
+      # ---------------- DEPLOY TO EC2 ------------------
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST_PROD }}
+          username: ${{ secrets.EC2_USER_PROD }}
+          key: ${{ secrets.EC2_SSH_KEY_PROD }}
+          script: |
+            set -e
+
+            ECR_REGISTRY="${{ secrets.AWS_ACCOUNT_ID_PROD }}.dkr.ecr.${{ secrets.AWS_REGION_PROD }}.amazonaws.com"
+            ECR_IMAGE="$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}"
+
+            echo "Logging into ECR"
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION_PROD }} \
+              | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+
+            echo "Pulling latest image"
+            docker pull "$ECR_IMAGE:latest"
+
+            echo "Stopping old container"
+            docker stop gym-server || true
+            docker rm gym-server || true
+
+            echo "Starting new container"
+            # The container runs `prisma migrate deploy` on startup, so it needs
+            # DATABASE_URL (and other runtime env). Provide them via an env file
+            # created on the EC2 host, e.g. /opt/gym-server/.env
+            docker run -d \
+              --name gym-server \
+              --restart always \
+              --env-file /opt/gym-server/.env \
+              -p 3000:3000 \
+              "$ECR_IMAGE:latest"
+
+            echo "Cleaning up dangling images"
+            docker image prune -f || true
+
+            echo "Deployment completed successfully"
