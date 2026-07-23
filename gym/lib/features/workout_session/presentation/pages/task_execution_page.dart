@@ -3,6 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../cubit/member_workout_session/member_workout_session_cubit.dart';
+import '../../../../core/router/app_routes.dart';
+import '../../../exercise_config/domain/entities/exercise_config.dart';
+import '../../../exercise_ai/domain/config/ai_config_parser.dart';
+import '../../../exercise_ai/domain/entities/analysis.dart';
+import '../../../exercise_ai/domain/session/set_plan.dart';
+import '../../../exercise_ai/presentation/pages/watch_me_args.dart';
 
 class TaskExecutionPage extends StatefulWidget {
   final Map<String, dynamic> taskData;
@@ -69,6 +75,58 @@ class _TaskExecutionPageState extends State<TaskExecutionPage> {
     Future.delayed(const Duration(milliseconds: 300), () {
       if (mounted) context.pop(true);
     });
+  }
+
+  /// The pre-fetched exercise config carried in `taskData['aiConfig']`. Non-null
+  /// with a populated `aiConfigJson` only when the upstream loader hydrated it.
+  ExerciseConfig? get _exerciseConfig {
+    final cfg = widget.taskData['aiConfig'];
+    return cfg is ExerciseConfig ? cfg : null;
+  }
+
+  /// Show the Watch Me button only when there is a usable, supported config.
+  bool get _canWatchMe {
+    final cfg = _exerciseConfig;
+    if (cfg == null) return false;
+    return AiConfigParser.isSupported(cfg.analyzerType, cfg.aiConfigJson);
+  }
+
+  /// Today's prescription, straight from the backend task. This is the only
+  /// source of sets/reps/rest for the coach — the AI config says nothing about
+  /// them.
+  SetPlan get _setPlan => SetPlan.fromTask(
+        sets: widget.taskData['sets'] as int?,
+        reps: widget.taskData['reps'] as String?,
+        restSeconds: widget.taskData['restSeconds'] as int?,
+      );
+
+  Future<void> _launchWatchMe() async {
+    final cfg = _exerciseConfig;
+    if (cfg == null) return;
+    final result = await context.push(
+      AppRoute.watchMe.path,
+      extra: WatchMeArgs(config: cfg, plan: _setPlan),
+    );
+    if (!mounted || result is! SessionAnalysisResult) return;
+    if (result.completedSets == 0) return;
+
+    // Pre-fill logged actuals from the AI-measured sets (user can still edit).
+    if (_setsController.text.isEmpty) {
+      _setsController.text = '${result.completedSets}';
+    }
+    if (_repsController.text.isEmpty) {
+      _repsController.text = result.repsPerSetLabel;
+    }
+    final scoreNote =
+        'AI: ${result.completedSets}/${result.plannedSets} sets · '
+        'reps ${result.repsPerSetLabel} '
+        '(${result.validReps}/${result.totalReps} clean) · '
+        'form ${result.formScore.toStringAsFixed(0)} · '
+        'overall ${result.overallScore.toStringAsFixed(0)}';
+    _notesController.text = _notesController.text.isEmpty
+        ? scoreNote
+        : '${_notesController.text}\n$scoreNote';
+    _autoSave();
   }
 
   @override
@@ -175,7 +233,34 @@ class _TaskExecutionPageState extends State<TaskExecutionPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+
+                // AI form coach entry point (only when a supported, hydrated
+                // ExerciseConfig is present on this task).
+                if (_canWatchMe)
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: OutlinedButton.icon(
+                      onPressed: _launchWatchMe,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: sinewGreen,
+                        side: const BorderSide(color: sinewGreen, width: 1.5),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero),
+                      ),
+                      icon: const Icon(Icons.videocam_outlined, size: 20),
+                      label: Text(
+                        'WATCH ME — AI FORM COACH',
+                        style: GoogleFonts.manrope(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                if (_canWatchMe) const SizedBox(height: 24),
 
                 // Actual inputs
                 Text(

@@ -30,6 +30,9 @@ import '../../features/workout_session/presentation/pages/task_execution_page.da
 import '../../features/workout_session/presentation/pages/trainer_live_clients_page.dart';
 import '../../features/workout_session/presentation/pages/trainer_client_session_page.dart';
 import '../../features/workout_session/presentation/pages/day_preview_page.dart';
+import '../../features/exercise_ai/presentation/pages/watch_me_args.dart';
+import '../../features/exercise_ai/presentation/pages/watch_me_page.dart';
+import '../../features/exercise_ai/presentation/cubit/watch_me_cubit.dart';
 import '../../features/workout_session/presentation/cubit/member_workout_session/member_workout_session_cubit.dart';
 import '../../features/workout_session/presentation/cubit/trainer_live_clients/trainer_live_clients_cubit.dart';
 import '../../features/workout_session/presentation/cubit/trainer_client_session/trainer_client_session_cubit.dart';
@@ -224,6 +227,20 @@ class AppRouter {
           builder: (context, state) => DayPreviewPage(
             args: state.extra as DayPreviewArgs,
           ),
+        ),
+        // AI form coach — root-level so the bottom nav is hidden while the
+        // camera is live. Receives the pre-fetched ExerciseConfig plus the
+        // athlete's set/rep prescription as `extra`.
+        GoRoute(
+          path: AppRoute.watchMe.path,
+          name: AppRoute.watchMe.name,
+          builder: (context, state) {
+            final args = state.extra as WatchMeArgs;
+            return BlocProvider(
+              create: (_) => GetIt.I<WatchMeCubit>(),
+              child: WatchMePage(config: args.config, plan: args.plan),
+            );
+          },
         ),
       ],
     );

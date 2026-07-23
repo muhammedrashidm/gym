@@ -21,6 +21,7 @@ enum AppRoute {
   weekPlanCreator(path: '/staff/clients/:clientId/workout/workout-profile/:workoutProfileId/weekly-plan/new', name: 'week-plan-creator'),
   dayPlanCreator(path: '/staff/clients/:clientId/workout/weekly-plan/:weeklyPlanId/edit', name: 'day-plan-creator'),
   taskExecution(path: '/member/train/task-execution', name: 'task-execution'),
+  watchMe(path: '/member/train/watch-me', name: 'watch-me'),
   staffLiveSessions(path: '/staff/live-sessions', name: 'staff-live-sessions'),
   clientSessionUpdate(path: '/staff/clients/:clientId/session', name: 'client-session-update'),
   dayPreview(path: '/day-preview', name: 'day-preview');

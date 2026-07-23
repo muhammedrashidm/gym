@@ -23,6 +23,13 @@ import '../../features/workout_session/domain/usecases/get_today_plan_query.dart
 import '../../features/workout_session/domain/usecases/member_session_commands.dart';
 import '../../features/workout_session/domain/usecases/trainer_session_commands.dart';
 import '../live_session/session_sync_service.dart';
+import '../../features/exercise_ai/data/camera/camera_source_impl.dart';
+import '../../features/exercise_ai/data/pose/mlkit_pose_detector.dart';
+import '../../features/exercise_ai/data/voice/flutter_tts_voice_output.dart';
+import '../../features/exercise_ai/data/ml/noop_ml_classifier.dart';
+import '../../features/exercise_ai/domain/engine/analyzers.dart';
+import '../../features/exercise_ai/domain/ports/ports.dart';
+import '../../features/exercise_ai/presentation/cubit/watch_me_cubit.dart';
 import 'injection.config.dart';
 
 final getIt = GetIt.instance;
@@ -98,6 +105,22 @@ Future<void> configureDependencies(AppConfig config) async {
   mediator.registerCommandHandler(getIt<SkipClientWorkoutSessionCommandHandler>());
   mediator.registerCommandHandler(getIt<GetClientWorkoutSessionLogsQueryHandler>());
   mediator.registerCommandHandler(getIt<GetTrainerActiveClientDraftsQueryHandler>());
+
+  // Exercise AI coach (manual registration — pure engine + plugin adapters,
+  // no injectable annotations so no codegen is required for this feature).
+  getIt.registerLazySingleton<AnalyzerFactory>(() => AnalyzerFactory());
+  getIt.registerFactory<CameraSourceImpl>(() => CameraSourceImpl());
+  getIt.registerFactory<PoseDetector>(() => MlkitPoseDetector());
+  getIt.registerFactory<VoiceOutput>(() => FlutterTtsVoiceOutput());
+  getIt.registerFactory<MlClassifier>(() => NoopMlClassifier());
+  getIt.registerFactory<WatchMeCubit>(
+    () => WatchMeCubit(
+      camera: getIt<CameraSourceImpl>(),
+      detector: getIt<PoseDetector>(),
+      voice: getIt<VoiceOutput>(),
+      analyzerFactory: getIt<AnalyzerFactory>(),
+    ),
+  );
 
   // 5. Bootstrap background sync service (lives for app lifetime)
   getIt<SessionSyncService>();
