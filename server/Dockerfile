@@ -11,7 +11,7 @@ COPY prisma ./prisma/
 COPY prisma.config.ts ./
 
 # Install deps (including devDeps: prisma CLI + nest CLI are needed to build)
-RUN npm ci --omit=dev --quiet
+RUN npm ci --quiet
 
 # Generate Prisma Client into node_modules/.prisma/client (standard location)
 RUN npx prisma generate
