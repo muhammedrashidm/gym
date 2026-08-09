@@ -21,7 +21,7 @@ import type {
   TaskMedia,
   Media,
   ExerciseConfig,
-} from 'generated/prisma/client';
+} from '@prisma/client';
 
 type FullTaskAttachment = TaskAttachment & {
   taskMedia: TaskMedia & { media: Media };

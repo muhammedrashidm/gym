@@ -1,7 +1,7 @@
 import { ProfileModel } from '../models/profile.model';
 import { BodyMetricsModel } from '../models/body-metrics.model';
 import { DisableProfileModel } from '../models/disable-profile.model';
-import { BodyMetrics, Profile } from 'generated/prisma/client';
+import { BodyMetrics, Profile } from '@prisma/client';
 
 type ProfileWithMetrics = Profile & { bodyMetrics: BodyMetrics[] };
 

@@ -11,7 +11,7 @@ import {
   type Prisma,
   type Media,
   type TaskMedia,
-} from 'generated/prisma/client';
+} from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
   PROTECTED_STORAGE_SERVICE,

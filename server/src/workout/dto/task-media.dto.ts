@@ -10,7 +10,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { TaskMediaType } from 'generated/prisma/client';
+import { TaskMediaType } from '@prisma/client';
 import { PaginationQueryDto } from '../../common/dto/api-response.dto';
 
 /** Normalise a multipart keywords field (comma-separated string or repeated

@@ -22,7 +22,7 @@ import {
   Media,
   ExerciseConfig,
   WorkoutProfile,
-} from 'generated/prisma/client';
+} from '@prisma/client';
 
 type FullTaskAttachment = TaskAttachment & {
   taskMedia: TaskMedia & { media: Media };

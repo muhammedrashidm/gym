@@ -10,7 +10,7 @@ import {
   ArrayMaxSize,
 } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
-import { WeeklyPlanStatus } from 'generated/prisma/client';
+import { WeeklyPlanStatus } from '@prisma/client';
 import { DayPlanInputDto, DayPlanResponseDto } from './day-plan.dto';
 
 export class CreateWeeklyPlanDto {

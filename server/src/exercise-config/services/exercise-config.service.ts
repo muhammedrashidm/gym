@@ -9,7 +9,7 @@ import {
   type Prisma,
   type Media,
   type ExerciseConfig,
-} from 'generated/prisma/client';
+} from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import {
   PUBLIC_STORAGE_SERVICE,

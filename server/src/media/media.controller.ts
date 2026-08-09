@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import { MediaVisibility } from 'generated/prisma/client';
+import { MediaVisibility } from '@prisma/client';
 import { MediaService } from './media.service';
 import { ReqContext } from '../common/decorators/request-context.decorator';
 import type { RequestContext } from '../common/types/request-context.type';

@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthService } from '../auth/auth.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { Sex, ExpLevel } from 'generated/prisma/client';
+import { Sex, ExpLevel } from '@prisma/client';
 import { ProfileModel } from './models/profile.model';
 import { DisableProfileModel } from './models/disable-profile.model';
 import { BodyMetricsModel } from './models/body-metrics.model';

@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsString, IsOptional, IsNumber, IsEnum } from 'class-validator';
-import { ExpLevel, Sex } from 'generated/prisma/client';
+import { ExpLevel, Sex } from '@prisma/client';
 
 export class CreateProfileDto {
   @ApiProperty({

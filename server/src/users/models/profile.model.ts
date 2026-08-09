@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BodyMetricsModel } from './body-metrics.model';
-import { ExpLevel, Sex } from 'generated/prisma/client';
+import { ExpLevel, Sex } from '@prisma/client';
 
 export class ProfileModel {
   @ApiProperty({ description: 'Unique identifier' })

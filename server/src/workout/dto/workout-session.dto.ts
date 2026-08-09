@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { SessionLogStatus, SessionLogActorRole } from 'generated/prisma/client';
+import { SessionLogStatus, SessionLogActorRole } from '@prisma/client';
 
 export class TaskCompletionInputDto {
   @ApiProperty({

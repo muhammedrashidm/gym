@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Prisma } from 'generated/prisma/client';
+import type { Prisma } from '@prisma/client';
 import type { RequestContext } from '../common/types/request-context.type';
 
 @Injectable()

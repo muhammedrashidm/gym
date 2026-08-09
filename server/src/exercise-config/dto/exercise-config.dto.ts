@@ -10,7 +10,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { AnalyzerType } from 'generated/prisma/client';
+import { AnalyzerType } from '@prisma/client';
 import { PaginationQueryDto } from '../../common/dto/api-response.dto';
 
 /** Normalise a multipart keywords field (comma-separated string or repeated

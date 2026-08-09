@@ -12,8 +12,8 @@ import {
   UpdateWorkoutProfileDto,
 } from '../dto/workout-profile.dto';
 import type { RequestContext } from '../../common/types/request-context.type';
-import type { WorkoutProfile } from 'generated/prisma/client';
-import { Prisma } from 'generated/prisma/client';
+import type { WorkoutProfile } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { TaskMediaService } from './task-media.service';
 import { ExerciseConfigService } from '../../exercise-config/services/exercise-config.service';
 

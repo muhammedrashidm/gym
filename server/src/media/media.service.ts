@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MediaVisibility } from 'generated/prisma/client';
+import { MediaVisibility } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import {
   PUBLIC_STORAGE_SERVICE,

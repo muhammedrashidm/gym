@@ -18,7 +18,7 @@ import {
   SessionLogStatus,
   SessionLogActorRole,
   WorkoutProfile,
-} from 'generated/prisma/client';
+} from '@prisma/client';
 
 @Injectable()
 export class WorkoutSessionService implements IWorkoutSessionService {

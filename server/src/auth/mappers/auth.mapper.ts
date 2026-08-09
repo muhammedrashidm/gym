@@ -1,4 +1,4 @@
-import { Role, User, UserRole } from 'generated/prisma/client';
+import { Role, User, UserRole } from '@prisma/client';
 import { AuthUserModel } from '../models/auth-user.model';
 import { UserRoleModel } from '../models/user-role.model';
 

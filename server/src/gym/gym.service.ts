@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Prisma } from 'generated/prisma/client';
+import type { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import type { RequestContext } from '../common/types/request-context.type';
 import { CreateGymDto } from './dto/create-gym.dto';

@@ -3,21 +3,23 @@ FROM node:22.12.0-alpine AS builder
 
 WORKDIR /usr/src/app
 
-# Copy dependency files
+# Dependency manifests first, so npm ci is cached independently of source changes
 COPY package*.json ./
+
+# Prisma schema + config are needed by `prisma generate`
 COPY prisma ./prisma/
 COPY prisma.config.ts ./
 
-# Install deps (including devDeps for prisma + nest build)
+# Install deps (including devDeps: prisma CLI + nest CLI are needed to build)
 RUN npm ci --quiet
 
-# Generate Prisma Client (emits to ./generated/prisma per schema config)
+# Generate Prisma Client into node_modules/.prisma/client (standard location)
 RUN npx prisma generate
 
-# Copy source
+# Copy the rest of the source
 COPY . .
 
-# Build NestJS app -> ./dist (includes dist/src and dist/generated/prisma)
+# Build NestJS app -> ./dist (entry is dist/src/main.js)
 RUN npm run build
 
 
@@ -29,30 +31,34 @@ WORKDIR /usr/src/app
 # Create non-root user
 RUN addgroup -S nestjs && adduser -S nestjs -G nestjs
 
-# Copy package files
 COPY --from=builder /usr/src/app/package*.json ./
 
-# Install ALL deps (Prisma CLI is a devDependency, needed for `migrate deploy`)
-RUN npm ci --quiet
+# Install runtime deps. devDeps are kept because `prisma migrate deploy` runs at
+# container start and the prisma CLI (plus TypeScript, for prisma.config.ts) is a
+# devDependency. npm cache is dropped to keep the layer small.
+RUN npm ci --quiet && npm cache clean --force
 
-# Copy build output & prisma artifacts.
-# The generated Prisma client is compiled into dist/generated/prisma, so no
-# separate node_modules/.prisma copy is needed (driver-adapter based client).
+# Compiled application
 COPY --from=builder /usr/src/app/dist ./dist
+
+# Schema + migrations + config, required by `prisma migrate deploy`
 COPY --from=builder /usr/src/app/prisma ./prisma
 COPY --from=builder /usr/src/app/prisma.config.ts ./
+
+# The generated Prisma Client. `npm ci` above installs the @prisma/client package
+# but not the generated client, which lives in node_modules/.prisma/client — so it
+# must be copied AFTER npm ci or it would be wiped.
+COPY --from=builder /usr/src/app/node_modules/.prisma ./node_modules/.prisma
 
 # Static uploads dir referenced by main.ts (dist/../uploads at runtime)
 RUN mkdir -p uploads
 
-# Set environment
 ENV NODE_ENV=production
 
-# Ownership & user
 RUN chown -R nestjs:nestjs /usr/src/app
 USER nestjs
 
 EXPOSE 3000
 
-# Apply migrations THEN start app (entry is dist/src/main.js for this project)
+# Apply migrations THEN start the app
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/src/main.js"]

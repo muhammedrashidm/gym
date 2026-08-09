@@ -18,7 +18,7 @@ import {
   mapToProfileModel,
   mapToDisableProfileModel,
 } from './mappers/profile.mapper';
-import type { User } from 'generated/prisma/client';
+import type { User } from '@prisma/client';
 import { AuthService } from '../auth/auth.service';
 import { TokenPairModel } from '../auth/models/token-pair.model';
 import { randomUUID } from 'crypto';
