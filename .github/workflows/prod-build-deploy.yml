@@ -5,7 +5,7 @@ on:
     types:
       - closed # Runs when a PR is merged into the prod branch
     branches:
-      - protected/prod
+      - protected/server/prod
   workflow_dispatch: {} # Allow manual runs from the Actions tab
 
 env:
