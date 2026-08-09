@@ -91,6 +91,7 @@ jobs:
             docker run -d \
               --name gym-server \
               --restart always \
+              --network gym-network \
               --env-file /opt/gym-server/.env \
               -p 80:3000 \
               "$ECR_IMAGE:latest"
