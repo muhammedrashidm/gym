@@ -11,7 +11,7 @@ COPY prisma ./prisma/
 COPY prisma.config.ts ./
 
 # Install deps (including devDeps: prisma CLI + nest CLI are needed to build)
-RUN npm ci --quiet
+RUN npm ci --omit=dev --quiet
 
 # Generate Prisma Client into node_modules/.prisma/client (standard location)
 RUN npx prisma generate
@@ -36,7 +36,7 @@ COPY --from=builder /usr/src/app/package*.json ./
 # Install runtime deps. devDeps are kept because `prisma migrate deploy` runs at
 # container start and the prisma CLI (plus TypeScript, for prisma.config.ts) is a
 # devDependency. npm cache is dropped to keep the layer small.
-RUN npm ci --quiet && npm cache clean --force
+RUN npm ci --omit=dev --quiet && npm cache clean --force
 
 # Compiled application
 COPY --from=builder /usr/src/app/dist ./dist
