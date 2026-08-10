@@ -15,7 +15,7 @@ class AppConfig {
 
   static const dev = AppConfig._(
     flavor: Flavor.dev,
-    baseUrl: 'http://192.168.0.11:3000/api/v1',
+    baseUrl: 'http://ec2-43-204-220-28.ap-south-1.compute.amazonaws.com/api/v1',
     appName: 'Kinetic (Dev)',
     enableLogging: true,
   );

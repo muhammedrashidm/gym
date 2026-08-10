@@ -13,10 +13,12 @@ class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<Either<Failure, Unit>> sendOtp({required String phoneNumber}) async {
+  Future<Either<Failure, String?>> sendOtp({
+    required String phoneNumber,
+  }) async {
     try {
-      await _remoteDataSource.sendOtp(phoneNumber: phoneNumber);
-      return const Right(unit);
+      final code = await _remoteDataSource.sendOtp(phoneNumber: phoneNumber);
+      return Right(code);
     } on DioException catch (e) {
       return Left(_mapDioError(e));
     } catch (e) {

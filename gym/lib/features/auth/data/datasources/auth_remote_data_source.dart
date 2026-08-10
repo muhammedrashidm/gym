@@ -1,9 +1,12 @@
 import 'package:injectable/injectable.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/auth_token_model.dart';
+import '../models/otp_requested_model.dart';
 
 abstract interface class AuthRemoteDataSource {
-  Future<void> sendOtp({required String phoneNumber});
+  /// Returns the plaintext OTP while the server still echoes it (no SMS
+  /// provider yet), or null once it stops.
+  Future<String?> sendOtp({required String phoneNumber});
   Future<AuthTokenModel> verifyOtp({
     required String phoneNumber,
     required String otp,
@@ -18,11 +21,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl(this._apiClient);
 
   @override
-  Future<void> sendOtp({required String phoneNumber}) async {
-    await _apiClient.post<Map<String, dynamic>>(
+  Future<String?> sendOtp({required String phoneNumber}) async {
+    final response = await _apiClient.post<Map<String, dynamic>>(
       '/auth/request-otp',
       data: {'phoneNumber': phoneNumber},
     );
+    return OtpRequestedModel.fromJson(response.data as Map<String, dynamic>)
+        .code;
   }
 
   @override

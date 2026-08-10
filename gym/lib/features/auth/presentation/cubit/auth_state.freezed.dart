@@ -21,7 +21,7 @@ mixin _$AuthState {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
@@ -34,7 +34,7 @@ mixin _$AuthState {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
@@ -47,7 +47,7 @@ mixin _$AuthState {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,
@@ -150,7 +150,7 @@ class _$AuthInitialImpl implements AuthInitial {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
@@ -166,7 +166,7 @@ class _$AuthInitialImpl implements AuthInitial {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
@@ -182,7 +182,7 @@ class _$AuthInitialImpl implements AuthInitial {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,
@@ -288,7 +288,7 @@ class _$AuthCheckingTokenImpl implements AuthCheckingToken {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
@@ -304,7 +304,7 @@ class _$AuthCheckingTokenImpl implements AuthCheckingToken {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
@@ -320,7 +320,7 @@ class _$AuthCheckingTokenImpl implements AuthCheckingToken {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,
@@ -426,7 +426,7 @@ class _$AuthLoadingImpl implements AuthLoading {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
@@ -442,7 +442,7 @@ class _$AuthLoadingImpl implements AuthLoading {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
@@ -458,7 +458,7 @@ class _$AuthLoadingImpl implements AuthLoading {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,
@@ -529,7 +529,7 @@ abstract class _$$AuthOtpSentImplCopyWith<$Res> {
           _$AuthOtpSentImpl value, $Res Function(_$AuthOtpSentImpl) then) =
       __$$AuthOtpSentImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String phoneNumber});
+  $Res call({String phoneNumber, String? debugCode});
 }
 
 /// @nodoc
@@ -544,12 +544,17 @@ class __$$AuthOtpSentImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? phoneNumber = null,
+    Object? debugCode = freezed,
   }) {
     return _then(_$AuthOtpSentImpl(
       phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      debugCode: freezed == debugCode
+          ? _value.debugCode
+          : debugCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -557,14 +562,16 @@ class __$$AuthOtpSentImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthOtpSentImpl implements AuthOtpSent {
-  const _$AuthOtpSentImpl({required this.phoneNumber});
+  const _$AuthOtpSentImpl({required this.phoneNumber, this.debugCode});
 
   @override
   final String phoneNumber;
+  @override
+  final String? debugCode;
 
   @override
   String toString() {
-    return 'AuthState.otpSent(phoneNumber: $phoneNumber)';
+    return 'AuthState.otpSent(phoneNumber: $phoneNumber, debugCode: $debugCode)';
   }
 
   @override
@@ -573,11 +580,13 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
         (other.runtimeType == runtimeType &&
             other is _$AuthOtpSentImpl &&
             (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber));
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.debugCode, debugCode) ||
+                other.debugCode == debugCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, phoneNumber);
+  int get hashCode => Object.hash(runtimeType, phoneNumber, debugCode);
 
   @JsonKey(ignore: true)
   @override
@@ -591,14 +600,14 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
             AuthToken token, List<UserRole> availableRoles, UserRole activeRole)
         authenticated,
   }) {
-    return otpSent(phoneNumber);
+    return otpSent(phoneNumber, debugCode);
   }
 
   @override
@@ -607,14 +616,14 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
             UserRole activeRole)?
         authenticated,
   }) {
-    return otpSent?.call(phoneNumber);
+    return otpSent?.call(phoneNumber, debugCode);
   }
 
   @override
@@ -623,7 +632,7 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,
@@ -632,7 +641,7 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
     required TResult orElse(),
   }) {
     if (otpSent != null) {
-      return otpSent(phoneNumber);
+      return otpSent(phoneNumber, debugCode);
     }
     return orElse();
   }
@@ -685,10 +694,12 @@ class _$AuthOtpSentImpl implements AuthOtpSent {
 }
 
 abstract class AuthOtpSent implements AuthState {
-  const factory AuthOtpSent({required final String phoneNumber}) =
-      _$AuthOtpSentImpl;
+  const factory AuthOtpSent(
+      {required final String phoneNumber,
+      final String? debugCode}) = _$AuthOtpSentImpl;
 
   String get phoneNumber;
+  String? get debugCode;
   @JsonKey(ignore: true)
   _$$AuthOtpSentImplCopyWith<_$AuthOtpSentImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -764,7 +775,7 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
@@ -780,7 +791,7 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
@@ -796,7 +807,7 @@ class _$AuthUnauthenticatedImpl implements AuthUnauthenticated {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,
@@ -934,7 +945,7 @@ class _$AuthErrorImpl implements AuthError {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
@@ -950,7 +961,7 @@ class _$AuthErrorImpl implements AuthError {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
@@ -966,7 +977,7 @@ class _$AuthErrorImpl implements AuthError {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,
@@ -1153,7 +1164,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
     required TResult Function() initial,
     required TResult Function() checkingToken,
     required TResult Function() loading,
-    required TResult Function(String phoneNumber) otpSent,
+    required TResult Function(String phoneNumber, String? debugCode) otpSent,
     required TResult Function(bool sessionExpired) unauthenticated,
     required TResult Function(String message) error,
     required TResult Function(
@@ -1169,7 +1180,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
     TResult? Function()? initial,
     TResult? Function()? checkingToken,
     TResult? Function()? loading,
-    TResult? Function(String phoneNumber)? otpSent,
+    TResult? Function(String phoneNumber, String? debugCode)? otpSent,
     TResult? Function(bool sessionExpired)? unauthenticated,
     TResult? Function(String message)? error,
     TResult? Function(AuthToken token, List<UserRole> availableRoles,
@@ -1185,7 +1196,7 @@ class _$AuthAuthenticatedImpl implements AuthAuthenticated {
     TResult Function()? initial,
     TResult Function()? checkingToken,
     TResult Function()? loading,
-    TResult Function(String phoneNumber)? otpSent,
+    TResult Function(String phoneNumber, String? debugCode)? otpSent,
     TResult Function(bool sessionExpired)? unauthenticated,
     TResult Function(String message)? error,
     TResult Function(AuthToken token, List<UserRole> availableRoles,

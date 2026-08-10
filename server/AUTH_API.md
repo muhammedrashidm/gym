@@ -43,8 +43,13 @@ Content-Type: application/json
 
 ### Response (200 OK)
 ```json
-{ "success": true }
+{ "success": true, "code": "1234" }
 ```
+
+| Field | Notes |
+|-------|-------|
+| `success` | Always `true` on 200 |
+| `code` | **Temporary.** The plaintext OTP, so clients can display it while SMS delivery is unavailable. Omitted entirely once `OTP_ECHO_UNTIL` passes (default `2026-11-10T00:00:00Z`) — clients must treat it as optional/nullable. |
 
 ### Errors
 | Status | Message |
@@ -52,6 +57,10 @@ Content-Type: application/json
 | 400 | Invalid phone number format |
 
 **Dev Mode:** OTP is always `1234` and logged to console.
+
+**No SMS yet:** in every environment the OTP is logged to the server console and
+echoed back in `code` (see above). Set `OTP_ECHO_UNTIL` to a past date to kill
+the echo as soon as the SMS provider goes live.
 
 ---
 
@@ -434,7 +443,8 @@ model Profile {
 curl -X POST http://localhost:3000/auth/request-otp \
   -H "Content-Type: application/json" \
   -d '{"phoneNumber": "+1234567890"}'
-# Console: [OTP Stub] Code for +1234567890: 1234
+# Console:  [OTP Stub] Code for +1234567890: 1234
+# Response: {"success":true,"code":"1234"}   (code omitted after OTP_ECHO_UNTIL)
 
 # Verify with 1234
 curl -X POST http://localhost:3000/auth/verify-otp \

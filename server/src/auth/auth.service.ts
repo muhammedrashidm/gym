@@ -21,6 +21,26 @@ export class AuthService implements IAuthService {
     private config: ConfigService,
   ) {}
 
+  /** TEMPORARY — see OtpRequestedModel.code. Delete with the echo logic. */
+  private static readonly OTP_ECHO_DEFAULT_UNTIL = '2026-11-10T00:00:00Z';
+
+  /**
+   * TEMPORARY: while no SMS provider is wired up, the OTP is returned in the
+   * request-otp response so the client can display it. Expires on its own at
+   * OTP_ECHO_UNTIL (default 2026-11-10) — no deploy needed to close it.
+   */
+  private shouldEchoOtp(): boolean {
+    const raw = this.config.get<string>(
+      'OTP_ECHO_UNTIL',
+      AuthService.OTP_ECHO_DEFAULT_UNTIL,
+    );
+    const until = new Date(raw).getTime();
+    // Fail closed: an unparseable value disables the echo rather than
+    // silently leaking the code forever.
+    if (Number.isNaN(until)) return false;
+    return Date.now() < until;
+  }
+
   async requestOtp(phoneNumber: string): Promise<OtpRequestedModel> {
     const isDev = this.config.get('NODE_ENV') === 'development';
     const code = isDev
@@ -36,14 +56,13 @@ export class AuthService implements IAuthService {
       },
     });
 
-    if (isDev) {
-      console.log(`[OTP Stub] Code for ${phoneNumber}: ${code}`);
-    } else {
-      console.log(`[OTP Stub] Code for ${phoneNumber}: ${code}`); // fallback logging
-    }
+    console.log(`[OTP Stub] Code for ${phoneNumber}: ${code}`);
 
     const result = new OtpRequestedModel();
     result.success = true;
+    if (this.shouldEchoOtp()) {
+      result.code = code;
+    }
     return result;
   }
 

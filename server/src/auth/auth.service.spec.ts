@@ -81,8 +81,21 @@ describe('AuthService', () => {
   });
 
   describe('requestOtp', () => {
+    // Keys are read individually, so mock per-key rather than blanket-returning
+    // one value (an invalid OTP_ECHO_UNTIL would silently disable the echo).
+    const mockConfig = (overrides: Record<string, string> = {}) => {
+      const values: Record<string, string> = {
+        NODE_ENV: 'development',
+        OTP_ECHO_UNTIL: '2999-01-01T00:00:00Z',
+        ...overrides,
+      };
+      config.get.mockImplementation(
+        (key: string, defaultValue?: string) => values[key] ?? defaultValue,
+      );
+    };
+
     it('should create an OTP request and return OtpRequestedModel', async () => {
-      config.get.mockReturnValue('development');
+      mockConfig();
       prisma.otpRequest.create.mockResolvedValue({} as any);
 
       const result = await authService.requestOtp('+1234567890');
@@ -98,6 +111,34 @@ describe('AuthService', () => {
       );
       expect(result).toBeInstanceOf(OtpRequestedModel);
       expect(result.success).toBe(true);
+    });
+
+    it('should echo the code while inside the OTP_ECHO_UNTIL window', async () => {
+      mockConfig({ OTP_ECHO_UNTIL: '2999-01-01T00:00:00Z' });
+      prisma.otpRequest.create.mockResolvedValue({} as any);
+
+      const result = await authService.requestOtp('+1234567890');
+
+      expect(result.code).toBe('1234');
+    });
+
+    it('should not echo the code once OTP_ECHO_UNTIL has passed', async () => {
+      mockConfig({ OTP_ECHO_UNTIL: '2020-01-01T00:00:00Z' });
+      prisma.otpRequest.create.mockResolvedValue({} as any);
+
+      const result = await authService.requestOtp('+1234567890');
+
+      expect(result.success).toBe(true);
+      expect(result.code).toBeUndefined();
+    });
+
+    it('should not echo the code when OTP_ECHO_UNTIL is unparseable', async () => {
+      mockConfig({ OTP_ECHO_UNTIL: 'not-a-date' });
+      prisma.otpRequest.create.mockResolvedValue({} as any);
+
+      const result = await authService.requestOtp('+1234567890');
+
+      expect(result.code).toBeUndefined();
     });
   });
 

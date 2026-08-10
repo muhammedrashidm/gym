@@ -7,6 +7,7 @@ import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_routes.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
+import '../widgets/otp_code_snack_bar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -52,11 +53,21 @@ class _LoginPageState extends State<LoginPage> {
       value: getIt<AuthCubit>(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthOtpSent) {
+          // This page stays mounted underneath the pushed OtpPage, so it also
+          // sees the AuthOtpSent emitted by "Resend" there. Only react while
+          // we are the top route, otherwise resending pushes a second OtpPage
+          // and double-toasts the code.
+          final isTopRoute = ModalRoute.of(context)?.isCurrent ?? true;
+
+          if (state is AuthOtpSent && isTopRoute) {
             context.push(
               AppRoute.otp.path,
               extra: state.phoneNumber,
             );
+            final code = state.debugCode;
+            if (code != null) {
+              showOtpCodeSnackBar(context, code);
+            }
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

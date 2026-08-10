@@ -16,7 +16,12 @@ sealed class AuthState with _$AuthState {
   const factory AuthState.loading() = AuthLoading;
 
   /// OTP was sent; waiting for user to enter the code.
-  const factory AuthState.otpSent({required String phoneNumber}) = AuthOtpSent;
+  /// [debugCode] is the plaintext OTP echoed back by the server while SMS
+  /// delivery is unavailable — null once the server stops returning it.
+  const factory AuthState.otpSent({
+    required String phoneNumber,
+    String? debugCode,
+  }) = AuthOtpSent;
 
   /// No token stored, or the session was forcibly ended.
   /// [sessionExpired] is true when this followed a server-confirmed refresh

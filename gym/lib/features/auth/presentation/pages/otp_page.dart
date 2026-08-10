@@ -6,6 +6,7 @@ import '../../../../core/di/injection.dart';
 import '../../../../globals.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
+import '../widgets/otp_code_snack_bar.dart';
 
 class OtpPage extends StatefulWidget {
   final String phoneNumber;
@@ -54,6 +55,12 @@ class _OtpPageState extends State<OtpPage> {
         listener: (context, state) {
           if (state is AuthAuthenticated) {
             // GoRouter's refreshListenable automatically redirects to the correct route
+          } else if (state is AuthOtpSent) {
+            // Emitted here only by "Resend".
+            final code = state.debugCode;
+            if (code != null) {
+              showOtpCodeSnackBar(context, code);
+            }
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

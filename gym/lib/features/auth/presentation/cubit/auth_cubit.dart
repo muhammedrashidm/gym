@@ -96,11 +96,13 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await _mediator
         .sendCommand(SendOtpCommand(phoneNumber: phoneNumber))
-    as Either<Failure, Unit>;
+    as Either<Failure, String?>;
 
     result.fold(
       (failure) => emit(AuthState.error(message: failure.toString())),
-      (_) => emit(AuthState.otpSent(phoneNumber: phoneNumber)),
+      (code) => emit(
+        AuthState.otpSent(phoneNumber: phoneNumber, debugCode: code),
+      ),
     );
   }
 
